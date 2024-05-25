@@ -1,0 +1,3 @@
+learnopengl.com
+stb_image.h - Sean Barrett
+key_input - https://stackoverflow.com/questions/55573238/how-do-i-do-a-proper-input-class-in-glfw-for-a-game-engine
