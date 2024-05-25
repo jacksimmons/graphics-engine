@@ -4,6 +4,9 @@
 #include <cmath>
 #include <iostream>
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -146,6 +149,16 @@ int main()
 		GLFW_KEY_O,
 	});
 	initGLAD();
+
+
+	// Init ImGUI
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO &imIO = ImGui::GetIO(); (void)imIO;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+	
 
 
 	// ===== VIEWPORT =====
