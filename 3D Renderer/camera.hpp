@@ -18,9 +18,9 @@ private:
 	glm::vec3 m_centre;
 	glm::vec3 m_up;
 public:
-	Camera(glm::vec3 eye, glm::vec3 centre, glm::vec3 up);
-	glm::mat4 getView();
-	void move(glm::vec3 vec);
-	void rotate(glm::vec3 vec);
-	void update();
+	Camera(glm::vec3 eye, glm::vec3 centre, glm::vec3 up) noexcept;
+	glm::mat4 getView() noexcept;
+	void move(glm::vec3 vec) noexcept;
+	void rotate(glm::vec3 vec) noexcept;
+	void update() noexcept;
 };
