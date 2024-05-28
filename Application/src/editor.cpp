@@ -72,15 +72,35 @@ static void handleKeyInput(std::shared_ptr<KeyInput> input, GLFWwindow *win, Tan
 }
 
 
-/// <summary>
-/// Callback occurs when window size changes.
-/// </summary>
-void onFramebufferSizeChange(GLFWwindow *window, int width, int height)
+Editor::Editor()
 {
-	glViewport(0, 0, width, height);
+	initGL();
+	initImGui();
+
+	// Create scene
+	auto root = std::make_shared<Tank::Node>("Root");
+	std::shared_ptr<Tank::Camera> cam = std::make_shared<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
+	std::shared_ptr<Tank::Scene> scene = std::make_shared<Tank::Scene>(root, cam);
+
+	auto user = std::make_shared<Tank::Node>("User");
+	Tank::Node::addChild(user, std::make_shared<Tank::Model>("Cube"));
+	Tank::Node::addChild(root, user);
+
+	auto system = std::make_shared<Tank::Node>("System");
+	Tank::Node::addChild(system, std::shared_ptr<Hierarchy>(new Hierarchy(scene, "Hierarchy")));
+	Tank::Node::addChild(root, system);
+
+	Tank::Scene::setActiveScene(scene);
+
+	glEnable(GL_DEPTH_TEST);
 }
 
-Editor::Editor()
+Editor::~Editor()
+{
+	cleanup();
+}
+
+void Editor::initGL()
 {
 	int width = 800, height = 600;
 
@@ -105,7 +125,7 @@ Editor::Editor()
 
 	// Initialise callbacks
 	KeyInput::setupKeyInputs(m_window);
-	glfwSetFramebufferSizeCallback(m_window, onFramebufferSizeChange);
+	glfwSetFramebufferSizeCallback(m_window, Editor::onFramebufferSizeChange);
 
 	// Initialise GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -113,47 +133,22 @@ Editor::Editor()
 		TE_CORE_CRITICAL("GLAD failed to initialise.");
 	}
 
-	// Initialise ImGui
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO &imIO = ImGui::GetIO(); (void)imIO;
-	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
-
 	// Create viewport
 	glViewport(0, 0, width, height);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-	// Create scene
-	auto root = std::make_shared<Tank::Node>("Root");
-	std::shared_ptr<Tank::Camera> cam = std::make_shared<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
-	std::shared_ptr<Tank::Scene> scene = std::make_shared<Tank::Scene>(root, cam);
-
-	auto user = std::make_shared<Tank::Node>("User");
-	Tank::Node::addChild(user, std::make_shared<Tank::Model>("Cube"));
-	Tank::Node::addChild(root, user);
-
-	auto system = std::make_shared<Tank::Node>("System");
-	Tank::Node::addChild(system, std::shared_ptr<Hierarchy>(new Hierarchy(scene, "Hierarchy")));
-	Tank::Node::addChild(root, system);
-
-	Tank::Scene::setActiveScene(scene);
-
-	glEnable(GL_DEPTH_TEST);
 }
 
-
-Editor::~Editor()
+void Editor::initImGui()
 {
-	// Cleanup
-	glfwDestroyWindow(m_window);
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-	glfwTerminate();
+	// Initialise ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO &imIO = ImGui::GetIO();
+	imIO.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui::StyleColorsDark();
 }
-
 
 void Editor::run()
 {
@@ -194,9 +189,7 @@ void Editor::run()
 		scene->update();
 
 		ImGui::Render();
-
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 
 		handleKeyInput(keyInput, m_window, *scene->getActiveCamera());
 
@@ -204,6 +197,17 @@ void Editor::run()
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
+
+	cleanup();
+}
+
+void Editor::cleanup()
+{
+	glfwDestroyWindow(m_window);
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+	glfwTerminate();
 }
 
 

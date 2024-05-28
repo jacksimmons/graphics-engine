@@ -27,13 +27,12 @@ void Hierarchy::drawRecursive(std::shared_ptr<Node> node) const
 	auto children = node->getChildren();
 
 	// Determine if leaf node.
-	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+	ImGuiTreeNodeFlags flags = 0;
 	if (children.size() == 0)
 		flags |= ImGuiTreeNodeFlags_Leaf;
 
 	if (ImGui::TreeNodeEx(node->getName().c_str(), flags))
 	{
-		// ! Need to improve this.
 		if (ImGui::IsItemFocused())
 		{
 			auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
