@@ -3,11 +3,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-#include "nodes/model.hpp"
 #include "texture.hpp"
 #include "shader.hpp"
 #include "uniform.hpp"
 #include "scene.hpp"
+#include "nodes/model.hpp"
+#include "nodes/camera.hpp"
 
 
 float vertices[] = {
@@ -124,6 +125,8 @@ namespace Tank
 		m_uniformP = std::make_unique<Uniform>(shader, "proj");
 		m_uniformV = std::make_unique<Uniform>(shader, "view");
 		m_uniformM = std::make_unique<Uniform>(shader, "model");
+
+		m_M = glm::translate(m_M, { 0.9, 0.5, 0.3 });
 	}
 
 	void Model::draw() const

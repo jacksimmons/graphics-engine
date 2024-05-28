@@ -2,22 +2,29 @@
 #include <memory>
 #include "nodes/node.hpp"
 #include "nodes/ui_element.hpp"
-#include "scene.hpp"
 
 
 namespace Tank
 {
-	class Hierarchy : public UIElement
-	{
-		friend class Editor;
-	private:
-		std::shared_ptr<Node> m_root;
-		Hierarchy(std::shared_ptr<Scene> scene, std::string name);
-	protected:
-		/// <summary>
-		/// Generates buttons for all children of the current node, at a given
-		/// indentation depth (based on the generation depth).
-		/// </summary>
-		void draw() const override;
-	};
+	class Scene;
 }
+
+
+class Hierarchy : public Tank::UIElement
+{
+	friend class Editor;
+private:
+	Hierarchy(std::shared_ptr<Tank::Scene> scene, std::string name);
+
+	/// <summary>
+	/// Draws a tree node for the node provided, then calls itself for each
+	/// of its children. Draws a leaf instead if no children.
+	/// </summary>
+	void drawRecursive(std::shared_ptr<Node> node) const;
+protected:
+	/// <summary>
+	/// Generates buttons for all children of the current node, at a given
+	/// indentation depth (based on the generation depth).
+	/// </summary>
+	void draw() const override;
+};

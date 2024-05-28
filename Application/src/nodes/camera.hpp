@@ -2,12 +2,13 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
-#include <nodes/node.hpp>
+#include "nodes/node.hpp"
+#include "nodes/hierarchy.hpp"
 
 
 namespace Tank
 {
-	class Camera : Node
+	class Camera : public Node
 	{
 	private:
 		// Projection matrix
@@ -25,9 +26,11 @@ namespace Tank
 		glm::vec3 m_up;
 	public:
 		Camera(glm::vec3 eye, glm::vec3 centre, glm::vec3 up, std::string name);
-		glm::mat4 getView() const { return m_V; }
-		glm::mat4 getProj() const { return m_P; }
-		void move(glm::vec3 vec);
+		glm::mat4 getView() const noexcept { return m_V; }
+		glm::mat4 getProj() const noexcept { return m_P; }
+		void setPosition(glm::vec3 pos);
+		void translate(glm::vec3 vec);
+		void setRotation(glm::vec3 rot);
 		void rotate(glm::vec3 vec);
 		void update() override;
 	};

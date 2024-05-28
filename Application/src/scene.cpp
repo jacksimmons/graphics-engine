@@ -1,16 +1,13 @@
 #include <iostream>
 #include "scene.hpp"
+#include "nodes/node.hpp"
+#include "nodes/camera.hpp"
 
 
 namespace Tank
 {
 	std::shared_ptr<Scene> Scene::s_activeScene = nullptr;
 
-
-	void Scene::draw() const
-	{
-		m_root->draw();
-	}
 
 	void Scene::update()
 	{

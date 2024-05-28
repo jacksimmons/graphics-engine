@@ -3,8 +3,7 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-
-#include "nodes/Camera.hpp"
+#include "nodes/camera.hpp"
 
 
 enum class KeyState

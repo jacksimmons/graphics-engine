@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin/$(Configuration)-$(Platform)/$(ProjectName)</OutDir>
+    <OutDir>$(SolutionDir)bin/$(Configuration)-$(Platform)/$(ProjectName)/</OutDir>
     <IntDir>$(SolutionDir)bin-int/$(Configuration)-$(Platform)/$(ProjectName)/</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -150,6 +150,7 @@
     <ClInclude Include="src\matrix.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
     <ClInclude Include="src\nodes\hierarchy.hpp" />
+    <ClInclude Include="src\nodes\inspector.hpp" />
     <ClInclude Include="src\nodes\model.hpp" />
     <ClInclude Include="src\nodes\node.hpp" />
     <ClInclude Include="src\nodes\ui_element.hpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="include\glad\glad.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\imgui\imgui_draw.cpp" />
     <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\nodes\camera.cpp" />
     <ClCompile Include="src\nodes\hierarchy.cpp" />
+    <ClCompile Include="src\nodes\inspector.cpp" />
     <ClCompile Include="src\nodes\model.cpp" />
     <ClCompile Include="src\nodes\node.cpp" />
     <ClCompile Include="src\nodes\ui_element.cpp" />
