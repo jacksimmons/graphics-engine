@@ -21,9 +21,20 @@ namespace Tank
 		update();
 	}
 
-	void Camera::move(glm::vec3 vec)
+	void Camera::setPosition(glm::vec3 pos)
+	{
+		m_T = glm::translate(glm::mat4(1.0f), pos);
+	}
+
+	void Camera::translate(glm::vec3 vec)
 	{
 		m_T = glm::translate(m_T, vec);
+	}
+
+	void Camera::setRotation(glm::vec3 rot)
+	{
+		m_R = glm::mat4(1.0f);
+		rotate(rot);
 	}
 
 	void Camera::rotate(glm::vec3 vec)

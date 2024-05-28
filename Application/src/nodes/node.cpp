@@ -6,7 +6,9 @@ namespace Tank
 {
 	Node::Node(std::string name)
 	{
+		m_M = glm::mat4(1.0f);
 		m_name = name;
+		m_parent = nullptr;
 	}
 
 	void Node::addChild(std::shared_ptr<Node> parent, std::shared_ptr<Node> child)

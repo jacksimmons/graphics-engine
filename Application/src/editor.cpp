@@ -14,13 +14,12 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "key_input.hpp"
+#include "scene.hpp"
 #include "shader.hpp"
 #include "uniform.hpp"
 #include "texture.hpp"
-#include "scene.hpp"
 #include "editor.hpp"
 #include "nodes/node.hpp"
-#include "nodes/camera.hpp"
 #include "nodes/model.hpp"
 #include "nodes/hierarchy.hpp"
 
@@ -35,22 +34,22 @@ static void handleKeyInput(std::shared_ptr<KeyInput> input, GLFWwindow *win, Tan
 
 
 	if (input->getKeyState(GLFW_KEY_W) == KeyState::Held)
-		cam.move(glm::vec3(0.0f, -0.01f, 0.0f));
+		cam.translate(glm::vec3(0.0f, -0.01f, 0.0f));
 
 	if (input->getKeyState(GLFW_KEY_A) == KeyState::Held)
-		cam.move(glm::vec3(0.01f, 0.0f, 0.0f));
+		cam.translate(glm::vec3(0.01f, 0.0f, 0.0f));
 
 	if (input->getKeyState(GLFW_KEY_S) == KeyState::Held)
-		cam.move(glm::vec3(0.0f, 0.01f, 0.0f));
+		cam.translate(glm::vec3(0.0f, 0.01f, 0.0f));
 
 	if (input->getKeyState(GLFW_KEY_D) == KeyState::Held)
-		cam.move(glm::vec3(-0.01f, 0.0f, 0.0f));
+		cam.translate(glm::vec3(-0.01f, 0.0f, 0.0f));
 
 	if (input->getKeyState(GLFW_KEY_Q) == KeyState::Held)
-		cam.move(glm::vec3(0.0f, 0.0f, 0.01f));
+		cam.translate(glm::vec3(0.0f, 0.0f, 0.01f));
 
 	if (input->getKeyState(GLFW_KEY_E) == KeyState::Held)
-		cam.move(glm::vec3(0.0f, 0.0f, -0.01f));
+		cam.translate(glm::vec3(0.0f, 0.0f, -0.01f));
 
 
 	if (input->getKeyState(GLFW_KEY_J) == KeyState::Held)
@@ -136,7 +135,8 @@ Editor::Editor()
 	Tank::Node::addChild(root, user);
 
 	auto system = std::make_shared<Tank::Node>("System");
-	Tank::Node::addChild(system, std::shared_ptr<Tank::Hierarchy>(new Tank::Hierarchy(scene, "Hierarchy")));
+	Tank::Node::addChild(system, std::shared_ptr<Hierarchy>(new Hierarchy(scene, "Hierarchy")));
+	Tank::Node::addChild(root, system);
 
 	Tank::Scene::setActiveScene(scene);
 
@@ -186,7 +186,6 @@ void Editor::run()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::Begin("GUI");
 
 		// Draw scene
 		// Scene must be updated after input is handled.
@@ -194,7 +193,6 @@ void Editor::run()
 		auto scene = Tank::Scene::getActiveScene();
 		scene->update();
 
-		ImGui::End();
 		ImGui::Render();
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
