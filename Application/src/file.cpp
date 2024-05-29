@@ -1,11 +1,17 @@
 #include <fstream>
 #include <string>
+#include <exception>
 
 #include "file.hpp"
 
 
-std::string File::readAllLines(std::string fp)
+std::string File::readAllLines(std::filesystem::path fp)
 {
+	if (!std::filesystem::exists(fp))
+	{
+		throw InvalidFileException();
+	}
+
 	try
 	{
 		std::ifstream in(fp);
@@ -20,7 +26,7 @@ std::string File::readAllLines(std::string fp)
 	}
 	catch (std::exception const)
 	{
-		throw FileReadException();
+		throw InaccessibleFileException();
 	}
 }
 

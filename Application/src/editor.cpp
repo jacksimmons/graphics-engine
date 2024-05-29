@@ -6,22 +6,23 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <imgui.h>
-#include <imgui_impl_opengl3.h>
-#include <imgui_impl_glfw.h>
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+#include <imgui/backends/imgui_impl_glfw.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #define STB_IMAGE_IMPLEMENTATION
+#include "editor.hpp"
 #include "key_input.hpp"
 #include "scene.hpp"
 #include "shader.hpp"
-#include "uniform.hpp"
 #include "texture.hpp"
-#include "editor.hpp"
+#include "framebuffer.hpp"
 #include "nodes/node.hpp"
 #include "nodes/model.hpp"
 #include "nodes/hierarchy.hpp"
+#include "nodes/scene_view.hpp"
 
 
 static void handleKeyInput(std::shared_ptr<KeyInput> input, GLFWwindow *win, Tank::Camera &cam)
@@ -74,22 +75,27 @@ static void handleKeyInput(std::shared_ptr<KeyInput> input, GLFWwindow *win, Tan
 
 Editor::Editor()
 {
-	initGL();
+	int w = 800, h = 600;
+	int viewW = 400, viewH = 300;
+
+	initGL(w, h);
 	initImGui();
+
+	m_fb = std::make_unique<Framebuffer>(w, h);
 
 	// Create scene
 	auto root = std::make_shared<Tank::Node>("Root");
 	std::shared_ptr<Tank::Camera> cam = std::make_shared<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
+	Tank::Node::addChild(root, cam);
+	Tank::Node::addChild(root, std::make_shared<Tank::Model>("Cube"));
+
+	m_uiRoot = std::make_shared<Tank::Node>("System");
+	Tank::Node::addChild(m_uiRoot, std::shared_ptr<Hierarchy>(new Hierarchy("Hierarchy")));
+	
+	m_sceneView = std::shared_ptr<SceneView>(new SceneView({ w, h }, { 400, 300 }));
+	Tank::Node::addChild(m_uiRoot, m_sceneView);
+
 	std::shared_ptr<Tank::Scene> scene = std::make_shared<Tank::Scene>(root, cam);
-
-	auto user = std::make_shared<Tank::Node>("User");
-	Tank::Node::addChild(user, std::make_shared<Tank::Model>("Cube"));
-	Tank::Node::addChild(root, user);
-
-	auto system = std::make_shared<Tank::Node>("System");
-	Tank::Node::addChild(system, std::shared_ptr<Hierarchy>(new Hierarchy(scene, "Hierarchy")));
-	Tank::Node::addChild(root, system);
-
 	Tank::Scene::setActiveScene(scene);
 
 	glEnable(GL_DEPTH_TEST);
@@ -100,10 +106,8 @@ Editor::~Editor()
 	cleanup();
 }
 
-void Editor::initGL()
+void Editor::initGL(int w, int h)
 {
-	int width = 800, height = 600;
-
 	if (!glfwInit())
 	{
 		TE_CORE_CRITICAL("GLFW failed to initialise.");
@@ -115,7 +119,7 @@ void Editor::initGL()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	m_window = glfwCreateWindow(width, height, (char *)"TankEngine", nullptr, nullptr);
+	m_window = glfwCreateWindow(w, h, (char *)"TankEngine", nullptr, nullptr);
 	if (m_window == nullptr)
 	{
 		TE_CORE_CRITICAL("GLFW failed to create window.");
@@ -125,7 +129,7 @@ void Editor::initGL()
 
 	// Initialise callbacks
 	KeyInput::setupKeyInputs(m_window);
-	glfwSetFramebufferSizeCallback(m_window, Editor::onFramebufferSizeChange);
+	glfwSetFramebufferSizeCallback(m_window, Editor::onWindowSizeChange);
 
 	// Initialise GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -134,7 +138,7 @@ void Editor::initGL()
 	}
 
 	// Create viewport
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, w, h);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 }
 
@@ -144,7 +148,9 @@ void Editor::initImGui()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO &imIO = ImGui::GetIO();
-	imIO.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	imIO.ConfigFlags |= ImGuiConfigFlags_DockingEnable
+		| ImGuiConfigFlags_ViewportsEnable;
+
 	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 	ImGui::StyleColorsDark();
@@ -171,7 +177,7 @@ void Editor::run()
 		GLFW_KEY_U,
 		GLFW_KEY_O
 		}));
-
+	
 	// ===== MAINLOOP =====
 	while (!glfwWindowShouldClose(m_window))
 	{
@@ -182,16 +188,21 @@ void Editor::run()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		// Draw scene
-		// Scene must be updated after input is handled.
 		keyInput->update();
-		auto scene = Tank::Scene::getActiveScene();
-		scene->update();
+		m_uiRoot->update();
 
 		ImGui::Render();
+
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		handleKeyInput(keyInput, m_window, *scene->getActiveCamera());
+		//// ! Remove this?
+		GLFWwindow *backup_current_context = glfwGetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		glfwMakeContextCurrent(backup_current_context);
+		// ! End
+
+		handleKeyInput(keyInput, m_window, *(Tank::Scene::getActiveScene()->getActiveCamera()));
 
 		// Double buffering
 		glfwSwapBuffers(m_window);

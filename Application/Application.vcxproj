@@ -106,9 +106,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PLATFORM_WINDOWS;_DEBUG;_CONSOLE;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine/src;$(SolutionDir)include;$(ProjectDir)include;$(ProjectDir)include/imgui;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine/src;$(SolutionDir)include;$(ProjectDir)include;$(ProjectDir)include/imgui;$(ProjectDir)include/imgui/backends;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,17 +136,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\glad\glad.h" />
+    <ClInclude Include="include\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="include\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="include\imgui\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
-    <ClInclude Include="include\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="include\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="include\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="include\imgui\imgui_internal.h" />
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="src\editor.hpp" />
     <ClInclude Include="src\file.hpp" />
+    <ClInclude Include="src\framebuffer.hpp" />
     <ClInclude Include="src\key_input.hpp" />
     <ClInclude Include="src\matrix.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
@@ -153,23 +155,25 @@
     <ClInclude Include="src\nodes\inspector.hpp" />
     <ClInclude Include="src\nodes\model.hpp" />
     <ClInclude Include="src\nodes\node.hpp" />
+    <ClInclude Include="src\nodes\scene_view.hpp" />
     <ClInclude Include="src\nodes\ui_element.hpp" />
     <ClInclude Include="src\scene.hpp" />
     <ClInclude Include="src\shader.hpp" />
     <ClInclude Include="src\texture.hpp" />
-    <ClInclude Include="src\uniform.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\glad\glad.cpp" />
+    <ClCompile Include="include\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="include\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\imgui\imgui_draw.cpp" />
-    <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\editor.cpp" />
     <ClCompile Include="src\file.cpp" />
+    <ClCompile Include="src\framebuffer.cpp" />
+    <ClCompile Include="src\nodes\scene_view.cpp" />
     <ClCompile Include="src\key_input.cpp" />
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\nodes\camera.cpp" />
@@ -181,11 +185,12 @@
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\texture.cpp" />
-    <ClCompile Include="src\uniform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.frag" />
-    <None Include="shader.vert" />
+    <None Include="src\shaders\screenShader.frag" />
+    <None Include="src\shaders\screenShader.vert" />
+    <None Include="src\shaders\shader.frag" />
+    <None Include="src\shaders\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

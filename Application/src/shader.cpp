@@ -16,11 +16,13 @@ ShaderCompileError::ShaderCompileError(std::string pipelineStage)
 /// Generates a shader program from shader files.
 /// </summary>
 /// <returns>The shader program, as a uint.</returns>
-Shader::Shader(std::string fvert, std::string ffrag)
+Shader::Shader(std::filesystem::path fpVert, std::filesystem::path fpFrag)
 {
-	std::string vertShader = File::readAllLines(fvert);
-	std::string fragShader = File::readAllLines(ffrag);
-
+	std::string vertShader;
+	std::string fragShader;
+	vertShader = File::readAllLines(std::filesystem::current_path() / fpVert);
+	fragShader = File::readAllLines(std::filesystem::current_path() / fpFrag);
+	
 	unsigned int vshader;
 	vshader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vshader, 1, StringHelper(vertShader), nullptr);

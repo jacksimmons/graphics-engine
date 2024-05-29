@@ -3,7 +3,7 @@
 #include <string>
 
 #include "glm/glm.hpp"
-#include "uniform.hpp"
+#include "shader.hpp"
 #include "nodes/node.hpp"
 
 
@@ -16,9 +16,7 @@ namespace Tank
 		unsigned int m_vbo;
 		unsigned int m_ebo;
 		GLuint m_t0, m_t1;
-		std::unique_ptr<Uniform> m_uniformP;
-		std::unique_ptr<Uniform> m_uniformV;
-		std::unique_ptr<Uniform> m_uniformM;
+		std::unique_ptr<Shader> m_shader;
 	public:
 		Model(std::string name);
 		void draw() const override;

@@ -1,7 +1,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "nodes/camera.hpp"
-#include "uniform.hpp"
 #include "matrix.hpp"
 
 

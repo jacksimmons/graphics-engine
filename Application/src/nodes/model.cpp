@@ -1,12 +1,14 @@
+#include <exception>
 #include <iostream>
+#include <filesystem>
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
 #include "texture.hpp"
 #include "shader.hpp"
-#include "uniform.hpp"
 #include "scene.hpp"
+#include "log.hpp"
 #include "nodes/model.hpp"
 #include "nodes/camera.hpp"
 
@@ -64,15 +66,17 @@ namespace Tank
 {
 	Model::Model(std::string name) : Node(name)
 	{
-		Shader *shader;
 		try
 		{
-			shader = new Shader("shader.vert", "shader.frag");
+			m_shader = std::make_unique<Shader>("src/shaders/shader.vert", "src/shaders/shader.frag");
 		}
-		catch (ShaderCompileError const &e)
+		catch (std::exception const &e)
 		{
-			std::cout << "Error :(" << e.what() << std::endl;
-			return;
+			m_shader = nullptr;
+			
+			std::cout << std::filesystem::current_path() << std::endl;
+			TE_CORE_CRITICAL("Model: Unable to read shader file.");
+			std::cin.get();
 		}
 
 		// ===== INIT VBO/VAO =====
@@ -115,18 +119,13 @@ namespace Tank
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		shader->use();
-		Uniform *uTex0 = new Uniform(shader, "tex0");
-		uTex0->setInt(0);
-		Uniform *uTex1 = new Uniform(shader, "tex1");
-		uTex1->setInt(1);
+		m_shader->use();
+		m_shader->setInt("tex0", 0);
+		m_shader->setInt("tex1", 1);
+		m_shader->unuse();
 
 		m_M = glm::mat4(1.0f);
-		m_uniformP = std::make_unique<Uniform>(shader, "proj");
-		m_uniformV = std::make_unique<Uniform>(shader, "view");
-		m_uniformM = std::make_unique<Uniform>(shader, "model");
-
-		m_M = glm::translate(m_M, { 0.9, 0.5, 0.3 });
+		//m_M = glm::translate(glm::mat4(1.0f), { 0.9, 0.5, 0.3 });
 	}
 
 	void Model::draw() const
@@ -136,16 +135,18 @@ namespace Tank
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, m_t1);
 
-		m_uniformM->setMat4(m_M);
+		m_shader->use();
+		m_shader->setMat4("model", m_M);
 
 		auto cam = Scene::getActiveScene()->getActiveCamera();
-		m_uniformV->setMat4(cam->getView());
-		m_uniformP->setMat4(cam->getProj());
+		m_shader->setMat4("view", cam->getView());
+		m_shader->setMat4("proj", cam->getProj());
 
 		glBindVertexArray(m_vao);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
+		m_shader->unuse();
 
 		Node::draw();
 	}
