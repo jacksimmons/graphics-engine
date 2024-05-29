@@ -1,13 +1,17 @@
 #pragma once
 #include <string>
 #include <exception>
+#include <filesystem>
 
 
 class File
 {
 public:
-	static std::string readAllLines(std::string filepath);
+	static std::string readAllLines(std::filesystem::path fp);
 };
 
 
-class FileReadException : std::exception {};
+class InvalidFileException : public std::exception {};
+
+
+class InaccessibleFileException : public std::exception {};

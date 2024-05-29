@@ -5,11 +5,6 @@
 #include "nodes/camera.hpp"
 
 
-Hierarchy::Hierarchy(std::shared_ptr<Tank::Scene> scene, std::string name) : UIElement(name)
-{
-}
-
-
 void Hierarchy::draw() const
 {
 	std::shared_ptr<Node> root = Tank::Scene::getActiveScene()->getRoot();
