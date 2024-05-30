@@ -8,8 +8,10 @@
 namespace Tank
 {
 	class Node;
+	class SceneView;
 }
-class SceneView;
+class KeyInput;
+
 
 class Editor : public Tank::Application
 {
@@ -20,8 +22,7 @@ private:
 	/// Root node for editor UI (Hierarchy, Inspector, etc.)
 	/// </summary>
 	std::shared_ptr<Tank::Node> m_uiRoot;
-	std::shared_ptr<SceneView> m_sceneView;
-	std::unique_ptr<Framebuffer> m_fb;
+	std::unique_ptr<KeyInput> m_keyInput;
 public:
 	/// <summary>
 	/// Callback occurs when window size changes.
@@ -33,4 +34,5 @@ public:
 	void initGL(int w, int h);
 	void initImGui();
 	void run() override;
+	void handleKeyInput();
 };

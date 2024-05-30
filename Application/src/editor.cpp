@@ -25,54 +25,6 @@
 #include "nodes/scene_view.hpp"
 
 
-static void handleKeyInput(std::shared_ptr<KeyInput> input, GLFWwindow *win, Tank::Camera &cam)
-{
-	if (input->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
-		glfwSetWindowShouldClose(win, GL_TRUE);
-
-	if (input->getKeyState(GLFW_KEY_0) == KeyState::Pressed)
-		input->cycleRenderMode();
-
-
-	if (input->getKeyState(GLFW_KEY_W) == KeyState::Held)
-		cam.translate(glm::vec3(0.0f, -0.01f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_A) == KeyState::Held)
-		cam.translate(glm::vec3(0.01f, 0.0f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_S) == KeyState::Held)
-		cam.translate(glm::vec3(0.0f, 0.01f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_D) == KeyState::Held)
-		cam.translate(glm::vec3(-0.01f, 0.0f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_Q) == KeyState::Held)
-		cam.translate(glm::vec3(0.0f, 0.0f, 0.01f));
-
-	if (input->getKeyState(GLFW_KEY_E) == KeyState::Held)
-		cam.translate(glm::vec3(0.0f, 0.0f, -0.01f));
-
-
-	if (input->getKeyState(GLFW_KEY_J) == KeyState::Held)
-		cam.rotate(glm::vec3(-0.01f, 0.0f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_L) == KeyState::Held)
-		cam.rotate(glm::vec3(0.01f, 0.0f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_I) == KeyState::Held)
-		cam.rotate(glm::vec3(0.0f, 0.01f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_K) == KeyState::Held)
-		cam.rotate(glm::vec3(0.0f, -0.01f, 0.0f));
-
-	if (input->getKeyState(GLFW_KEY_U) == KeyState::Held)
-		cam.rotate(glm::vec3(0.0f, 0.0f, 0.01f));
-
-	if (input->getKeyState(GLFW_KEY_O) == KeyState::Held)
-		cam.rotate(glm::vec3(0.0f, 0.0f, -0.01f));
-}
-
-
 Editor::Editor()
 {
 	int w = 800, h = 600;
@@ -81,24 +33,40 @@ Editor::Editor()
 	initGL(w, h);
 	initImGui();
 
-	m_fb = std::make_unique<Framebuffer>(w, h);
-
 	// Create scene
 	auto root = std::make_shared<Tank::Node>("Root");
 	std::shared_ptr<Tank::Camera> cam = std::make_shared<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
-	Tank::Node::addChild(root, cam);
-	Tank::Node::addChild(root, std::make_shared<Tank::Model>("Cube"));
+	root->addChild(cam);
+	root->addChild(std::make_shared<Tank::Model>("Cube"));
 
 	m_uiRoot = std::make_shared<Tank::Node>("System");
-	Tank::Node::addChild(m_uiRoot, std::shared_ptr<Hierarchy>(new Hierarchy("Hierarchy")));
-	
-	m_sceneView = std::shared_ptr<SceneView>(new SceneView({ w, h }, { 400, 300 }));
-	Tank::Node::addChild(m_uiRoot, m_sceneView);
+	m_uiRoot->addChild(std::make_shared<Tank::Hierarchy>("Hierarchy"));
+	m_uiRoot->addChild(std::make_shared<Tank::SceneView>("SceneView", glm::ivec2(w, h), glm::ivec2(400, 300)));
 
 	std::shared_ptr<Tank::Scene> scene = std::make_shared<Tank::Scene>(root, cam);
 	Tank::Scene::setActiveScene(scene);
 
-	glEnable(GL_DEPTH_TEST);
+
+	// Initialise input
+	m_keyInput = std::make_unique<KeyInput>(std::vector<int>(
+		{
+		GLFW_KEY_ESCAPE,
+		GLFW_KEY_0,
+
+		GLFW_KEY_W,
+		GLFW_KEY_A,
+		GLFW_KEY_S,
+		GLFW_KEY_D,
+		GLFW_KEY_Q,
+		GLFW_KEY_E,
+
+		GLFW_KEY_I,
+		GLFW_KEY_J,
+		GLFW_KEY_K,
+		GLFW_KEY_L,
+		GLFW_KEY_U,
+		GLFW_KEY_O
+	}));
 }
 
 void Editor::initGL(int w, int h)
@@ -135,6 +103,9 @@ void Editor::initGL(int w, int h)
 	// Create viewport
 	glViewport(0, 0, w, h);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+	// Enable depth buffer
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Editor::initImGui()
@@ -152,27 +123,7 @@ void Editor::initImGui()
 }
 
 void Editor::run()
-{
-	std::shared_ptr<KeyInput> keyInput = std::make_shared<KeyInput>(std::vector<int>(
-		{
-		GLFW_KEY_ESCAPE,
-		GLFW_KEY_0,
-
-		GLFW_KEY_W,
-		GLFW_KEY_A,
-		GLFW_KEY_S,
-		GLFW_KEY_D,
-		GLFW_KEY_Q,
-		GLFW_KEY_E,
-
-		GLFW_KEY_I,
-		GLFW_KEY_J,
-		GLFW_KEY_K,
-		GLFW_KEY_L,
-		GLFW_KEY_U,
-		GLFW_KEY_O
-		}));
-	
+{	
 	// ===== MAINLOOP =====
 	while (!glfwWindowShouldClose(m_window))
 	{
@@ -184,9 +135,9 @@ void Editor::run()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		handleKeyInput(keyInput, m_window, *(Tank::Scene::getActiveScene()->getActiveCamera()));
+		handleKeyInput();
 		// Decay input states (comes after handleKeyInput)
-		keyInput->update();
+		m_keyInput->update();
 		m_uiRoot->update();
 
 		ImGui::Render();
@@ -203,6 +154,55 @@ void Editor::run()
 		// Double buffering
 		glfwSwapBuffers(m_window);
 	}
+}
+
+void Editor::handleKeyInput()
+{
+	auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
+	
+	if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
+		glfwSetWindowShouldClose(m_window, GL_TRUE);
+
+	if (m_keyInput->getKeyState(GLFW_KEY_0) == KeyState::Pressed)
+		m_keyInput->cycleRenderMode();
+
+
+	if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Held)
+		cam->translate(glm::vec3(0.0f, -0.01f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_A) == KeyState::Held)
+		cam->translate(glm::vec3(0.01f, 0.0f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_S) == KeyState::Held)
+		cam->translate(glm::vec3(0.0f, 0.01f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_D) == KeyState::Held)
+		cam->translate(glm::vec3(-0.01f, 0.0f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_Q) == KeyState::Held)
+		cam->translate(glm::vec3(0.0f, 0.0f, 0.01f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_E) == KeyState::Held)
+		cam->translate(glm::vec3(0.0f, 0.0f, -0.01f));
+
+
+	if (m_keyInput->getKeyState(GLFW_KEY_J) == KeyState::Held)
+		cam->rotate(glm::vec3(-0.01f, 0.0f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_L) == KeyState::Held)
+		cam->rotate(glm::vec3(0.01f, 0.0f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_I) == KeyState::Held)
+		cam->rotate(glm::vec3(0.0f, 0.01f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_K) == KeyState::Held)
+		cam->rotate(glm::vec3(0.0f, -0.01f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_U) == KeyState::Held)
+		cam->rotate(glm::vec3(0.0f, 0.0f, 0.01f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_O) == KeyState::Held)
+		cam->rotate(glm::vec3(0.0f, 0.0f, -0.01f));
 }
 
 Editor::~Editor()
