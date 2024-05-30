@@ -101,11 +101,6 @@ Editor::Editor()
 	glEnable(GL_DEPTH_TEST);
 }
 
-Editor::~Editor()
-{
-	cleanup();
-}
-
 void Editor::initGL(int w, int h)
 {
 	if (!glfwInit())
@@ -181,6 +176,7 @@ void Editor::run()
 	// ===== MAINLOOP =====
 	while (!glfwWindowShouldClose(m_window))
 	{
+		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draw UI
@@ -188,6 +184,8 @@ void Editor::run()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		handleKeyInput(keyInput, m_window, *(Tank::Scene::getActiveScene()->getActiveCamera()));
+		// Decay input states (comes after handleKeyInput)
 		keyInput->update();
 		m_uiRoot->update();
 
@@ -202,25 +200,19 @@ void Editor::run()
 		glfwMakeContextCurrent(backup_current_context);
 		// ! End
 
-		handleKeyInput(keyInput, m_window, *(Tank::Scene::getActiveScene()->getActiveCamera()));
-
 		// Double buffering
 		glfwSwapBuffers(m_window);
-		glfwPollEvents();
 	}
-
-	cleanup();
 }
 
-void Editor::cleanup()
+Editor::~Editor()
 {
-	glfwDestroyWindow(m_window);
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+	glfwDestroyWindow(m_window);
 	glfwTerminate();
 }
-
 
 std::unique_ptr<Tank::Application> Tank::createApplication()
 {

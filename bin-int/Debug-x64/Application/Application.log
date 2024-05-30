@@ -14,45 +14,4 @@ C:\Git\opengl\tank-engine\Engine\src\log.hpp(13,42): warning C4251: 'Tank::Log::
   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\memory(1525,7):
   see declaration of 'std::shared_ptr<spdlog::logger>'
   
-  framebuffer.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.22000.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-  (compiling source file 'src/framebuffer.cpp')
-  C:\Git\opengl\tank-engine\Application\include\glad\glad.h(32,1):
-  see previous definition of 'APIENTRY'
-  
-C:\Git\opengl\tank-engine\Engine\src\log.hpp(12,42): warning C4251: 'Tank::Log::s_coreLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Tank::Log'
-  (compiling source file 'src/framebuffer.cpp')
-  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\memory(1525,7):
-  see declaration of 'std::shared_ptr<spdlog::logger>'
-  
-C:\Git\opengl\tank-engine\Engine\src\log.hpp(13,42): warning C4251: 'Tank::Log::s_clientLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Tank::Log'
-  (compiling source file 'src/framebuffer.cpp')
-  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\memory(1525,7):
-  see declaration of 'std::shared_ptr<spdlog::logger>'
-  
-C:\Git\opengl\tank-engine\Application\src\framebuffer.cpp(16,35): warning C4101: 'e': unreferenced local variable
-  scene_view.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.22000.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-  (compiling source file 'src/nodes/scene_view.cpp')
-  C:\Git\opengl\tank-engine\Application\include\glad\glad.h(32,1):
-  see previous definition of 'APIENTRY'
-  
-C:\Git\opengl\tank-engine\Engine\src\log.hpp(12,42): warning C4251: 'Tank::Log::s_coreLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Tank::Log'
-  (compiling source file 'src/nodes/scene_view.cpp')
-  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\memory(1525,7):
-  see declaration of 'std::shared_ptr<spdlog::logger>'
-  
-C:\Git\opengl\tank-engine\Engine\src\log.hpp(13,42): warning C4251: 'Tank::Log::s_clientLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Tank::Log'
-  (compiling source file 'src/nodes/scene_view.cpp')
-  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\memory(1525,7):
-  see declaration of 'std::shared_ptr<spdlog::logger>'
-  
-C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp(34,48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp(34,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp(41,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp(41,19): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp(43,16): warning C4312: 'type cast': conversion from 'GLuint' to 'ImTextureID' of greater size
-C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp(43,63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp(43,58): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
   Application.vcxproj -> C:\Git\opengl\tank-engine\bin\Debug-x64\Application\Application.exe

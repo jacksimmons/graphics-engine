@@ -33,5 +33,4 @@ public:
 	void initGL(int w, int h);
 	void initImGui();
 	void run() override;
-	void cleanup();
 };
