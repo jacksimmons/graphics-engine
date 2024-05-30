@@ -7,7 +7,7 @@
 
 namespace Tank
 {
-	class Node
+	class Node : public std::enable_shared_from_this<Node>
 	{
 		friend class Scene;
 	private:
@@ -20,8 +20,6 @@ namespace Tank
 	protected:
 		virtual void draw() const;
 	public:
-		static void addChild(std::shared_ptr<Node> parent, std::shared_ptr<Node> child);
-
 		Node(std::string name);
 		constexpr void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		constexpr bool getEnabled() const noexcept { return m_enabled; }
@@ -29,6 +27,7 @@ namespace Tank
 		std::shared_ptr<Node> getParent() const noexcept { return m_parent; }
 		std::shared_ptr<Node> getChild(std::string name) const;
 		std::vector<std::shared_ptr<Node>> getChildren() const noexcept { return m_children; }
+		void addChild(std::shared_ptr<Node> child);
 		glm::mat4 getModelMatrix() const noexcept { return m_M; }
 		virtual void update();
 	};

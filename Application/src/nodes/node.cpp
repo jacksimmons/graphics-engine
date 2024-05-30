@@ -11,12 +11,6 @@ namespace Tank
 		m_parent = nullptr;
 	}
 
-	void Node::addChild(std::shared_ptr<Node> parent, std::shared_ptr<Node> child)
-	{
-		child->m_parent = parent;
-		parent->m_children.push_back(std::move(child));
-	}
-
 	std::shared_ptr<Node> Node::getChild(std::string name) const
 	{
 		for (auto const &child : m_children)
@@ -29,6 +23,12 @@ namespace Tank
 
 		// Return nullptr if no child was found.
 		return std::shared_ptr<Node>();
+	}
+
+	void Node::addChild(std::shared_ptr<Node> child)
+	{
+		child->m_parent = shared_from_this();
+		m_children.push_back(child);
 	}
 
 	void Node::draw() const
