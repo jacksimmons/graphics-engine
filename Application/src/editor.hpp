@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <GLFW/glfw3.h>
+#include <imgui.h>
 #include "engine.hpp"
 #include "framebuffer.hpp"
 
@@ -13,6 +14,14 @@ namespace Tank
 class KeyInput;
 
 
+struct EditorSettings
+{
+	ImGuiConfigFlags configFlags;
+	ImGuiWindowFlags mainWinFlags;
+	glm::ivec2 windowSize;
+};
+
+
 class Editor : public Tank::Application
 {
 private:
@@ -23,6 +32,10 @@ private:
 	/// </summary>
 	std::shared_ptr<Tank::Node> m_uiRoot;
 	std::unique_ptr<KeyInput> m_keyInput;
+	std::shared_ptr<ImGuiIO> m_io;
+
+	EditorSettings m_settings;
+
 public:
 	/// <summary>
 	/// Callback occurs when window size changes.
@@ -31,8 +44,9 @@ public:
 	
 	Editor();
 	~Editor();
-	void initGL(int w, int h);
+	void initGL();
 	void initImGui();
+	void generateSceneThenInitInput();
 	void run() override;
 	void handleKeyInput();
 };

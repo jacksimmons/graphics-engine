@@ -9,7 +9,6 @@ namespace Tank
 {
 	class Node : public std::enable_shared_from_this<Node>
 	{
-		friend class Scene;
 	private:
 		std::string m_name;
 		bool m_enabled = true;
@@ -17,6 +16,7 @@ namespace Tank
 		std::vector<std::shared_ptr<Node>> m_children;
 		std::shared_ptr<Node> m_parent;
 		glm::mat4 m_M;
+
 	protected:
 		virtual void draw() const;
 	public:
