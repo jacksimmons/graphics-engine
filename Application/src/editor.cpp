@@ -27,12 +27,73 @@
 
 Editor::Editor()
 {
-	int w = 800, h = 600;
-	int viewW = 400, viewH = 300;
+	m_settings.configFlags = ImGuiConfigFlags_DockingEnable;
+	m_settings.mainWinFlags = ImGuiWindowFlags_NoResize
+		| ImGuiWindowFlags_NoCollapse
+		| ImGuiWindowFlags_NoTitleBar
+		| ImGuiWindowFlags_MenuBar
+		| ImGuiWindowFlags_NoBringToFrontOnFocus;
+	m_settings.windowSize = glm::ivec2(800, 600);
 
-	initGL(w, h);
+	initGL();
 	initImGui();
+	generateSceneThenInitInput();
+}
 
+void Editor::initGL()
+{
+	if (!glfwInit())
+	{
+		TE_CORE_CRITICAL("GLFW failed to initialise.");
+		glfwTerminate();
+	}
+
+	// Set GL version hint
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	m_window = glfwCreateWindow(m_settings.windowSize.x, m_settings.windowSize.y, (char *)"TankEngine", nullptr, nullptr);
+	if (m_window == nullptr)
+	{
+		TE_CORE_CRITICAL("GLFW failed to create window.");
+		glfwTerminate();
+	}
+	glfwMakeContextCurrent(m_window);
+
+	// Initialise callbacks
+	KeyInput::setupKeyInputs(m_window);
+	glfwSetFramebufferSizeCallback(m_window, Editor::onWindowSizeChange);
+
+	// Initialise GLAD
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		TE_CORE_CRITICAL("GLAD failed to initialise.");
+	}
+
+	// Create viewport
+	glViewport(0, 0, m_settings.windowSize.x, m_settings.windowSize.y);
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+	// Enable depth buffer
+	glEnable(GL_DEPTH_TEST);
+}
+
+void Editor::initImGui()
+{
+	// Initialise ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	m_io = std::shared_ptr<ImGuiIO>(&ImGui::GetIO());
+	m_io->ConfigFlags = m_settings.configFlags;
+
+	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui::StyleColorsDark();
+}
+
+void Editor::generateSceneThenInitInput()
+{
 	// Create scene
 	auto root = std::make_shared<Tank::Node>("Root");
 	std::shared_ptr<Tank::Camera> cam = std::make_shared<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
@@ -41,15 +102,14 @@ Editor::Editor()
 
 	m_uiRoot = std::make_shared<Tank::Node>("System");
 	m_uiRoot->addChild(std::make_shared<Tank::Hierarchy>("Hierarchy"));
-	m_uiRoot->addChild(std::make_shared<Tank::SceneView>("SceneView", glm::ivec2(w, h), glm::ivec2(400, 300)));
+	m_uiRoot->addChild(std::make_shared<Tank::SceneView>("SceneView", m_settings.windowSize, m_settings.windowSize));
 
 	std::shared_ptr<Tank::Scene> scene = std::make_shared<Tank::Scene>(root, cam);
 	Tank::Scene::setActiveScene(scene);
 
-
-	// Initialise input
+	// Initialise input. Requires scene init first.
 	m_keyInput = std::make_unique<KeyInput>(std::vector<int>(
-		{
+	{
 		GLFW_KEY_ESCAPE,
 		GLFW_KEY_0,
 
@@ -69,59 +129,6 @@ Editor::Editor()
 	}));
 }
 
-void Editor::initGL(int w, int h)
-{
-	if (!glfwInit())
-	{
-		TE_CORE_CRITICAL("GLFW failed to initialise.");
-		glfwTerminate();
-	}
-
-	// Set GL version hint
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	m_window = glfwCreateWindow(w, h, (char *)"TankEngine", nullptr, nullptr);
-	if (m_window == nullptr)
-	{
-		TE_CORE_CRITICAL("GLFW failed to create window.");
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(m_window);
-
-	// Initialise callbacks
-	KeyInput::setupKeyInputs(m_window);
-	glfwSetFramebufferSizeCallback(m_window, Editor::onWindowSizeChange);
-
-	// Initialise GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		TE_CORE_CRITICAL("GLAD failed to initialise.");
-	}
-
-	// Create viewport
-	glViewport(0, 0, w, h);
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-	// Enable depth buffer
-	glEnable(GL_DEPTH_TEST);
-}
-
-void Editor::initImGui()
-{
-	// Initialise ImGui
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO &imIO = ImGui::GetIO();
-	imIO.ConfigFlags |= ImGuiConfigFlags_DockingEnable
-		| ImGuiConfigFlags_ViewportsEnable;
-
-	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
-	ImGui::StyleColorsDark();
-}
-
 void Editor::run()
 {	
 	// ===== MAINLOOP =====
@@ -135,11 +142,17 @@ void Editor::run()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		ImGui::SetNextWindowPos(ImVec2(0,0));
+		ImGui::SetNextWindowSize(m_io->DisplaySize);
+		
+		ImGui::Begin("##Main", nullptr, m_settings.mainWinFlags);
+
 		handleKeyInput();
 		// Decay input states (comes after handleKeyInput)
 		m_keyInput->update();
 		m_uiRoot->update();
 
+		ImGui::End();
 		ImGui::Render();
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
