@@ -1,25 +1,28 @@
 #pragma once
-#include "nodes/ui_element.hpp"
+#include <memory>
+#include "nodes/node.hpp"
 
 
 namespace Tank
 {
-	//class Inspector : public Tank::UIElement
-	//{
-	//	friend class Editor;
-	//private:
-	//	Inspector(std::shared_ptr<Tank::> scene, std::string name);
+	class Inspector : public Node
+	{
+		// Members
+	private:
+		std::shared_ptr<Node> m_inspectedNode;
 
-	//	/// <summary>
-	//	/// Draws a tree node for the node provided, then calls itself for each
-	//	/// of its children. Draws a leaf instead if no children.
-	//	/// </summary>
-	//	void drawRecursive(std::shared_ptr<Node> node) const;
-	//protected:
-	//	/// <summary>
-	//	/// Generates buttons for all children of the current node, at a given
-	//	/// indentation depth (based on the generation depth).
-	//	/// </summary>
-	//	void draw() const override;
-	//};
+
+		// Methods
+	private:
+		void drawInspector() const;
+	protected:
+		/// <summary>
+		/// Generates buttons for all children of the current node, at a given
+		/// indentation depth (based on the generation depth).
+		/// </summary>
+		void draw() const override;
+	public:
+		Inspector(std::string name);
+		void setInspectedNode(std::shared_ptr<Node> node) noexcept { m_inspectedNode = node; }
+	};
 }

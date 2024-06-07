@@ -1,0 +1,15 @@
+﻿  application.cpp
+  log.cpp
+C:\Git\opengl\tank-engine\Engine\src\log.hpp(13,42): warning C4251: 'Tank::Log::s_coreLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Tank::Log'
+  (compiling source file 'src/log.cpp')
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\memory(1525,7):
+  see declaration of 'std::shared_ptr<spdlog::logger>'
+  
+C:\Git\opengl\tank-engine\Engine\src\log.hpp(14,42): warning C4251: 'Tank::Log::s_clientLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Tank::Log'
+  (compiling source file 'src/log.cpp')
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\memory(1525,7):
+  see declaration of 'std::shared_ptr<spdlog::logger>'
+  
+  Generating Code...
+     Creating library C:\Git\opengl\tank-engine\bin\Debug-x64\tengine\tengine.lib and object C:\Git\opengl\tank-engine\bin\Debug-x64\tengine\tengine.exp
+  Engine.vcxproj -> C:\Git\opengl\tank-engine\bin\Debug-x64\tengine\tengine.dll

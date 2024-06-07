@@ -123,9 +123,6 @@ namespace Tank
 		m_shader->setInt("tex0", 0);
 		m_shader->setInt("tex1", 1);
 		m_shader->unuse();
-
-		m_M = glm::mat4(1.0f);
-		//m_M = glm::translate(glm::mat4(1.0f), { 0.9, 0.5, 0.3 });
 	}
 
 	void Model::draw() const
@@ -136,7 +133,7 @@ namespace Tank
 		glBindTexture(GL_TEXTURE_2D, m_t1);
 
 		m_shader->use();
-		m_shader->setMat4("model", m_M);
+		m_shader->setMat4("model", getModelMatrix());
 
 		auto cam = Scene::getActiveScene()->getActiveCamera();
 		m_shader->setMat4("view", cam->getView());

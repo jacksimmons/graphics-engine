@@ -9,15 +9,17 @@ namespace Tank
 {
 	class Node : public std::enable_shared_from_this<Node>
 	{
+		friend class Inspector;
 	private:
 		std::string m_name;
 		bool m_enabled = true;
+		glm::mat4 m_M;
 	protected:
 		std::vector<std::shared_ptr<Node>> m_children;
 		std::shared_ptr<Node> m_parent;
-		glm::mat4 m_M;
 
 	protected:
+		void setModelMatrix(glm::mat4 modelMatrix) { m_M = modelMatrix; }
 		virtual void draw() const;
 	public:
 		Node(std::string name);

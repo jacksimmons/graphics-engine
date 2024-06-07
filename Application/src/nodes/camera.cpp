@@ -27,7 +27,7 @@ namespace Tank
 
 	void Camera::translate(glm::vec3 vec)
 	{
-		m_T = glm::translate(m_T, vec);
+		m_T = glm::translate(m_T, glm::vec3(m_R * glm::vec4(vec, 1.0f)));
 	}
 
 	void Camera::setRotation(glm::vec3 rot)
@@ -42,11 +42,14 @@ namespace Tank
 		glm::vec3 zAxis = glm::normalize(m_R * glm::vec4(m_centre - m_eye, 1.0f));
 		glm::vec3 xAxis = glm::cross(yAxis, zAxis);
 
-		glm::quat rx = glm::angleAxis(vec.x, xAxis);
-		glm::quat ry = glm::angleAxis(vec.y, yAxis);
+		// y-comp of input controls rotation around x-axis.
+		glm::quat rx = glm::angleAxis(vec.y, xAxis);
+		// x-comp of input controls rotation around y-axis.
+		glm::quat ry = glm::angleAxis(vec.x, yAxis);
+		// z-comp of input controls rotation around z-axis.
 		glm::quat rz = glm::angleAxis(vec.z, zAxis);
 
-		glm::quat rot = ry * rz * rx;
+		glm::quat rot = rz * ry * rx;
 
 		m_R = glm::mat4_cast(rot) * m_R;
 	}

@@ -145,6 +145,7 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\colours.hpp" />
     <ClInclude Include="src\editor.hpp" />
     <ClInclude Include="src\file.hpp" />
     <ClInclude Include="src\framebuffer.hpp" />
@@ -156,12 +157,12 @@
     <ClInclude Include="src\nodes\model.hpp" />
     <ClInclude Include="src\nodes\node.hpp" />
     <ClInclude Include="src\nodes\scene_view.hpp" />
-    <ClInclude Include="src\nodes\ui_element.hpp" />
     <ClInclude Include="src\scene.hpp" />
     <ClInclude Include="src\shader.hpp" />
     <ClInclude Include="src\texture.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="colours.cpp" />
     <ClCompile Include="include\glad\glad.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -181,7 +182,6 @@
     <ClCompile Include="src\nodes\inspector.cpp" />
     <ClCompile Include="src\nodes\model.cpp" />
     <ClCompile Include="src\nodes\node.cpp" />
-    <ClCompile Include="src\nodes\ui_element.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\texture.cpp" />

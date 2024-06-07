@@ -1,12 +1,20 @@
 #pragma once
 #include <memory>
-#include "nodes/ui_element.hpp"
+#include "nodes/node.hpp"
 
 
 namespace Tank
 {
-	class Hierarchy : public UIElement
+	class Inspector;
+
+	class Hierarchy : public Node
 	{
+		// Members
+	private:
+		std::shared_ptr<Inspector> m_inspector;
+
+
+		// Methods
 	private:
 		/// <summary>
 		/// Draws a tree node for the node provided, then calls itself for each
@@ -20,6 +28,6 @@ namespace Tank
 		/// </summary>
 		void draw() const override;
 	public:
-		Hierarchy(std::string name);
+		Hierarchy(std::string name, std::shared_ptr<Inspector> inspector);
 	};
 }

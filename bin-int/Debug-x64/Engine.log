@@ -1,0 +1,2 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (C:\Git\opengl\tank-engine\bin-int/Debug-x64/) contains files shared from another project (Application.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Engine.vcxproj -> C:\Git\opengl\tank-engine\bin\Debug-x64\Engine.dll

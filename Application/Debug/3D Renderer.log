@@ -1,0 +1,9 @@
+﻿  Main.cpp
+C:\Git\opengl\3d-renderer\3D Renderer\Main.cpp(2,10): fatal  error C1083: Cannot open include file: 'GLEW/glew.h': No such file or directory
+  Model.cpp
+C:\Git\opengl\3d-renderer\3D Renderer\Model.cpp(1,10): fatal  error C1083: Cannot open include file: 'GLFW/glfw3.h': No such file or directory
+  Scene.cpp
+C:\Git\opengl\3d-renderer\3D Renderer\Scene.cpp(1,10): fatal  error C1083: Cannot open include file: 'GLFW/glfw3.h': No such file or directory
+  Shape.cpp
+C:\Git\opengl\3d-renderer\3D Renderer\Shape.cpp(1,10): fatal  error C1083: Cannot open include file: 'GLEW/glew.h': No such file or directory
+  Generating Code...
