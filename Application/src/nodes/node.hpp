@@ -17,7 +17,6 @@ namespace Tank
 		std::shared_ptr<Transform> m_transform;
 	protected:
 		std::vector<std::shared_ptr<Node>> m_children;
-		std::shared_ptr<Node> m_parent;
 
 	protected:
 		virtual void draw() const;
@@ -28,10 +27,7 @@ namespace Tank
 		constexpr bool getEnabled() const noexcept { return m_enabled; }
 
 		const std::string& getName() const noexcept { return m_name; }
-		std::shared_ptr<Node> getParent() const noexcept { return m_parent; }
 		
-		const std::vector<std::shared_ptr<Node>>& getChildren() const noexcept { return m_children; }
-
 		/// <summary>
 		/// Tries to get a child by name.
 		/// </summary>
@@ -40,6 +36,7 @@ namespace Tank
 		/// <returns>Whether or not this operation succeeded.</returns>
 		bool getChild(std::string name, std::shared_ptr<Node> outChild) const;
 		void addChild(std::shared_ptr<Node> child);
+		const std::vector<std::shared_ptr<Node>> &getChildren() const noexcept { return m_children; }
 
 		Transform& getTransform() const { return *m_transform; }
 

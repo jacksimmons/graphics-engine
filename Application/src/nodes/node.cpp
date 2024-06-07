@@ -9,7 +9,6 @@ namespace Tank
 	Node::Node(std::string name)
 	{
 		m_name = name;
-		m_parent = nullptr;
 		m_transform = std::make_shared<Transform>();
 	}
 
@@ -30,7 +29,6 @@ namespace Tank
 
 	void Node::addChild(std::shared_ptr<Node> child)
 	{
-		child->m_parent = shared_from_this();
 		m_children.push_back(child);
 	}
 

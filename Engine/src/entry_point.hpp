@@ -19,5 +19,7 @@ int main(int argc, char **argv)
 		app->run();
 		spdlog::shutdown();
 	}
+
+	std::cout << "SHUTDOWN" << std::endl;
 }
 #endif
