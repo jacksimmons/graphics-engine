@@ -11,6 +11,7 @@ namespace Tank
 {
 	class Model : public Node
 	{
+		friend class Inspector;
 	private:
 		unsigned int m_vao;
 		unsigned int m_vbo;

@@ -2,14 +2,17 @@
 #include "matrix.hpp"
 #include "scene.hpp"
 #include "nodes/hierarchy.hpp"
+#include "nodes/inspector.hpp"
 #include "nodes/camera.hpp"
 
 
 namespace Tank
 {
-	Hierarchy::Hierarchy(std::string name) : UIElement(name)
+	Hierarchy::Hierarchy(std::string name, std::shared_ptr<Inspector> inspector) : Node(name)
 	{
+		m_inspector = inspector;
 	}
+
 
 	void Hierarchy::draw() const
 	{
@@ -21,6 +24,7 @@ namespace Tank
 
 		Node::draw();
 	}
+
 
 	void Hierarchy::drawRecursive(std::shared_ptr<Node> node) const
 	{
@@ -35,9 +39,7 @@ namespace Tank
 		{
 			if (ImGui::IsItemFocused())
 			{
-				auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
-				cam->setPosition(Matrix::getPosition(node->getModelMatrix()));
-				cam->setRotation(glm::vec3());
+				m_inspector->setInspectedNode(node);
 			}
 
 			for (std::shared_ptr<Node> child : children)

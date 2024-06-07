@@ -18,10 +18,11 @@ ShaderCompileError::ShaderCompileError(std::string pipelineStage)
 /// <returns>The shader program, as a uint.</returns>
 Shader::Shader(std::filesystem::path fpVert, std::filesystem::path fpFrag)
 {
-	std::string vertShader;
-	std::string fragShader;
-	vertShader = File::readAllLines(std::filesystem::current_path() / fpVert);
-	fragShader = File::readAllLines(std::filesystem::current_path() / fpFrag);
+	m_fpFrag = fpFrag;
+	m_fpVert = fpVert;
+
+	std::string vertShader = File::readAllLines(std::filesystem::current_path() / fpVert);
+	std::string fragShader = File::readAllLines(std::filesystem::current_path() / fpFrag);
 	
 	unsigned int vshader;
 	vshader = glCreateShader(GL_VERTEX_SHADER);

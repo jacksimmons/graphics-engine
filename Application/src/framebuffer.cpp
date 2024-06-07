@@ -85,6 +85,7 @@ void Framebuffer::update()
 
 void Framebuffer::rescale(int w, int h)
 {
+	// This section is similar to in ctor, except missing glGen... functions.
 	glBindTexture(GL_TEXTURE_2D, m_texColBuf);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

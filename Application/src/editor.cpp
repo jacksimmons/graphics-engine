@@ -23,6 +23,7 @@
 #include "nodes/model.hpp"
 #include "nodes/hierarchy.hpp"
 #include "nodes/scene_view.hpp"
+#include "nodes/inspector.hpp"
 
 
 Editor::Editor()
@@ -52,6 +53,7 @@ void Editor::initGL()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	m_window = glfwCreateWindow(m_settings.windowSize.x, m_settings.windowSize.y, (char *)"TankEngine", nullptr, nullptr);
 	if (m_window == nullptr)
@@ -88,7 +90,7 @@ void Editor::initImGui()
 	m_io->ConfigFlags = m_settings.configFlags;
 
 	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplOpenGL3_Init("#version 330 core");
 	ImGui::StyleColorsDark();
 }
 
@@ -101,7 +103,11 @@ void Editor::generateSceneThenInitInput()
 	root->addChild(std::make_shared<Tank::Model>("Cube"));
 
 	m_uiRoot = std::make_shared<Tank::Node>("System");
-	m_uiRoot->addChild(std::make_shared<Tank::Hierarchy>("Hierarchy"));
+
+	auto inspector = std::make_shared<Tank::Inspector>("Inspector");
+
+	m_uiRoot->addChild(inspector);
+	m_uiRoot->addChild(std::make_shared<Tank::Hierarchy>("Hierarchy", inspector));
 	m_uiRoot->addChild(std::make_shared<Tank::SceneView>("SceneView", m_settings.windowSize, m_settings.windowSize));
 
 	std::shared_ptr<Tank::Scene> scene = std::make_shared<Tank::Scene>(root, cam);
@@ -111,7 +117,7 @@ void Editor::generateSceneThenInitInput()
 	m_keyInput = std::make_unique<KeyInput>(std::vector<int>(
 	{
 		GLFW_KEY_ESCAPE,
-		GLFW_KEY_0,
+		GLFW_KEY_F1,
 
 		GLFW_KEY_W,
 		GLFW_KEY_A,
@@ -176,7 +182,7 @@ void Editor::handleKeyInput()
 	if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
 		glfwSetWindowShouldClose(m_window, GL_TRUE);
 
-	if (m_keyInput->getKeyState(GLFW_KEY_0) == KeyState::Pressed)
+	if (m_keyInput->getKeyState(GLFW_KEY_F1) == KeyState::Pressed)
 		m_keyInput->cycleRenderMode();
 
 

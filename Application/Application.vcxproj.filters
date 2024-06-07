@@ -81,9 +81,6 @@
     <ClInclude Include="src\nodes\model.hpp">
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
-    <ClInclude Include="src\nodes\ui_element.hpp">
-      <Filter>Header Files\nodes</Filter>
-    </ClInclude>
     <ClInclude Include="src\editor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -106,6 +103,9 @@
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
     <ClInclude Include="src\framebuffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\colours.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -143,9 +143,6 @@
     <ClCompile Include="src\scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\nodes\ui_element.cpp">
-      <Filter>Source Files\nodes</Filter>
-    </ClCompile>
     <ClCompile Include="src\nodes\camera.cpp">
       <Filter>Source Files\nodes</Filter>
     </ClCompile>
@@ -177,6 +174,9 @@
       <Filter>Source Files\nodes</Filter>
     </ClCompile>
     <ClCompile Include="src\framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="colours.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

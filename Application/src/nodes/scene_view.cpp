@@ -1,13 +1,13 @@
 #include <imgui.h>
 #include <glad/glad.h>
+#include "log.hpp"
 #include "scene.hpp"
 #include "nodes/scene_view.hpp"
-#include "log.hpp"
 
 
 namespace Tank
 {
-	SceneView::SceneView(std::string name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize) : UIElement(name)
+	SceneView::SceneView(std::string name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize) : Node(name)
 	{
 		m_sceneW = sceneViewportSize.x, m_sceneH = sceneViewportSize.y;
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
@@ -19,8 +19,6 @@ namespace Tank
 
 	void SceneView::rescale(int w, int h) const
 	{
-		// This section is similar to in ctor, except missing glGen... functions.
-		// Would be difficult to implement code reuse here.
 		m_fb->rescale(w, h);
 	}
 

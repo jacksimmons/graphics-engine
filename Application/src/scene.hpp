@@ -32,7 +32,7 @@ namespace Tank
 		Scene(std::shared_ptr<Node> root, std::shared_ptr<Camera> cam);
 		~Scene();
 		std::shared_ptr<Camera> getActiveCamera() const noexcept { return m_activeCamera; }
-		std::shared_ptr<Node> getRoot() const noexcept { return m_root; }
+		std::shared_ptr<Node> getRoot() const noexcept { return m_root; }	
 		void update();
 	};
 }

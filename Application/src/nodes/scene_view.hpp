@@ -1,13 +1,13 @@
 #pragma once
 #include <memory>
 #include <glad/glad.h>
-#include "nodes/ui_element.hpp"
+#include "nodes/node.hpp"
 #include "framebuffer.hpp"
 
 
 namespace Tank
 {
-	class SceneView : public UIElement
+	class SceneView : public Node
 	{
 	private:
 		/// <summary>

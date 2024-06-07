@@ -11,6 +11,6 @@ namespace Tank
 	{
 	public:
 		UIElement(std::string name);
-		virtual void draw() const = 0;
+		virtual void draw() const;
 	};
 }
