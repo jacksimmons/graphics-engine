@@ -30,7 +30,7 @@ namespace Tank
 		glm::mat4 getProj() const noexcept { return m_P; }
 		void setPosition(glm::vec3 pos);
 		void translate(glm::vec3 vec);
-		void setRotation(glm::vec3 rot);
+		void setRotation(glm::quat rot);
 		void rotate(glm::vec3 vec);
 		void update() override;
 	};

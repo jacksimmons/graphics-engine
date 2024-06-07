@@ -1,7 +1,9 @@
 #include <imgui.h>
 #include <glad/glad.h>
+
 #include "log.hpp"
 #include "scene.hpp"
+#include "framebuffer.hpp"
 #include "nodes/scene_view.hpp"
 
 
@@ -11,10 +13,6 @@ namespace Tank
 	{
 		m_sceneW = sceneViewportSize.x, m_sceneH = sceneViewportSize.y;
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
-	}
-
-	SceneView::~SceneView()
-	{
 	}
 
 	void SceneView::rescale(int w, int h) const
@@ -32,16 +30,19 @@ namespace Tank
 		glViewport(0, 0, m_sceneW, m_sceneH);
 
 		// Just sets default panel-window size.
-		ImGui::SetNextWindowSize(ImVec2(fbW + 10, fbH + 10), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize(ImVec2(fbW + 10.0f, fbH + 10.0f), ImGuiCond_FirstUseEver);
 
 		ImGui::Begin("SceneView");
 		{
 			ImGui::BeginChild("SceneRender");
 
 			ImVec2 wsize = ImGui::GetWindowSize();
-			rescale(wsize.x - 10, wsize.y - 10);
+			rescale((int)wsize.x - 10, (int)wsize.y - 10);
 
-			ImGui::Image((ImTextureID)m_fb->getTexColBuf(), ImVec2(fbW, fbH), ImVec2(0, 1), ImVec2(1, 0));
+			ImVec2 fbsize = ImVec2((float)fbW, (float)fbH);
+			ImTextureID imTex = (ImTextureID)(intptr_t)m_fb->getTexColBuf();
+
+			ImGui::Image(imTex, fbsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
 			ImGui::EndChild();
 		}
 		ImGui::End();

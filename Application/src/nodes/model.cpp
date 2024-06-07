@@ -5,10 +5,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
+#include "log.hpp"
 #include "texture.hpp"
 #include "shader.hpp"
 #include "scene.hpp"
-#include "log.hpp"
+#include "transform.hpp"
 #include "nodes/model.hpp"
 #include "nodes/camera.hpp"
 
@@ -66,18 +67,7 @@ namespace Tank
 {
 	Model::Model(std::string name) : Node(name)
 	{
-		try
-		{
-			m_shader = std::make_unique<Shader>("src/shaders/shader.vert", "src/shaders/shader.frag");
-		}
-		catch (std::exception const &e)
-		{
-			m_shader = nullptr;
-			
-			std::cout << std::filesystem::current_path() << std::endl;
-			TE_CORE_CRITICAL("Model: Unable to read shader file.");
-			std::cin.get();
-		}
+		m_shader = std::make_unique<Shader>("src/shaders/shader.vert", "src/shaders/shader.frag");
 
 		// ===== INIT VBO/VAO =====
 		glGenVertexArrays(1, &m_vao);
@@ -133,7 +123,7 @@ namespace Tank
 		glBindTexture(GL_TEXTURE_2D, m_t1);
 
 		m_shader->use();
-		m_shader->setMat4("model", getModelMatrix());
+		m_shader->setMat4("model", getTransform().getModelMatrix());
 
 		auto cam = Scene::getActiveScene()->getActiveCamera();
 		m_shader->setMat4("view", cam->getView());

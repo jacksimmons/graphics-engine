@@ -1,6 +1,3 @@
-[submodule "Application/include/imgui_docking"]
-	path = Application/include/imgui_docking
-	url = https://github.com/ocornut/imgui
 [submodule "Application/include/imgui"]
 	path = Application/include/imgui
 	url = https://github.com/ocornut/imgui

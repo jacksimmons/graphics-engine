@@ -1,7 +1,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "nodes/camera.hpp"
-#include "matrix.hpp"
+#include "transformation.hpp"
 
 
 namespace Tank
@@ -30,10 +30,9 @@ namespace Tank
 		m_T = glm::translate(m_T, glm::vec3(m_R * glm::vec4(vec, 1.0f)));
 	}
 
-	void Camera::setRotation(glm::vec3 rot)
+	void Camera::setRotation(glm::quat rot)
 	{
-		m_R = glm::mat4(1.0f);
-		rotate(rot);
+		m_R = glm::mat4_cast(rot);
 	}
 
 	void Camera::rotate(glm::vec3 vec)
@@ -42,14 +41,7 @@ namespace Tank
 		glm::vec3 zAxis = glm::normalize(m_R * glm::vec4(m_centre - m_eye, 1.0f));
 		glm::vec3 xAxis = glm::cross(yAxis, zAxis);
 
-		// y-comp of input controls rotation around x-axis.
-		glm::quat rx = glm::angleAxis(vec.y, xAxis);
-		// x-comp of input controls rotation around y-axis.
-		glm::quat ry = glm::angleAxis(vec.x, yAxis);
-		// z-comp of input controls rotation around z-axis.
-		glm::quat rz = glm::angleAxis(vec.z, zAxis);
-
-		glm::quat rot = rz * ry * rx;
+		glm::quat rot = Quat::fromAngleAxis(glm::vec3(vec.y, vec.x, vec.z), xAxis, yAxis, zAxis);
 
 		m_R = glm::mat4_cast(rot) * m_R;
 	}
@@ -65,7 +57,7 @@ namespace Tank
 	void Camera::update()
 	{
 		// Transformed vector
-		glm::vec3 t_centre = glm::vec3(m_T * Matrix::rotateAboutPoint(m_centre, -m_eye, m_R) * glm::vec4(m_centre, 1));
+		glm::vec3 t_centre = glm::vec3(m_T * Mat4::rotateAboutPoint(m_centre, -m_eye, m_R) * glm::vec4(m_centre, 1));
 		glm::vec3 t_eye = glm::vec3(m_T * glm::vec4(m_eye, 1));
 		glm::vec3 t_up = glm::vec3(m_R * glm::vec4(m_up, 1));
 

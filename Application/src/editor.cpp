@@ -86,8 +86,8 @@ void Editor::initImGui()
 	// Initialise ImGui
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	m_io = std::shared_ptr<ImGuiIO>(&ImGui::GetIO());
-	m_io->ConfigFlags = m_settings.configFlags;
+	ImGuiIO &io = ImGui::GetIO();
+	io.ConfigFlags = m_settings.configFlags;
 
 	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
@@ -137,6 +137,8 @@ void Editor::generateSceneThenInitInput()
 
 void Editor::run()
 {	
+	ImGuiIO &io = ImGui::GetIO();
+
 	// ===== MAINLOOP =====
 	while (!glfwWindowShouldClose(m_window))
 	{
@@ -149,7 +151,7 @@ void Editor::run()
 		ImGui::NewFrame();
 
 		ImGui::SetNextWindowPos(ImVec2(0,0));
-		ImGui::SetNextWindowSize(m_io->DisplaySize);
+		ImGui::SetNextWindowSize(io.DisplaySize);
 		
 		ImGui::Begin("##Main", nullptr, m_settings.mainWinFlags);
 
