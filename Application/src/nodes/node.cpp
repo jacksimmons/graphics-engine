@@ -1,28 +1,31 @@
 #include <iostream>
+
 #include "node.hpp"
+#include "transform.hpp"
 
 
 namespace Tank
 {
 	Node::Node(std::string name)
 	{
-		m_M = glm::mat4(1.0f);
 		m_name = name;
 		m_parent = nullptr;
+		m_transform = std::make_shared<Transform>();
 	}
 
-	std::shared_ptr<Node> Node::getChild(std::string name) const
+	bool Node::getChild(std::string name, std::shared_ptr<Node> outChild) const
 	{
 		for (auto const &child : m_children)
 		{
 			if (child->getName() == name)
 			{
-				return child;
+				outChild = child;
+				return true;
 			}
 		}
 
-		// Return nullptr if no child was found.
-		return std::shared_ptr<Node>();
+		// If the child was not found, return false;
+		return false;
 	}
 
 	void Node::addChild(std::shared_ptr<Node> child)

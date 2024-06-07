@@ -45,7 +45,7 @@
     <ClInclude Include="src\key_input.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\matrix.hpp">
+    <ClInclude Include="src\transformation.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\shader.hpp">
@@ -108,6 +108,9 @@
     <ClInclude Include="src\colours.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\transform.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file.cpp">
@@ -117,9 +120,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\key_input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\matrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\shader.cpp">
@@ -176,7 +176,10 @@
     <ClCompile Include="src\framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="colours.cpp">
+    <ClCompile Include="src\transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\colours.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

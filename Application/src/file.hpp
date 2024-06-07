@@ -1,17 +1,14 @@
 #pragma once
+#include <fstream>
 #include <string>
 #include <exception>
 #include <filesystem>
 
 
-class File
+namespace Tank
 {
-public:
-	static std::string readAllLines(std::filesystem::path fp);
-};
-
-
-class InvalidFileException : public std::exception {};
-
-
-class InaccessibleFileException : public std::exception {};
+	namespace File
+	{
+		bool readAllLines(std::filesystem::path fp, std::string *outStr);
+	}
+}

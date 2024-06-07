@@ -2,11 +2,11 @@
 #include <memory>
 #include <glad/glad.h>
 #include "nodes/node.hpp"
-#include "framebuffer.hpp"
 
 
 namespace Tank
 {
+	class Framebuffer;
 	class SceneView : public Node
 	{
 	private:
@@ -18,7 +18,6 @@ namespace Tank
 		std::unique_ptr<Framebuffer> m_fb;
 	public:
 		SceneView(std::string name, glm::ivec2 stdViewportSize, glm::ivec2 fbViewportSize);
-		~SceneView();
 		void rescale(int w, int h) const;
 		void draw() const override;
 		constexpr int getSceneW() const noexcept { return m_sceneW; }

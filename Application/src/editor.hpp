@@ -32,8 +32,7 @@ private:
 	/// </summary>
 	std::shared_ptr<Tank::Node> m_uiRoot;
 	std::unique_ptr<KeyInput> m_keyInput;
-	std::shared_ptr<ImGuiIO> m_io;
-
+	
 	EditorSettings m_settings;
 
 public:

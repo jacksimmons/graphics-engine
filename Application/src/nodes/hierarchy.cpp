@@ -1,5 +1,4 @@
 #include <imgui.h>
-#include "matrix.hpp"
 #include "scene.hpp"
 #include "nodes/hierarchy.hpp"
 #include "nodes/inspector.hpp"
@@ -13,7 +12,6 @@ namespace Tank
 		m_inspector = inspector;
 	}
 
-
 	void Hierarchy::draw() const
 	{
 		std::shared_ptr<Node> root = Tank::Scene::getActiveScene()->getRoot();
@@ -24,7 +22,6 @@ namespace Tank
 
 		Node::draw();
 	}
-
 
 	void Hierarchy::drawRecursive(std::shared_ptr<Node> node) const
 	{

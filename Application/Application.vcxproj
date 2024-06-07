@@ -150,7 +150,7 @@
     <ClInclude Include="src\file.hpp" />
     <ClInclude Include="src\framebuffer.hpp" />
     <ClInclude Include="src\key_input.hpp" />
-    <ClInclude Include="src\matrix.hpp" />
+    <ClInclude Include="src\transformation.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
     <ClInclude Include="src\nodes\hierarchy.hpp" />
     <ClInclude Include="src\nodes\inspector.hpp" />
@@ -160,9 +160,9 @@
     <ClInclude Include="src\scene.hpp" />
     <ClInclude Include="src\shader.hpp" />
     <ClInclude Include="src\texture.hpp" />
+    <ClInclude Include="src\transform.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="colours.cpp" />
     <ClCompile Include="include\glad\glad.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -171,12 +171,12 @@
     <ClCompile Include="include\imgui\imgui_draw.cpp" />
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\colours.cpp" />
     <ClCompile Include="src\editor.cpp" />
     <ClCompile Include="src\file.cpp" />
     <ClCompile Include="src\framebuffer.cpp" />
     <ClCompile Include="src\nodes\scene_view.cpp" />
     <ClCompile Include="src\key_input.cpp" />
-    <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\nodes\camera.cpp" />
     <ClCompile Include="src\nodes\hierarchy.cpp" />
     <ClCompile Include="src\nodes\inspector.cpp" />
@@ -185,6 +185,7 @@
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\screenShader.frag" />
