@@ -1,3 +1,6 @@
 [submodule "Application/include/imgui"]
 	path = Application/include/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "FileExplorer"]
+	path = FileExplorer
+	url = https://www.github.com/jacksimmons/file-explorer
