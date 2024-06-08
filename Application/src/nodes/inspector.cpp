@@ -107,10 +107,20 @@ namespace Tank
 		ImGui::End();
 	}
 
-
 	void Inspector::draw() const
 	{
 		drawInspector();
 		Node::draw();
+	}
+
+	void Inspector::handleNodeDeletion(Node *node)
+	{
+		int childCount = node->getChildCount();
+		for (int i = 0; i < childCount; i++)
+		{
+			handleNodeDeletion(node->getChild(i));
+		}
+
+		if (node == m_inspectedNode) m_inspectedNode = nullptr;
 	}
 }

@@ -19,6 +19,23 @@ namespace Tank
 		m_children.push_back(std::move(child));
 	}
 
+	bool Node::removeChild(Node *child)
+	{
+		if (child != nullptr)
+		{
+			for (int i = 0; i < getChildCount(); i++)
+			{
+				if (m_children[i].get() == child)
+				{
+					m_children.erase(m_children.begin() + i);
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	Node *Node::getChild(std::string name) const
 	{
 		for (int i = 0; i < getChildCount(); i++)

@@ -23,6 +23,13 @@ namespace Tank
 		void draw() const override;
 	public:
 		Inspector(std::string name);
+
 		void setInspectedNode(Node *node) noexcept { m_inspectedNode = node; }
+
+		/// <summary>
+		/// Recurse over all descendants of node, and if any match to the inspected
+		/// node, set the inspected node to nullptr (to reflect the deletion).
+		/// </summary>
+		void handleNodeDeletion(Node *node);
 	};
 }
