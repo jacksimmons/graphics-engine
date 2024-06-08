@@ -16,7 +16,9 @@ namespace Tank
 		Node *root = Tank::Scene::getActiveScene()->getRoot();
 
 		ImGui::Begin("Hierarchy");
+
 		drawRecursive(root);
+
 		ImGui::End();
 
 		Node::draw();
@@ -36,7 +38,9 @@ namespace Tank
 		if (childCount == 0)
 			flags |= ImGuiTreeNodeFlags_Leaf;
 
-		if (ImGui::TreeNodeEx(node->getName().c_str(), flags))
+		bool nodeExpanded = ImGui::TreeNodeEx(node->getName().c_str(), flags);
+		drawNodeContextMenu(node, inspector);
+		if (nodeExpanded)
 		{
 			if (ImGui::IsItemFocused())
 			{
@@ -50,5 +54,39 @@ namespace Tank
 
 			ImGui::TreePop();
 		}
+	}
+
+	void Hierarchy::drawNodeContextMenu(Node *node, Inspector *inspector) const
+	{
+		if (ImGui::BeginPopupContextItem())
+		{
+			Node *parent = node->getParent();
+			if (parent && ImGui::Button("Delete Node"))
+			{
+				// Clear inspector if needed.
+				inspector->handleNodeDeletion(node);
+
+				// Detach child from its parent.
+				node->getParent()->removeChild(node);
+			}
+			ImGui::EndPopup();
+		}
+
+		//const char *options[2] = { "Add Child", "Delete" };
+		//static int selectedOption = -1;
+
+		//for (int i = 0; i < 2; i++)
+		//{
+		//	if (ImGui::Selectable(options[i], selectedOption == i))
+		//		selectedOption = i;
+
+		//	// Uses the above selectable as popup ID
+		//	if (ImGui::BeginPopupContextItem())
+		//	{
+		//		selectedOption = i;
+		//		ImGui::Text("HI");
+		//		ImGui::EndPopup();
+		//	}
+		//}
 	}
 }

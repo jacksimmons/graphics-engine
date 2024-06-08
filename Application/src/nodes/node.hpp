@@ -34,7 +34,12 @@ namespace Tank
 		constexpr Node *getParent() const noexcept { return m_parent; }
 
 		size_t getChildCount() const noexcept { return m_children.size(); }
+
 		void addChild(std::unique_ptr<Node> child);
+
+		// Removes a child by rawptr, returns boolean of success.
+		bool removeChild(Node *child);
+
 		// Get child by name.
 		Node *getChild(std::string name) const;
 		// Get child by index.

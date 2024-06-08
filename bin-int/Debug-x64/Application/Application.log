@@ -1,2 +1,6 @@
-﻿  inspector.cpp
+﻿  hierarchy.cpp
+C:\Git\opengl\tank-engine\Application\src\nodes\hierarchy.cpp(34,18): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  inspector.cpp
+C:\Git\opengl\tank-engine\Application\src\nodes\inspector.cpp(118,18): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
   Application.vcxproj -> C:\Git\opengl\tank-engine\bin\Debug-x64\Application\Application.exe

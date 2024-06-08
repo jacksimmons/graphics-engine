@@ -172,6 +172,8 @@ void Editor::run()
 		
 		ImGui::Begin("##Main", nullptr, m_settings.mainWinFlags);
 
+		ImGui::ShowDemoWindow();
+
 		handleKeyInput();
 		// Decay input states (comes after handleKeyInput)
 		m_keyInput->update();
