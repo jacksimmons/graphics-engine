@@ -10,6 +10,7 @@ namespace Tank
 	{
 		m_name = name;
 		m_transform = std::make_unique<Transform>();
+		m_parent = nullptr;
 	}
 
 	void Node::addChild(std::unique_ptr<Node> child)

@@ -90,14 +90,14 @@ namespace Tank
 
 				ImGui::TextColored(TITLE, "Vertex Shader");
 				std::string vshader;
-				if (File::readAllLines(vertPath, &vshader))
+				if (File::readAllLines("src/shaders" / vertPath, &vshader))
 				{
 					ImGui::Text(vshader.c_str());
 				}
 
 				ImGui::TextColored(TITLE, "Fragment Shader");
 				std::string fshader;
-				if (File::readAllLines(fragPath, &fshader))
+				if (File::readAllLines("src/shaders" / fragPath, &fshader))
 				{
 					ImGui::Text(fshader.c_str());
 				}
