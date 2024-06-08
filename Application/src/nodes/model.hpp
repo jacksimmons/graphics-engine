@@ -16,10 +16,12 @@ namespace Tank
 		unsigned int m_vao;
 		unsigned int m_vbo;
 		unsigned int m_ebo;
-		GLuint m_t0, m_t1;
+	protected:
+		std::vector<GLuint> m_textures;
 		std::unique_ptr<Shader> m_shader;
 	public:
-		Model(std::string name);
+		Model(std::string name, std::string vsName, std::string fsName);
+		bool addTexture(std::string filename, GLenum mode, std::string uniformName);
 		void draw() const override;
 	};
 }

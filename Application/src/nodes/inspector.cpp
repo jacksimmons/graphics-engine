@@ -26,8 +26,8 @@ namespace Tank
 		
 		if (m_inspectedNode != nullptr)
 		{
-			Transform& transform = m_inspectedNode->getTransform();
-			const glm::mat4 &modelMatrix = transform.getModelMatrix();
+			Transform *transform = m_inspectedNode->getTransform();
+			const glm::mat4 &modelMatrix = transform->getModelMatrix();
 
 			ImGui::TextColored(TITLE, "Name");
 			ImGui::Text(m_inspectedNode->getName().c_str());
@@ -35,8 +35,8 @@ namespace Tank
 			if (ImGui::Button("<Snap To>"))
 			{
 				auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
-				cam->setPosition(transform.getTranslation());
-				cam->setRotation(transform.getRotation());
+				cam->setPosition(transform->getTranslation());
+				cam->setRotation(transform->getRotation());
 			}
 
 			ImGui::TextColored(TITLE, "Model Matrix");
@@ -54,36 +54,36 @@ namespace Tank
 			}
 
 			ImGui::TextColored(TITLE, "Translation");
-			glm::vec3 trans = transform.getTranslation();
+			glm::vec3 trans = transform->getTranslation();
 			float transInp[] = { trans.x, trans.y, trans.z };
 			if (ImGui::InputFloat3("##Transform_Translation", transInp))
 			{
 				glm::vec3 newTrans = { transInp[0], transInp[1], transInp[2] };
-				transform.setTranslation(newTrans);
+				transform->setTranslation(newTrans);
 			}
 
 			ImGui::TextColored(TITLE, "Scale");
-			glm::vec3 scale = transform.getScale();
+			glm::vec3 scale = transform->getScale();
 			float scaleInp[] = { scale.x, scale.y, scale.z };
 			if (ImGui::InputFloat3("##Transform_Scale", scaleInp))
 			{
 				glm::vec3 newScale = { scaleInp[0], scaleInp[1], scaleInp[2] };
-				transform.setScale(newScale);
+				transform->setScale(newScale);
 			}
 
 			ImGui::TextColored(TITLE, "Rotation (EulerAngles)");
-			glm::vec3 rot = glm::eulerAngles(transform.getRotation());
+			glm::vec3 rot = glm::eulerAngles(transform->getRotation());
 			float rotInp[] = { rot.x, rot.y, rot.z };
 			if (ImGui::InputFloat3("##Transform_Rotation", rotInp))
 			{
 				glm::vec3 newRotEuler = { rotInp[0], rotInp[1], rotInp[2] };
 				glm::quat newRot = Quat::fromAngleAxis(newRotEuler);
-				transform.setRotation(newRot);
+				transform->setRotation(newRot);
 			}
 
 			// Set to nullptr if cast fails (so if statement is not entered).
 			// Shader Files (if Node is Model)
-			if (std::shared_ptr<Model> model = std::dynamic_pointer_cast<Model>(m_inspectedNode))
+			if (Model *model = dynamic_cast<Model*>(m_inspectedNode))
 			{
 				std::filesystem::path fragPath = model->m_shader->getFragPath();
 				std::filesystem::path vertPath = model->m_shader->getVertPath();

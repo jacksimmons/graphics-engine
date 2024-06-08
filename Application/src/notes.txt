@@ -1,7 +1,0 @@
-char* the_string : I can change which char the_string points to, and I can modify the char to which it points.
-
-const char* the_string : I can change which char the_string points to, but I cannot modify the char to which it points.
-
-char* const the_string : I cannot change which char the_string points to, but I can modify the char to which it points.
-
-const char* const the_string : I cannot change which char the_string points to, nor can I modify the char to which it points.

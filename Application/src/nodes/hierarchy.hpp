@@ -9,18 +9,13 @@ namespace Tank
 
 	class Hierarchy : public Node
 	{
-		// Members
-	private:
-		std::shared_ptr<Inspector> m_inspector;
-
-
 		// Methods
 	private:
 		/// <summary>
 		/// Draws a tree node for the node provided, then calls itself for each
 		/// of its children. Draws a leaf instead if no children.
 		/// </summary>
-		void drawRecursive(std::shared_ptr<Node> node) const;
+		void drawRecursive(Node *node) const;
 	protected:
 		/// <summary>
 		/// Generates buttons for all children of the current node, at a given
@@ -28,6 +23,6 @@ namespace Tank
 		/// </summary>
 		void draw() const override;
 	public:
-		Hierarchy(std::string name, std::shared_ptr<Inspector> inspector);
+		Hierarchy(std::string name);
 	};
 }

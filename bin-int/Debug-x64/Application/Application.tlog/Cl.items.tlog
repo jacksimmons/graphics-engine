@@ -10,6 +10,7 @@ C:\Git\opengl\tank-engine\Application\src\colours.cpp;C:\Git\opengl\tank-engine\
 C:\Git\opengl\tank-engine\Application\src\editor.cpp;C:\Git\opengl\tank-engine\bin-int\Debug-x64\Application\editor.obj
 C:\Git\opengl\tank-engine\Application\src\file.cpp;C:\Git\opengl\tank-engine\bin-int\Debug-x64\Application\file.obj
 C:\Git\opengl\tank-engine\Application\src\framebuffer.cpp;C:\Git\opengl\tank-engine\bin-int\Debug-x64\Application\framebuffer.obj
+C:\Git\opengl\tank-engine\Application\src\nodes\light_source.cpp;C:\Git\opengl\tank-engine\bin-int\Debug-x64\Application\light_source.obj
 C:\Git\opengl\tank-engine\Application\src\nodes\scene_view.cpp;C:\Git\opengl\tank-engine\bin-int\Debug-x64\Application\scene_view.obj
 C:\Git\opengl\tank-engine\Application\src\key_input.cpp;C:\Git\opengl\tank-engine\bin-int\Debug-x64\Application\key_input.obj
 C:\Git\opengl\tank-engine\Application\src\nodes\camera.cpp;C:\Git\opengl\tank-engine\bin-int\Debug-x64\Application\camera.obj

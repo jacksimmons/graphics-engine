@@ -6,12 +6,12 @@
 
 namespace Tank
 {
-	std::shared_ptr<Scene> Scene::s_activeScene = nullptr;
+	Scene *Scene::s_activeScene = nullptr;
 
 
-	Scene::Scene(std::shared_ptr<Node> root, std::shared_ptr<Camera> cam)
+	Scene::Scene(std::unique_ptr<Node> root, Camera *cam)
 	{
-		m_root = root;
+		m_root = std::move(root);
 		m_activeCamera = cam;
 	}
 

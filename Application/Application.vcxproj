@@ -150,6 +150,7 @@
     <ClInclude Include="src\file.hpp" />
     <ClInclude Include="src\framebuffer.hpp" />
     <ClInclude Include="src\key_input.hpp" />
+    <ClInclude Include="src\nodes\light_source.hpp" />
     <ClInclude Include="src\transformation.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
     <ClInclude Include="src\nodes\hierarchy.hpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="src\editor.cpp" />
     <ClCompile Include="src\file.cpp" />
     <ClCompile Include="src\framebuffer.cpp" />
+    <ClCompile Include="src\nodes\light_source.cpp" />
     <ClCompile Include="src\nodes\scene_view.cpp" />
     <ClCompile Include="src\key_input.cpp" />
     <ClCompile Include="src\nodes\camera.cpp" />
@@ -188,10 +190,15 @@
     <ClCompile Include="src\transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\screenShader.frag" />
-    <None Include="src\shaders\screenShader.vert" />
+    <None Include="src\shaders\lightCubeShader.frag" />
+    <None Include="src\shaders\lightCubeShader.vert" />
     <None Include="src\shaders\shader.frag" />
     <None Include="src\shaders\shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Credits.txt" />
+    <Text Include="Notes.txt" />
+    <Text Include="Roadmap.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

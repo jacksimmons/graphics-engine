@@ -14,20 +14,20 @@ namespace Tank
 
 		// Individual transformation components
 		glm::quat m_rotation;
-		glm::mat4 m_scale;
-		glm::mat4 m_translation;
+		glm::vec3 m_scale;
+		glm::vec3 m_translation;
 	public:
 		Transform();
 
 		const glm::mat4& getModelMatrix() const { return m_modelMatrix; }
 
 		const glm::quat& getRotation() const { return m_rotation; }
-		const glm::vec3 getScale() const { return Mat4::getScale(m_scale); }
-		const glm::vec3 getTranslation() const { return Mat4::getTranslation(m_translation); }
+		const glm::vec3& getScale() const { return m_scale; }
+		const glm::vec3& getTranslation() const { return m_translation; }
 
-		void updateModelMatrix() { m_modelMatrix = glm::mat4_cast(m_rotation) * m_scale * m_translation; }
-		void setRotation(const glm::quat &rot);
-		void setScale(const glm::vec3 &scale);
-		void setTranslation(const glm::vec3 &trans);
+		void updateModelMatrix();
+		void setRotation(const glm::quat &rot) { m_rotation = rot; updateModelMatrix(); }
+		void setScale(const glm::vec3 &scale) { m_scale = scale; updateModelMatrix(); }
+		void setTranslation(const glm::vec3 &trans) { m_translation = trans; updateModelMatrix(); }
 	};
 }
