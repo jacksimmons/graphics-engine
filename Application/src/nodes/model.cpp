@@ -107,7 +107,10 @@ namespace Tank
 
 	bool Model::addTexture(std::string filename, GLenum mode, std::string uniformName)
 	{
-		size_t texNum = m_textures.size();
+		size_t rawTexNum = m_textures.size();
+		if (rawTexNum > 31) return false;
+
+		int texNum = (int)rawTexNum;
 		GLuint texID;
 
 		if (Texture::fromFile(filename, GL_TEXTURE0 + texNum, mode, &texID))
