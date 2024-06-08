@@ -7,14 +7,13 @@
 
 namespace Tank
 {
-	Hierarchy::Hierarchy(std::string name, std::shared_ptr<Inspector> inspector) : Node(name)
+	Hierarchy::Hierarchy(std::string name) : Node(name)
 	{
-		m_inspector = inspector;
 	}
 
 	void Hierarchy::draw() const
 	{
-		std::shared_ptr<Node> root = Tank::Scene::getActiveScene()->getRoot();
+		Node *root = Tank::Scene::getActiveScene()->getRoot();
 
 		ImGui::Begin("Hierarchy");
 		drawRecursive(root);
@@ -23,25 +22,30 @@ namespace Tank
 		Node::draw();
 	}
 
-	void Hierarchy::drawRecursive(std::shared_ptr<Node> node) const
+	void Hierarchy::drawRecursive(Node *node) const
 	{
-		auto children = node->getChildren();
+		// Base case.
+		if (node == nullptr)
+			return;
+
+		Inspector *inspector = (Inspector*)getParent()->getChild("Inspector");
+		int childCount = node->getChildCount();
 
 		// Determine if leaf node.
 		ImGuiTreeNodeFlags flags = 0;
-		if (children.size() == 0)
+		if (childCount == 0)
 			flags |= ImGuiTreeNodeFlags_Leaf;
 
 		if (ImGui::TreeNodeEx(node->getName().c_str(), flags))
 		{
 			if (ImGui::IsItemFocused())
 			{
-				m_inspector->setInspectedNode(node);
+				inspector->setInspectedNode(node);
 			}
 
-			for (std::shared_ptr<Node> child : children)
+			for (int i = 0; i < childCount; i++)
 			{
-				drawRecursive(child);
+				drawRecursive(node->getChild(i));
 			}
 
 			ImGui::TreePop();

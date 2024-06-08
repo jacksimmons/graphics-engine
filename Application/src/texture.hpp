@@ -3,4 +3,10 @@
 #include "stb_image.h"
 
 
-GLuint textureFromFile(const char *fn, GLenum texNum, GLenum mode);
+namespace Tank
+{
+	namespace Texture
+	{
+		bool fromFile(std::string filename, GLenum texNum, GLenum mode, GLuint *outTex);
+	}
+}

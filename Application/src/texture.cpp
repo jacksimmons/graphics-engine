@@ -1,30 +1,35 @@
 #include <glad/glad.h>
 #include <iostream>
 
+#include "log.hpp"
 #include "texture.hpp"
-#define INVALID_UINT (unsigned int)-1;
 
 
-GLuint textureFromFile(const char *fn, GLenum texNum, GLenum mode)
+namespace Tank
 {
-	int w, h, numChannels;
-	unsigned char *data = stbi_load(fn, &w, &h, &numChannels, 0); // +stbi1
-
-	GLuint texture = INVALID_UINT;
-	if (!data)
+	namespace Texture
 	{
-		printf("imageFromFile: Failed to load image.");
-		goto ret;
+		bool fromFile(std::string filename, GLenum texNum, GLenum mode, GLuint *outTex)
+		{
+			int w, h, numChannels;
+			unsigned char *data = stbi_load(filename.c_str(), &w, &h, &numChannels, 0); // +stbi1
+
+			if (!data)
+			{
+				TE_CORE_ERROR("Failed to load texture from image. File:");
+				TE_CORE_ERROR(filename);
+				stbi_image_free(data); // -stbi1
+				return false;
+			}
+
+			glGenTextures(1, outTex);
+			glActiveTexture(texNum);
+			glBindTexture(GL_TEXTURE_2D, *outTex);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, mode, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			stbi_image_free(data); // -stbi1
+			return true;
+		}
 	}
-
-	glGenTextures(1, &texture);
-	glActiveTexture(texNum);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, mode, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	ret:
-	stbi_image_free(data); // -stbi1
-
-	return texture;
 }

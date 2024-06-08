@@ -19,11 +19,13 @@
 #include "shader.hpp"
 #include "texture.hpp"
 #include "framebuffer.hpp"
+#include "transform.hpp"
 #include "nodes/node.hpp"
 #include "nodes/model.hpp"
 #include "nodes/hierarchy.hpp"
 #include "nodes/scene_view.hpp"
 #include "nodes/inspector.hpp"
+#include "nodes/light_source.hpp"
 
 
 Editor::Editor()
@@ -38,6 +40,9 @@ Editor::Editor()
 
 	initGL();
 	initImGui();
+
+	// Flip loaded textures on the y-axis.
+	stbi_set_flip_vertically_on_load(GL_TRUE);
 	generateSceneThenInitInput();
 }
 
@@ -60,6 +65,7 @@ void Editor::initGL()
 	{
 		TE_CORE_CRITICAL("GLFW failed to create window.");
 		glfwTerminate();
+		return;
 	}
 	glfwMakeContextCurrent(m_window);
 
@@ -71,6 +77,7 @@ void Editor::initGL()
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		TE_CORE_CRITICAL("GLAD failed to initialise.");
+		return;
 	}
 
 	// Create viewport
@@ -96,22 +103,32 @@ void Editor::initImGui()
 
 void Editor::generateSceneThenInitInput()
 {
-	// Create scene
-	auto root = std::make_shared<Tank::Node>("Root");
-	std::shared_ptr<Tank::Camera> cam = std::make_shared<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
-	root->addChild(cam);
-	root->addChild(std::make_shared<Tank::Model>("Cube"));
+	// Create scene (scopes help control ownership)
+	auto root = std::make_unique<Tank::Node>("Root");
+	{
+		auto cam = std::make_unique<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
+		root->addChild(std::move(cam));
+	
+		auto cube = std::make_unique<Tank::Model>("Cube", "shader.vert", "shader.frag");
+		cube->addTexture("wall.jpg", GL_RGB, "tex0");
+		cube->addTexture("awesomeface.png", GL_RGBA, "tex1");
+		root->addChild(std::move(cube));
+		
+		root->addChild(std::make_unique<Tank::LightSource>("Light"));
+	}
 
-	m_uiRoot = std::make_shared<Tank::Node>("System");
-
-	auto inspector = std::make_shared<Tank::Inspector>("Inspector");
-
-	m_uiRoot->addChild(inspector);
-	m_uiRoot->addChild(std::make_shared<Tank::Hierarchy>("Hierarchy", inspector));
-	m_uiRoot->addChild(std::make_shared<Tank::SceneView>("SceneView", m_settings.windowSize, m_settings.windowSize));
-
-	std::shared_ptr<Tank::Scene> scene = std::make_shared<Tank::Scene>(root, cam);
-	Tank::Scene::setActiveScene(scene);
+	m_uiRoot = std::make_unique<Tank::Node>("System");
+	{
+		auto inspector = std::make_unique<Tank::Inspector>("Inspector");
+		m_uiRoot->addChild(std::move(inspector));
+		m_uiRoot->addChild(std::make_unique<Tank::Hierarchy>("Hierarchy"));
+		m_uiRoot->addChild(std::make_unique<Tank::SceneView>("SceneView", m_settings.windowSize, m_settings.windowSize));
+	}
+	
+	Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
+	auto scene = std::make_unique<Tank::Scene>(std::move(root), cam);
+	Tank::Scene::setActiveScene(scene.get());
+	m_scene = std::move(scene);
 
 	// Initialise input. Requires scene init first.
 	m_keyInput = std::make_unique<KeyInput>(std::vector<int>(
@@ -189,16 +206,16 @@ void Editor::handleKeyInput()
 
 
 	if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Held)
-		cam->translate(glm::vec3(0.0f, -0.01f, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_A) == KeyState::Held)
-		cam->translate(glm::vec3(0.01f, 0.0f, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_S) == KeyState::Held)
 		cam->translate(glm::vec3(0.0f, 0.01f, 0.0f));
 
-	if (m_keyInput->getKeyState(GLFW_KEY_D) == KeyState::Held)
+	if (m_keyInput->getKeyState(GLFW_KEY_A) == KeyState::Held)
 		cam->translate(glm::vec3(-0.01f, 0.0f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_S) == KeyState::Held)
+		cam->translate(glm::vec3(0.0f, -0.01f, 0.0f));
+
+	if (m_keyInput->getKeyState(GLFW_KEY_D) == KeyState::Held)
+		cam->translate(glm::vec3(0.01f, 0.0f, 0.0f));
 
 	if (m_keyInput->getKeyState(GLFW_KEY_Q) == KeyState::Held)
 		cam->translate(glm::vec3(0.0f, 0.0f, 0.01f));
@@ -237,5 +254,5 @@ Editor::~Editor()
 
 std::unique_ptr<Tank::Application> Tank::createApplication()
 {
-	return std::move(std::make_unique<Editor>());
+	return std::make_unique<Editor>();
 }

@@ -65,9 +65,10 @@ unsigned int indices[] = {  // note that we start from 0!
 
 namespace Tank
 {
-	Model::Model(std::string name) : Node(name)
+	Model::Model(std::string name, std::string vsName, std::string fsName) : Node(name)
 	{
-		m_shader = std::make_unique<Shader>("src/shaders/shader.vert", "src/shaders/shader.frag");
+		TE_CORE_INFO(name);
+		m_shader = std::make_unique<Shader>(vsName, fsName);
 
 		// ===== INIT VBO/VAO =====
 		glGenVertexArrays(1, &m_vao);
@@ -98,36 +99,46 @@ namespace Tank
 		float borderColour[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColour);
 
-		// Flip loaded textures on the y-axis.
-		stbi_set_flip_vertically_on_load(GL_TRUE);
-
-		m_t0 = textureFromFile("wall.jpg", GL_TEXTURE0, GL_RGB);
-		m_t1 = textureFromFile("awesomeface.png", GL_TEXTURE1, GL_RGBA);
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
 
-		m_shader->use();
-		m_shader->setInt("tex0", 0);
-		m_shader->setInt("tex1", 1);
-		m_shader->unuse();
+	bool Model::addTexture(std::string filename, GLenum mode, std::string uniformName)
+	{
+		size_t texNum = m_textures.size();
+		GLuint texID;
+
+		if (Texture::fromFile(filename, GL_TEXTURE0 + texNum, mode, &texID))
+		{
+			m_textures.push_back(texID);
+
+			m_shader->use();
+			m_shader->setInt(uniformName, texNum);
+			m_shader->unuse();
+			return true;
+		}
+
+		TE_CORE_ERROR("Failed to add texture.");
+		return false;
 	}
 
 	void Model::draw() const
 	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_t0);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, m_t1);
+		for (int i = 0; i < m_textures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+		}
 
 		m_shader->use();
-		m_shader->setMat4("model", getTransform().getModelMatrix());
+		m_shader->setMat4("model", getTransform()->getModelMatrix());
 
 		auto cam = Scene::getActiveScene()->getActiveCamera();
 		m_shader->setMat4("view", cam->getView());
 		m_shader->setMat4("proj", cam->getProj());
+		m_shader->setVec3("lightCol", { 0.1f, 0.1f, 0.1f });
 
 		glBindVertexArray(m_vao);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

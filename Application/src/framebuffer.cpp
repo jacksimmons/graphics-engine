@@ -13,10 +13,6 @@ namespace Tank
 		m_w = width;
 		m_h = height;
 
-		m_screenShader = std::make_unique<Shader>("src/shaders/screenShader.vert", "src/shaders/screenShader.frag");
-		m_screenShader->use();
-		m_screenShader->setInt("screenTexture", 1); // ! Tutorial says 0 but 1 works for this program ?!
-
 		glGenFramebuffers(1, &m_fbo);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 
@@ -39,13 +35,12 @@ namespace Tank
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
-			TE_CORE_CRITICAL("Error: Framebuffer is not complete.");
+			TE_CORE_CRITICAL("Framebuffer is not complete.");
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-		m_screenShader->unuse();
 	}
 
 

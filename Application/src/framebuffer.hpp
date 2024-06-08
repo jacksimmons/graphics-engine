@@ -13,7 +13,6 @@ namespace Tank
 		/// </summary>
 		int m_w, m_h;
 
-		std::unique_ptr<Shader> m_screenShader;
 		GLuint m_fbo;
 		GLuint m_rbo;
 		GLuint m_texColBuf;

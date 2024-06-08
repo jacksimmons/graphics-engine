@@ -9,7 +9,7 @@ namespace Tank
 	{
 		// Members
 	private:
-		std::shared_ptr<Node> m_inspectedNode;
+		Node *m_inspectedNode;
 
 
 		// Methods
@@ -23,6 +23,6 @@ namespace Tank
 		void draw() const override;
 	public:
 		Inspector(std::string name);
-		void setInspectedNode(std::shared_ptr<Node> node) noexcept { m_inspectedNode = node; }
+		void setInspectedNode(Node *node) noexcept { m_inspectedNode = node; }
 	};
 }

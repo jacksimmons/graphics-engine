@@ -13,5 +13,5 @@ namespace Tank
 		virtual void run() = 0;
 	};
 
-	std::unique_ptr<Application> createApplication();
+	std::unique_ptr<Tank::Application> createApplication();
 }

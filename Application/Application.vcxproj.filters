@@ -111,6 +111,9 @@
     <ClInclude Include="src\transform.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\nodes\light_source.hpp">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file.cpp">
@@ -182,19 +185,33 @@
     <ClCompile Include="src\colours.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\nodes\light_source.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\screenShader.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="src\shaders\screenShader.frag">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="src\shaders\shader.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="src\shaders\shader.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="src\shaders\lightCubeShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="src\shaders\lightCubeShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Roadmap.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Credits.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Notes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

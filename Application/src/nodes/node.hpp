@@ -4,19 +4,20 @@
 #include <string>
 #include <glm/mat4x4.hpp>
 
+#include "transform.hpp"
+
 
 namespace Tank
 {
-	class Transform;
-	class Node : public std::enable_shared_from_this<Node>
+	class Node
 	{
 	private:
 		std::string m_name;
 		bool m_enabled = true;
-
-		std::shared_ptr<Transform> m_transform;
 	protected:
-		std::vector<std::shared_ptr<Node>> m_children;
+		Node *m_parent;
+		std::vector<std::unique_ptr<Node>> m_children;
+		std::unique_ptr<Transform> m_transform;
 
 	protected:
 		virtual void draw() const;
@@ -26,19 +27,20 @@ namespace Tank
 		constexpr void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		constexpr bool getEnabled() const noexcept { return m_enabled; }
 
-		const std::string& getName() const noexcept { return m_name; }
-		
-		/// <summary>
-		/// Tries to get a child by name.
-		/// </summary>
-		/// <param name="name">Name of the child.</param>
-		/// <param name="outChild">Child output.</param>
-		/// <returns>Whether or not this operation succeeded.</returns>
-		bool getChild(std::string name, std::shared_ptr<Node> outChild) const;
-		void addChild(std::shared_ptr<Node> child);
-		const std::vector<std::shared_ptr<Node>> &getChildren() const noexcept { return m_children; }
+		void setName(const std::string &name) noexcept { m_name = name; }
+		constexpr const std::string& getName() const noexcept { return m_name; }
 
-		Transform& getTransform() const { return *m_transform; }
+		constexpr void setParent(Node *parent) noexcept { m_parent = parent; }
+		constexpr Node *getParent() const noexcept { return m_parent; }
+
+		size_t getChildCount() const noexcept { return m_children.size(); }
+		void addChild(std::unique_ptr<Node> child);
+		// Get child by name.
+		Node *getChild(std::string name) const;
+		// Get child by index.
+		Node *getChild(int index) const;
+
+		Transform *getTransform() const { return m_transform.get(); }
 
 		virtual void update();
 	};

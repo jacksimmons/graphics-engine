@@ -8,22 +8,22 @@
 
 namespace Tank
 {
-	Shader::Shader(std::filesystem::path fpVert, std::filesystem::path fpFrag)
+	Shader::Shader(std::filesystem::path vsPath, std::filesystem::path fsPath)
+		: m_vsPath(vsPath), m_fsPath(fsPath)
 	{
-		m_fpFrag = fpFrag;
-		m_fpVert = fpVert;
-
 		std::string vertShader;
 		std::string fragShader;
 
-		if (!File::readAllLines(std::filesystem::current_path() / fpVert, &vertShader))
+		if (!File::readAllLines(std::filesystem::current_path() / "src" / "shaders" / vsPath, &vertShader))
 		{
 			TE_CORE_ERROR("Failed to read vertex shader.");
+			std::cout << std::filesystem::current_path() / "src" / "shaders" / vsPath << std::endl;
 		}
 
-		if (!File::readAllLines(std::filesystem::current_path() / fpFrag, &fragShader))
+		if (!File::readAllLines(std::filesystem::current_path() / "src" / "shaders" / fsPath, &fragShader))
 		{
 			TE_CORE_ERROR("Failed to read fragment shader.");
+			std::cout << std::filesystem::current_path() / "src" / "shaders" / fsPath << std::endl;
 		}
 
 		unsigned int vshader;

@@ -6,26 +6,16 @@ namespace Tank
 	Transform::Transform()
 	{
 		m_modelMatrix = glm::identity<glm::mat4>();
-		m_scale = glm::identity<glm::mat4>();
+		m_scale = { 1,1,1 };
 		m_rotation = glm::identity<glm::quat>();
-		m_translation = glm::identity<glm::mat4>();
+		m_translation = { 1,1,1 };
 	}
 
-	void Transform::setRotation(const glm::quat &rot)
+	void Transform::updateModelMatrix()
 	{
-		m_rotation = rot;
-		updateModelMatrix();
-	}
-
-	void Transform::setScale(const glm::vec3 &scale)
-	{
-		Mat4::setScale(m_scale, scale);
-		updateModelMatrix();
-	}
-
-	void Transform::setTranslation(const glm::vec3 &trans)
-	{
-		Mat4::setTranslation(m_translation, trans);
-		updateModelMatrix();
+		m_modelMatrix =
+			  glm::translate(glm::identity<glm::mat4>(), m_translation)
+			* glm::scale(glm::identity<glm::mat4>(), m_scale)
+			* glm::mat4_cast(m_rotation);
 	}
 }

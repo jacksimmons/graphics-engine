@@ -9,27 +9,39 @@ namespace Tank
 	Node::Node(std::string name)
 	{
 		m_name = name;
-		m_transform = std::make_shared<Transform>();
+		m_transform = std::make_unique<Transform>();
 	}
 
-	bool Node::getChild(std::string name, std::shared_ptr<Node> outChild) const
+	void Node::addChild(std::unique_ptr<Node> child)
 	{
-		for (auto const &child : m_children)
+		child->m_parent = this;
+		m_children.push_back(std::move(child));
+	}
+
+	Node *Node::getChild(std::string name) const
+	{
+		for (int i = 0; i < getChildCount(); i++)
 		{
+			Node *child = getChild(i);
 			if (child->getName() == name)
 			{
-				outChild = child;
-				return true;
+				return child;
 			}
 		}
 
-		// If the child was not found, return false;
-		return false;
+		// No child exists by this name.
+		return nullptr;
 	}
 
-	void Node::addChild(std::shared_ptr<Node> child)
+	Node *Node::getChild(int index) const
 	{
-		m_children.push_back(child);
+		if (0 <= index && index < m_children.size())
+		{
+			return m_children[index].get();
+		}
+		
+		// Out of children list range.
+		return nullptr;
 	}
 
 	void Node::draw() const

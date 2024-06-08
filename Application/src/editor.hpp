@@ -8,6 +8,7 @@
 
 namespace Tank
 {
+	class Scene;
 	class Node;
 	class SceneView;
 }
@@ -30,8 +31,9 @@ private:
 	/// <summary>
 	/// Root node for editor UI (Hierarchy, Inspector, etc.)
 	/// </summary>
-	std::shared_ptr<Tank::Node> m_uiRoot;
+	std::unique_ptr<Tank::Node> m_uiRoot;
 	std::unique_ptr<KeyInput> m_keyInput;
+	std::unique_ptr<Tank::Scene> m_scene;
 	
 	EditorSettings m_settings;
 
