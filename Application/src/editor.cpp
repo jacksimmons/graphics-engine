@@ -106,7 +106,7 @@ void Editor::generateSceneThenInitInput()
 	// Create scene (scopes help control ownership)
 	auto root = std::make_unique<Tank::Node>("Root");
 	{
-		auto cam = std::make_unique<Tank::Camera>(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), "Camera");
+		auto cam = std::make_unique<Tank::Camera>("Camera");
 		root->addChild(std::move(cam));
 	
 		auto cube = std::make_unique<Tank::Model>("Cube", "shader.vert", "shader.frag");

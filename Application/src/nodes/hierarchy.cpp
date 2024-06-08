@@ -61,7 +61,7 @@ namespace Tank
 		if (ImGui::BeginPopupContextItem())
 		{
 			Node *parent = node->getParent();
-			if (parent && ImGui::Button("Delete Node"))
+			if (parent && ImGui::MenuItem("Delete Node"))
 			{
 				// Clear inspector if needed.
 				inspector->handleNodeDeletion(node);
@@ -71,22 +71,5 @@ namespace Tank
 			}
 			ImGui::EndPopup();
 		}
-
-		//const char *options[2] = { "Add Child", "Delete" };
-		//static int selectedOption = -1;
-
-		//for (int i = 0; i < 2; i++)
-		//{
-		//	if (ImGui::Selectable(options[i], selectedOption == i))
-		//		selectedOption = i;
-
-		//	// Uses the above selectable as popup ID
-		//	if (ImGui::BeginPopupContextItem())
-		//	{
-		//		selectedOption = i;
-		//		ImGui::Text("HI");
-		//		ImGui::EndPopup();
-		//	}
-		//}
 	}
 }

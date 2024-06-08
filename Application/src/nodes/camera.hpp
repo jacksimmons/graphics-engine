@@ -25,7 +25,10 @@ namespace Tank
 		glm::vec3 m_centre;
 		glm::vec3 m_up;
 	public:
-		Camera(glm::vec3 eye, glm::vec3 centre, glm::vec3 up, std::string name);
+		Camera(std::string name,
+			glm::vec3 eye = { 0, 0, 3 },
+			glm::vec3 centre = { 0, 0, 0 },
+			glm::vec3 up = { 0, 1, 0 });
 		glm::mat4 getView() const noexcept { return m_V; }
 		glm::mat4 getProj() const noexcept { return m_P; }
 		void setPosition(glm::vec3 pos);
