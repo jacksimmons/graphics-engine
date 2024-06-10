@@ -4,6 +4,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include "nodes/node.hpp"
 #include "nodes/hierarchy.hpp"
+#include "transformation.hpp"
 
 
 namespace Tank
@@ -35,6 +36,9 @@ namespace Tank
 		void translate(glm::vec3 vec);
 		void setRotation(glm::quat rot);
 		void rotate(glm::vec3 vec);
+		glm::vec3 getTransformedCentre() const;
+		glm::vec3 getTransformedEye() const;
+		glm::vec3 getTransformedUp() const;
 		void update() override;
 	};
 }
