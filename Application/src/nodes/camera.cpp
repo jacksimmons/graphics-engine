@@ -46,6 +46,21 @@ namespace Tank
 		m_R = glm::mat4_cast(rot) * m_R;
 	}
 
+	glm::vec3 Camera::getTransformedCentre() const
+	{
+		return glm::vec3(m_T * Mat4::rotateAboutPoint(m_centre, -m_eye, m_R) * glm::vec4(m_centre, 1));
+	}
+
+	glm::vec3 Camera::getTransformedEye() const
+	{
+		return glm::vec3(m_T * glm::vec4(m_eye, 1));
+	}
+
+	glm::vec3 Camera::getTransformedUp() const
+	{
+		return glm::vec3(m_R * glm::vec4(m_up, 1));
+	}
+
 	/// <summary>
 	/// 1. Rotate center around the eye("Universe rotates around camera")
 	/// (Translate center by - eye, then rotate it around origin with R)
@@ -57,10 +72,9 @@ namespace Tank
 	void Camera::update()
 	{
 		// Transformed vector
-		glm::vec3 t_centre = glm::vec3(m_T * Mat4::rotateAboutPoint(m_centre, -m_eye, m_R) * glm::vec4(m_centre, 1));
-		glm::vec3 t_eye = glm::vec3(m_T * glm::vec4(m_eye, 1));
-		glm::vec3 t_up = glm::vec3(m_R * glm::vec4(m_up, 1));
-
+		glm::vec3 t_centre = getTransformedCentre();
+		glm::vec3 t_eye = getTransformedEye();
+		glm::vec3 t_up = getTransformedUp();
 		m_V = glm::lookAt(t_eye, t_centre, t_up);
 	}
 }

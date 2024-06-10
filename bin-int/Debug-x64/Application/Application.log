@@ -38,4 +38,5 @@ C:\Git\opengl\tank-engine\Engine\src\log.hpp(13,42): warning C4251: 'Tank::Log::
   
   scene.cpp
   Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Application.vcxproj -> C:\Git\opengl\tank-engine\bin\Debug-x64\Application\Application.exe

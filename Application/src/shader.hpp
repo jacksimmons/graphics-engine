@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
 #include <filesystem>
+#include <iostream>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 
 namespace Tank
@@ -44,12 +46,31 @@ namespace Tank
 		void use() const { glUseProgram(m_id); }
 		void unuse() const { glUseProgram(0); }
 		GLuint getID() const noexcept { return m_id; };
-		void setInt(const std::string &name, int value) const { glUniform1i(getLoc(name.c_str()), value); }
-		void setFloat(const std::string &name, float value) const { glUniform1f(getLoc(name.c_str()), value); }
-		void setVec3(const std::string &name, const glm::vec3 &value) const { glUniform3fv(getLoc(name.c_str()), 1, glm::value_ptr(value)); }
-		void setVec4(const std::string &name, const glm::vec4 &value) const { glUniform4fv(getLoc(name.c_str()), 1, glm::value_ptr(value)); }
-		void setMat4(const std::string &name, const glm::mat4 &value) const { glUniformMatrix4fv(getLoc(name.c_str()), 1, GL_FALSE, glm::value_ptr(value)); }
 		std::filesystem::path getVertPath() const noexcept { return m_vsPath; }
 		std::filesystem::path getFragPath() const noexcept { return m_fsPath; }
+		void setInt(const std::string &name, int value) const
+		{
+			glUniform1i(getLoc(name.c_str()), value);
+		}
+		void setFloat(const std::string &name, float value) const
+		{
+			glUniform1f(getLoc(name.c_str()), value);
+		}
+		void setVec3(const std::string &name, const glm::vec3 &value) const
+		{
+			glUniform3fv(getLoc(name.c_str()), 1, glm::value_ptr(value));
+		}
+		void setVec4(const std::string &name, const glm::vec4 &value) const
+		{
+			glUniform4fv(getLoc(name.c_str()), 1, glm::value_ptr(value));
+		}
+		void setMat3(const std::string &name, const glm::mat3 &value) const
+		{
+			glUniformMatrix3fv(getLoc(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+		}
+		void setMat4(const std::string &name, const glm::mat4 &value) const
+		{
+			glUniformMatrix4fv(getLoc(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+		}
 	};
 }

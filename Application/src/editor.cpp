@@ -114,7 +114,8 @@ void Editor::generateSceneThenInitInput()
 		cube->addTexture("awesomeface.png", GL_RGBA, "tex1");
 		root->addChild(std::move(cube));
 		
-		root->addChild(std::make_unique<Tank::LightSource>("Light"));
+		auto light = std::make_unique<Tank::LightSource>("Light");
+		root->addChild(std::move(light));
 	}
 
 	m_uiRoot = std::make_unique<Tank::Node>("System");
@@ -172,7 +173,7 @@ void Editor::run()
 		
 		ImGui::Begin("##Main", nullptr, m_settings.mainWinFlags);
 
-		ImGui::ShowDemoWindow();
+		//ImGui::ShowDemoWindow();
 
 		handleKeyInput();
 		// Decay input states (comes after handleKeyInput)

@@ -8,7 +8,7 @@ namespace Tank
 	{
 		auto lightCube = std::make_unique<Model>("LightCube", "lightCubeShader.vert", "lightCubeShader.frag");
 		lightCube->getTransform()->setScale({ 0.1f, 0.1f, 0.1f });
-		lightCube->getTransform()->setTranslation({ 1,0,0 });
+		lightCube->getTransform()->setTranslation({ 1, 0, 0 });
 		addChild(std::move(lightCube));
 	}
 }
