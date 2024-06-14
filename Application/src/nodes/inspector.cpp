@@ -45,7 +45,7 @@ namespace Tank
 			ImGui::TextColored(TITLE, "Model Matrix");
 			// glm::mat4 indexing is column-major, but ImGui is row-major.
 			// Transposing the model means an ImGui row corresponds to a model matrix row.
-			glm::mat4x4 displayMatrix = glm::transpose(modelMatrix);
+			glm::mat4 displayMatrix = glm::transpose(modelMatrix);
 			for (int i = 0; i < 4; i++)
 			{
 				glm::vec4 row = displayMatrix[i];
