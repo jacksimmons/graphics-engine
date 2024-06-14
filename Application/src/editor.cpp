@@ -25,7 +25,7 @@
 #include "nodes/hierarchy.hpp"
 #include "nodes/scene_view.hpp"
 #include "nodes/inspector.hpp"
-#include "nodes/light_source.hpp"
+#include "nodes/light.hpp"
 
 
 Editor::Editor()
@@ -114,7 +114,7 @@ void Editor::generateSceneThenInitInput()
 		cube->addTexture("awesomeface.png", GL_RGBA, "tex1");
 		root->addChild(std::move(cube));
 		
-		auto light = std::make_unique<Tank::LightSource>("Light");
+		auto light = std::make_unique<Tank::Light>("Light", glm::vec3(1, 0, 0));
 		root->addChild(std::move(light));
 	}
 
@@ -127,6 +127,7 @@ void Editor::generateSceneThenInitInput()
 	}
 	
 	Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
+
 	auto scene = std::make_unique<Tank::Scene>(std::move(root), cam);
 	Tank::Scene::setActiveScene(scene.get());
 	m_scene = std::move(scene);
@@ -199,7 +200,6 @@ void Editor::run()
 
 void Editor::handleKeyInput()
 {
-	auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
 	
 	if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
 		glfwSetWindowShouldClose(m_window, GL_TRUE);
@@ -207,6 +207,8 @@ void Editor::handleKeyInput()
 	if (m_keyInput->getKeyState(GLFW_KEY_F1) == KeyState::Pressed)
 		m_keyInput->cycleRenderMode();
 
+	auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
+	if (cam == nullptr) return;
 
 	if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Held)
 		cam->translate(glm::vec3(0.0f, 0.01f, 0.0f));
