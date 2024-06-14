@@ -66,6 +66,9 @@ namespace Tank
 				// Clear inspector if needed.
 				inspector->handleNodeDeletion(node);
 
+				// Clear active camera if needed.
+				Scene::getActiveScene()->handleNodeDeletion(node);
+
 				// Detach child from its parent.
 				node->getParent()->removeChild(node);
 			}

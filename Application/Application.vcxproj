@@ -150,7 +150,8 @@
     <ClInclude Include="src\file.hpp" />
     <ClInclude Include="src\framebuffer.hpp" />
     <ClInclude Include="src\key_input.hpp" />
-    <ClInclude Include="src\nodes\light_source.hpp" />
+    <ClInclude Include="src\nodes\directional_light.hpp" />
+    <ClInclude Include="src\nodes\light.hpp" />
     <ClInclude Include="src\transformation.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
     <ClInclude Include="src\nodes\hierarchy.hpp" />
@@ -176,7 +177,8 @@
     <ClCompile Include="src\editor.cpp" />
     <ClCompile Include="src\file.cpp" />
     <ClCompile Include="src\framebuffer.cpp" />
-    <ClCompile Include="src\nodes\light_source.cpp" />
+    <ClCompile Include="src\nodes\directional_light.cpp" />
+    <ClCompile Include="src\nodes\light.cpp" />
     <ClCompile Include="src\nodes\scene_view.cpp" />
     <ClCompile Include="src\key_input.cpp" />
     <ClCompile Include="src\nodes\camera.cpp" />

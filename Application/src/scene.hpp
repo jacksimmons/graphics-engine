@@ -37,5 +37,6 @@ namespace Tank
 		Camera *getActiveCamera() const noexcept { return m_activeCamera; }
 		Node *getRoot() const noexcept { return m_root.get(); }	
 		void update();
+		void handleNodeDeletion(Node *deleted) noexcept;
 	};
 }

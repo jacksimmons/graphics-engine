@@ -35,8 +35,11 @@ namespace Tank
 			if (ImGui::Button("<Snap To>"))
 			{
 				auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
-				cam->setPosition(transform->getTranslation());
-				cam->setRotation(transform->getRotation());
+				if (cam != nullptr)
+				{
+					cam->setPosition(transform->getTranslation());
+					cam->setRotation(transform->getRotation());
+				}
 			}
 
 			ImGui::TextColored(TITLE, "Model Matrix");
