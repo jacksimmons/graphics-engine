@@ -8,8 +8,11 @@ namespace Tank
 {
 	class Node;
 	class Camera;
+	class Light;
+
 	class Scene
 	{
+		friend class Hierarchy;
 		// Static
 	private:
 		static Scene *s_activeScene;
@@ -29,14 +32,19 @@ namespace Tank
 	private:
 		std::unique_ptr<Node> m_root;
 		Camera *m_activeCamera;
+		std::vector<Light *> m_activeLights;
+
+		void onNodeDeleted(Node *deleted) noexcept;
 	public:
 		// A Scene has ownership of the entire Node hierarchy, and a reference to
 		// the active camera.
 		Scene(std::unique_ptr<Node> root, Camera *cam);
 		~Scene();
+		Node *getRoot() const noexcept { return m_root.get(); }
 		Camera *getActiveCamera() const noexcept { return m_activeCamera; }
-		Node *getRoot() const noexcept { return m_root.get(); }	
+		void addLight(Light *);
+		std::vector<Light *> getActiveLights() const { return m_activeLights; }
+
 		void update();
-		void handleNodeDeletion(Node *deleted) noexcept;
 	};
 }

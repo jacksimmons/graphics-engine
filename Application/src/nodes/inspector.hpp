@@ -7,6 +7,7 @@ namespace Tank
 {
 	class Inspector : public Node
 	{
+		friend class Hierarchy;
 		// Members
 	private:
 		Node *m_inspectedNode;
@@ -15,6 +16,11 @@ namespace Tank
 		// Methods
 	private:
 		void drawInspector() const;
+		/// <summary>
+		/// Recurse over all descendants of node, and if any match to the inspected
+		/// node, set the inspected node to nullptr (to reflect the deletion).
+		/// </summary>
+		void onNodeDeleted(Node *node);
 	protected:
 		/// <summary>
 		/// Generates buttons for all children of the current node, at a given
@@ -25,11 +31,5 @@ namespace Tank
 		Inspector(std::string name);
 
 		void setInspectedNode(Node *node) noexcept { m_inspectedNode = node; }
-
-		/// <summary>
-		/// Recurse over all descendants of node, and if any match to the inspected
-		/// node, set the inspected node to nullptr (to reflect the deletion).
-		/// </summary>
-		void handleNodeDeletion(Node *node);
 	};
 }

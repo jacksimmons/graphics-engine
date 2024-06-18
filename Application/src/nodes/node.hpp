@@ -19,11 +19,12 @@ namespace Tank
 		std::vector<std::unique_ptr<Node>> m_children;
 		std::unique_ptr<Transform> m_transform;
 
+	// Member Functions
 	protected:
 		virtual void draw() const;
 	public:
 		Node(std::string name);
-
+		
 		constexpr void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		constexpr bool getEnabled() const noexcept { return m_enabled; }
 
@@ -35,11 +36,10 @@ namespace Tank
 
 		size_t getChildCount() const noexcept { return m_children.size(); }
 
+		// Add an existing child.
 		void addChild(std::unique_ptr<Node> child);
-
 		// Removes a child by rawptr, returns boolean of success.
 		bool removeChild(Node *child);
-
 		// Get child by name.
 		Node *getChild(std::string name) const;
 		// Get child by index.

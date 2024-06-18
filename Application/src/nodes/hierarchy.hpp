@@ -20,10 +20,11 @@ namespace Tank
 		/// <summary>
 		/// Handles drawing for node context menus. A node context menu is
 		/// displayed when a node is right-clicked in the hierarchy.
-		/// ! This allows the user to Add Nodes, ...
+		/// This allows the user to Delete Nodes (leading to *node
+		/// = nullptr).
 		/// </summary>
 		/// <param name="node"></param>
-		void drawNodeContextMenu(Node *node, Inspector *inspector) const;
+		void drawNodeContextMenu(Node **node, Inspector *inspector) const;
 	protected:
 		/// <summary>
 		/// Generates buttons for all children of the current node, at a given

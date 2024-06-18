@@ -1,14 +1,53 @@
+#include <string>
 #include "transform.hpp"
+#include "shader.hpp"
 #include "nodes/light.hpp"
 
 
 namespace Tank
 {
-	Light::Light(std::string name, glm::vec3 pos) : Node("LightSource")
+	int DirLight::s_count = 0;
+	int PointLight::s_count = 0;
+
+	Light::Light(std::string name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec) : Node(name),
+		m_ambient(amb), m_diffuse(diff), m_specular(spec), m_index(0) {}
+
+	DirLight::DirLight(std::string name, glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+		: Light(name, amb, diff, spec), m_direction(dir)
 	{
-		auto lightCube = std::make_unique<Model>("LightCube", "lightCubeShader.vert", "lightCubeShader.frag");
-		lightCube->getTransform()->setScale({ 0.1f, 0.1f, 0.1f });
-		lightCube->getTransform()->setTranslation(pos);
-		addChild(std::move(lightCube));
+		m_index = DirLight::s_count;
+		m_lightArrayName = "dirLights";
+		DirLight::s_count++;
+	}
+
+
+	void DirLight::updateShader(Shader *shader)
+	{
+		std::string str = getLightStruct();
+		shader->setVec3(str + ".ambient", m_ambient);
+		shader->setVec3(str + ".diffuse", m_diffuse);
+		shader->setVec3(str + ".specular", m_specular);
+		shader->setVec3(str + ".direction", m_direction);
+	}
+
+
+	PointLight::PointLight(std::string name, glm::vec3 pos, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+		: Light(name, amb, diff, spec), m_position(pos)
+	{
+		m_index = PointLight::s_count;
+		m_lightArrayName = "pointLights";
+		PointLight::s_count++;
+	}
+
+	void PointLight::updateShader(Shader *shader)
+	{
+		std::string str = getLightStruct();
+		shader->setVec3(str + ".ambient", m_ambient);
+		shader->setVec3(str + ".diffuse", m_diffuse);
+		shader->setVec3(str + ".specular", m_specular);
+		shader->setVec3(str + ".position", m_position);
+		shader->setFloat(str + ".constant", 1.0f);
+		shader->setFloat(str + ".linear", 0.0f);
+		shader->setFloat(str + ".quadratic", 0.0f);
 	}
 }
