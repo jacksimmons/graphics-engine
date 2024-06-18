@@ -30,13 +30,14 @@
 
 Editor::Editor()
 {
-	m_settings.configFlags = ImGuiConfigFlags_DockingEnable;
-	m_settings.mainWinFlags = ImGuiWindowFlags_NoResize
+	m_settings = std::make_unique<WindowSettings>();
+	m_settings->configFlags = ImGuiConfigFlags_DockingEnable;
+	m_settings->mainWinFlags = ImGuiWindowFlags_NoResize
 		| ImGuiWindowFlags_NoCollapse
 		| ImGuiWindowFlags_NoTitleBar
 		| ImGuiWindowFlags_MenuBar
 		| ImGuiWindowFlags_NoBringToFrontOnFocus;
-	m_settings.windowSize = glm::ivec2(800, 600);
+	m_settings->windowSize = glm::ivec2(800, 600);
 
 	initGL();
 	initImGui();
@@ -60,7 +61,7 @@ void Editor::initGL()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	m_window = glfwCreateWindow(m_settings.windowSize.x, m_settings.windowSize.y, (char *)"TankEngine", nullptr, nullptr);
+	m_window = glfwCreateWindow(m_settings->windowSize.x, m_settings->windowSize.y, (char *)"TankEngine", nullptr, nullptr);
 	if (m_window == nullptr)
 	{
 		TE_CORE_CRITICAL("GLFW failed to create window.");
@@ -81,7 +82,7 @@ void Editor::initGL()
 	}
 
 	// Create viewport
-	glViewport(0, 0, m_settings.windowSize.x, m_settings.windowSize.y);
+	glViewport(0, 0, m_settings->windowSize.x, m_settings->windowSize.y);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
 	// Enable depth buffer
@@ -94,7 +95,7 @@ void Editor::initImGui()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO &io = ImGui::GetIO();
-	io.ConfigFlags = m_settings.configFlags;
+	io.ConfigFlags = m_settings->configFlags;
 
 	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
@@ -103,34 +104,47 @@ void Editor::initImGui()
 
 void Editor::generateSceneThenInitInput()
 {
+	using namespace Tank;
+
 	// Create scene (scopes help control ownership)
 	auto root = std::make_unique<Tank::Node>("Root");
 	{
-		auto cam = std::make_unique<Tank::Camera>("Camera");
-		root->addChild(std::move(cam));
-	
-		auto cube = std::make_unique<Tank::Model>("Cube", "shader.vert", "shader.frag");
-		cube->addTexture("wall.jpg", GL_RGB, "tex0");
-		cube->addTexture("awesomeface.png", GL_RGBA, "tex1");
-		root->addChild(std::move(cube));
-		
-		auto light = std::make_unique<Tank::Light>("Light", glm::vec3(1, 0, 0));
-		root->addChild(std::move(light));
+		root->addChild(std::make_unique<Camera>("Camera"));
+		root->addChild(std::make_unique<Model>("Cube", "shader.vert", "shader.frag"));
 	}
 
-	m_uiRoot = std::make_unique<Tank::Node>("System");
+	m_uiRoot = std::make_unique<Tank::Node>("Editor");
 	{
-		auto inspector = std::make_unique<Tank::Inspector>("Inspector");
-		m_uiRoot->addChild(std::move(inspector));
-		m_uiRoot->addChild(std::make_unique<Tank::Hierarchy>("Hierarchy"));
-		m_uiRoot->addChild(std::make_unique<Tank::SceneView>("SceneView", m_settings.windowSize, m_settings.windowSize));
+		m_uiRoot->addChild(std::make_unique<Inspector>("Inspector"));
+		m_uiRoot->addChild(std::make_unique<Hierarchy>("Hierarchy"));
+		m_uiRoot->addChild(std::make_unique<SceneView>("SceneView", m_settings->windowSize, m_settings->windowSize));
 	}
-	
-	Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
 
+	// Initialise scene.
+	Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
 	auto scene = std::make_unique<Tank::Scene>(std::move(root), cam);
 	Tank::Scene::setActiveScene(scene.get());
 	m_scene = std::move(scene);
+
+	// Lights
+	glm::vec3 amb{ 0.1f, 0.1f, 0.1f };
+	glm::vec3 diff{ 0.5f, 0.5f, 0.5f };
+	glm::vec3 spec{ 1.0f, 1.0f, 1.0f };
+	glm::vec3 pointLightPositions[]
+	{
+		glm::vec3(0.7f,  0.2f,  2.0f),
+		glm::vec3(2.3f, -3.3f, -4.0f),
+		glm::vec3(-4.0f,  2.0f, -12.0f),
+		glm::vec3(0.0f,  0.0f, -3.0f)
+	};
+
+	auto rawRoot = m_scene->getRoot();
+	for (int i = 0; i < 4; i++)
+	{
+		std::string name = "PtLight" + std::to_string(i);
+		rawRoot->addChild(std::make_unique<PointLight>(name, pointLightPositions[i], amb, diff, spec));
+		m_scene->addLight(dynamic_cast<Tank::Light *>(rawRoot->getChild(name)));
+	}
 
 	// Initialise input. Requires scene init first.
 	m_keyInput = std::make_unique<KeyInput>(std::vector<int>(
@@ -172,7 +186,7 @@ void Editor::run()
 		ImGui::SetNextWindowPos(ImVec2(0,0));
 		ImGui::SetNextWindowSize(io.DisplaySize);
 		
-		ImGui::Begin("##Main", nullptr, m_settings.mainWinFlags);
+		ImGui::Begin("##Main", nullptr, m_settings->mainWinFlags);
 
 		//ImGui::ShowDemoWindow();
 
@@ -200,7 +214,6 @@ void Editor::run()
 
 void Editor::handleKeyInput()
 {
-	
 	if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
 		glfwSetWindowShouldClose(m_window, GL_TRUE);
 

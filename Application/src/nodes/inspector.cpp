@@ -24,7 +24,7 @@ namespace Tank
 	{
 		ImGui::Begin("Inspector");
 		
-		if (m_inspectedNode != nullptr)
+		if (m_inspectedNode)
 		{
 			Transform *transform = m_inspectedNode->getTransform();
 			const glm::mat4 &modelMatrix = transform->getModelMatrix();
@@ -116,14 +116,17 @@ namespace Tank
 		Node::draw();
 	}
 
-	void Inspector::handleNodeDeletion(Node *node)
+	void Inspector::onNodeDeleted(Node *node)
 	{
 		int childCount = node->getChildCount();
 		for (int i = 0; i < childCount; i++)
 		{
-			handleNodeDeletion(node->getChild(i));
+			onNodeDeleted(node->getChild(i));
 		}
 
-		if (node == m_inspectedNode) m_inspectedNode = nullptr;
+		if (node == m_inspectedNode)
+		{
+			m_inspectedNode = nullptr;
+		}
 	}
 }

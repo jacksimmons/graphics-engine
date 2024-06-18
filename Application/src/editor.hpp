@@ -8,14 +8,13 @@
 
 namespace Tank
 {
-	class Scene;
 	class Node;
-	class SceneView;
+	class Scene;
 }
 class KeyInput;
 
 
-struct EditorSettings
+struct WindowSettings
 {
 	ImGuiConfigFlags configFlags;
 	ImGuiWindowFlags mainWinFlags;
@@ -35,8 +34,7 @@ private:
 	std::unique_ptr<KeyInput> m_keyInput;
 	std::unique_ptr<Tank::Scene> m_scene;
 	
-	EditorSettings m_settings;
-
+	std::unique_ptr<WindowSettings> m_settings;
 public:
 	/// <summary>
 	/// Callback occurs when window size changes.
@@ -50,4 +48,6 @@ public:
 	void generateSceneThenInitInput();
 	void run() override;
 	void handleKeyInput();
+
+	WindowSettings *getWindowSettings() const noexcept { return m_settings.get(); }
 };

@@ -13,6 +13,7 @@
 #include "transform.hpp"
 #include "nodes/model.hpp"
 #include "nodes/camera.hpp"
+#include "nodes/light.hpp"
 
 
 float vertices[] = {
@@ -155,16 +156,16 @@ namespace Tank
 		m_shader->setMat4("view", cam->getView());
 		m_shader->setMat4("proj", cam->getProj());
 		m_shader->setVec3("viewPos", cam->getTransformedEye());
-		m_shader->setVec3("lightCol", { 1.0f, 1.0f, 1.0f });
 		m_shader->setVec3("objectCol", { 1.0f, 1.0f, 1.0f });
 
 		m_shader->setVec3("material.specular", { 0.5f, 0.5f, 0.5f });
 		m_shader->setFloat("material.shininess", 32.0f);
 
-		m_shader->setVec3("light.pos", { 1.0f, 0.0f, 0.0f });
-		m_shader->setVec3("light.ambient", { 0.1f, 0.1f, 0.1f });
-		m_shader->setVec3("light.diffuse", { 0.5f, 0.5f, 0.5f });
-		m_shader->setVec3("light.specular", { 1.0f, 1.0f, 1.0f });
+		std::vector<Light *> lights = Scene::getActiveScene()->getActiveLights();
+		for (int i = 0; i < lights.size(); i++)
+		{
+			lights[i]->updateShader(m_shader.get());
+		}
 
 		glBindVertexArray(m_vao);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
