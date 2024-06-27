@@ -25,6 +25,9 @@ namespace Tank
 		glm::vec3 m_eye;
 		glm::vec3 m_centre;
 		glm::vec3 m_up;
+
+		float m_panSpeed;
+		float m_rotSpeed;
 	public:
 		Camera(std::string name,
 			glm::vec3 eye = { 0, 0, 3 },
@@ -40,6 +43,13 @@ namespace Tank
 		glm::vec3 getTransformedCentre() const;
 		glm::vec3 getTransformedEye() const;
 		glm::vec3 getTransformedUp() const;
+
+		void setPanSpeed(float speed) noexcept { m_panSpeed = speed; }
+		float getPanSpeed() const noexcept { return m_panSpeed; }
+
+		void setRotSpeed(float speed) noexcept { m_rotSpeed = speed; }
+		float getRotSpeed() const noexcept { return m_rotSpeed; }
+
 		void update() override;
 	};
 }

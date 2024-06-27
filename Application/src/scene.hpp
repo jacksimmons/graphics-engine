@@ -42,6 +42,7 @@ namespace Tank
 		~Scene();
 		Node *getRoot() const noexcept { return m_root.get(); }
 		Camera *getActiveCamera() const noexcept { return m_activeCamera; }
+		
 		void addLight(Light *);
 		std::vector<Light *> getActiveLights() const { return m_activeLights; }
 

@@ -1,6 +1,7 @@
 #include <string>
 #include "transform.hpp"
 #include "shader.hpp"
+#include "scene.hpp"
 #include "nodes/light.hpp"
 
 
@@ -31,8 +32,8 @@ namespace Tank
 	}
 
 
-	PointLight::PointLight(std::string name, glm::vec3 pos, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
-		: Light(name, amb, diff, spec), m_position(pos)
+	PointLight::PointLight(std::string name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+		: Light(name, amb, diff, spec)
 	{
 		m_index = PointLight::s_count;
 		m_lightArrayName = "pointLights";
@@ -45,7 +46,7 @@ namespace Tank
 		shader->setVec3(str + ".ambient", m_ambient);
 		shader->setVec3(str + ".diffuse", m_diffuse);
 		shader->setVec3(str + ".specular", m_specular);
-		shader->setVec3(str + ".position", m_position);
+		shader->setVec3(str + ".position", getTransform()->getTranslation());
 		shader->setFloat(str + ".constant", 1.0f);
 		shader->setFloat(str + ".linear", 0.0f);
 		shader->setFloat(str + ".quadratic", 0.0f);

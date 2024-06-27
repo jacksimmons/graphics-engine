@@ -30,7 +30,7 @@ struct PointLight
 
 uniform Material material;
 
-#define NUM_DIR_LIGHTS 1
+#define NUM_DIR_LIGHTS 4
 uniform DirLight dirLights[NUM_DIR_LIGHTS];
 
 #define NUM_POINT_LIGHTS 4
@@ -88,7 +88,7 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 dirToView)
     vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
 
     // Specular
-    vec3 reflectDir = reflect(-dirToView, normal);
+    vec3 reflectDir = reflect(-dirToLight, normal);
     float spec = pow(max(dot(dirToView, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
 

@@ -28,9 +28,9 @@ private:
 	GLFWwindow *m_window;
 
 	/// <summary>
-	/// Root node for editor UI (Hierarchy, Inspector, etc.)
+	/// Root node for system UI (Hierarchy, Inspector, etc.)
 	/// </summary>
-	std::unique_ptr<Tank::Node> m_uiRoot;
+	std::unique_ptr<Tank::Node> m_system;
 	std::unique_ptr<KeyInput> m_keyInput;
 	std::unique_ptr<Tank::Scene> m_scene;
 	
@@ -45,7 +45,8 @@ public:
 	~Editor();
 	void initGL();
 	void initImGui();
-	void generateSceneThenInitInput();
+	void initSystem();
+	void loadScene();
 	void run() override;
 	void handleKeyInput();
 

@@ -50,9 +50,9 @@ namespace Tank
 			{
 				glm::vec4 row = displayMatrix[i];
 				std::string rowText = std::to_string(row.x) + "\t" +
-									std::to_string(row.y) + "\t" +
-									std::to_string(row.z) + "\t" +
-									std::to_string(row.w);
+					std::to_string(row.y) + "\t" +
+					std::to_string(row.z) + "\t" +
+					std::to_string(row.w);
 				ImGui::Text(rowText.c_str());
 			}
 
@@ -86,7 +86,8 @@ namespace Tank
 
 			// Set to nullptr if cast fails (so if statement is not entered).
 			// Shader Files (if Node is Model)
-			if (Model *model = dynamic_cast<Model*>(m_inspectedNode))
+			// ! Expensive reads every frame
+			if (Model *model = dynamic_cast<Model *>(m_inspectedNode))
 			{
 				std::filesystem::path fragPath = model->m_shader->getFragPath();
 				std::filesystem::path vertPath = model->m_shader->getVertPath();
@@ -103,6 +104,36 @@ namespace Tank
 				if (File::readAllLines("src/shaders" / fragPath, &fshader))
 				{
 					ImGui::Text(fshader.c_str());
+				}
+			}
+
+			// Camera options
+			if (Camera *camera = dynamic_cast<Camera *>(m_inspectedNode))
+			{
+				ImGui::TextColored(TITLE, "Camera Eye");
+				glm::vec3 eye = camera->getTransformedEye();
+				ImGui::Text(glm::to_string(eye).c_str());
+
+				ImGui::TextColored(TITLE, "Camera Centre");
+				glm::vec3 centre = camera->getTransformedCentre();
+				ImGui::Text(glm::to_string(centre).c_str());
+
+				ImGui::TextColored(TITLE, "Camera Up");
+				glm::vec3 up = camera->getTransformedUp();
+				ImGui::Text(glm::to_string(up).c_str());
+
+				ImGui::TextColored(TITLE, "Camera Pan Speed");
+				float panSpd = camera->getPanSpeed();
+				if (ImGui::InputFloat("##Camera_PanSpd", &panSpd))
+				{
+					camera->setPanSpeed(panSpd);
+				}
+
+				ImGui::TextColored(TITLE, "Camera Rotation Speed");
+				float rotSpd = camera->getRotSpeed();
+				if (ImGui::InputFloat("##Camera_RotSpd", &rotSpd))
+				{
+					camera->setRotSpeed(rotSpd);
 				}
 			}
 		}
