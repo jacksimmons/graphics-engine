@@ -17,6 +17,9 @@ namespace Tank
 		m_centre = centre;
 		m_up = up;
 
+		m_panSpeed = 0.01f;
+		m_rotSpeed = 0.01f;
+
 		update();
 	}
 
