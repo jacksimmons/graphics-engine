@@ -1,3 +1,2 @@
-﻿  inspector.cpp
-C:\Git\opengl\tank-engine\Application\src\nodes\inspector.cpp(152,18): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Application.vcxproj -> C:\Git\opengl\tank-engine\bin\Debug-x64\Application\Application.exe
+﻿LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Application.vcxproj -> C:\Git\tank-engine\bin\Debug-x64\Application\Application.exe

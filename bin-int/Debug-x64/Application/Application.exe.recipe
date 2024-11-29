@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Git\opengl\tank-engine\bin\Debug-x64\Application\Application.exe</FullPath>
+      <FullPath>C:\Git\tank-engine\bin\Debug-x64\Application\Application.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

@@ -1,2 +1,0 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (C:\Git\opengl\tank-engine\bin-int/Debug-x64/) contains files shared from another project (Engine.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-LINK : fatal error LNK1104: cannot open file 'Engine.lib'
