@@ -1,4 +1,10 @@
 .vs/
+.github
+
 bin/
 bin-int/
 *.vcxproj.user
+
+# glm ignores
+glm/doc/
+glm/test/
