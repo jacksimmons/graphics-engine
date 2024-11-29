@@ -4,11 +4,13 @@
 # Setup
 Open the .sln file in Visual Studio 2022, and run.
 
-# Credits/Modules
+# Modules Used
 [Dear ImGui](https://github.com/ocornut/imgui)  
 [GLFW](https://github.com/glfw/glfw)  
 [GLAD](https://github.com/Dav1dde/glad)  
 [learnopengl.com](https://learnopengl.com/)  
-The Cherno (YouTube)  
 [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)  
 [Input](https://stackoverflow.com/questions/55573238/how-do-i-do-a-proper-input-class-in-glfw-for-a-game-engine)  
+
+# Credits
+The Cherno
