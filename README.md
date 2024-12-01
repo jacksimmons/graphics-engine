@@ -2,9 +2,8 @@
 ![image](https://github.com/jacksimmons/tank-engine/assets/56202789/b035e9df-3a38-41ab-b9d4-6ea552802694)
 
 # Setup
-Open the .sln file in Visual Studio 2022, and build Engine application.
-Then move the generated .dll and .lib files in Engine/bin/(Release|Debug)-(Platform)/ to bin/(Release|Debug)-(Platform)/
-Now you can build and run the Application project.
+Open the .sln file in Visual Studio 2022, and build Engine application, to generate .lib and .dll files for the Application. 
+Then run the solution. 
 
 # Modules Used
 [Dear ImGui](https://github.com/ocornut/imgui)  
