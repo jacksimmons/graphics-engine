@@ -164,6 +164,7 @@
     <ClInclude Include="src\transform.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="debugging.cpp" />
     <ClCompile Include="include\glad\glad.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_opengl3.cpp" />

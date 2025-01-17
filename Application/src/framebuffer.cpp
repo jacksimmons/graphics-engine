@@ -33,14 +33,11 @@ namespace Tank
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_w, m_h);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rbo);
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			TE_CORE_CRITICAL("Framebuffer is not complete.");
-		}
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+		checkStatus();
 	}
 
 
@@ -52,10 +49,21 @@ namespace Tank
 	}
 
 
+	void Framebuffer::checkStatus() const
+	{
+		// Check the framebuffer
+		GLenum fbStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (fbStatus != GL_FRAMEBUFFER_COMPLETE)
+		{
+			fprintf(stderr, "Failed to initialise framebuffer. Status: %u", fbStatus);
+		}
+	}
+
+
 	/// <summary>
 	/// Render a quad whose texture is the whole scene.
 	/// </summary>
-	void Framebuffer::update()
+	void Framebuffer::update() const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -75,10 +83,12 @@ namespace Tank
 	void Framebuffer::rescale(int w, int h)
 	{
 		// This section is similar to in ctor, except missing glGen... functions.
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 		glBindTexture(GL_TEXTURE_2D, m_texColBuf);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texColBuf, 0);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, m_rbo);

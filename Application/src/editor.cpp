@@ -28,6 +28,18 @@
 #include "nodes/light.hpp"
 
 
+// Enable debug output
+static void GLAPIENTRY msgCallback(GLenum source,
+	GLenum type, GLenum id, GLenum severity, GLsizei length, const GLchar* message,
+	const void* userParam)
+{
+	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message
+	);
+}
+
+
 Editor::Editor()
 {
 	m_settings = std::make_unique<WindowSettings>();
@@ -88,6 +100,17 @@ void Editor::initGL()
 
 	// Enable depth buffer
 	glEnable(GL_DEPTH_TEST);
+
+	// Enable debug output
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+	glDebugMessageCallback(msgCallback, nullptr);
+
+	// Re-set title to add graphics info
+	std::string graphicalDeviceInfo = (const char*)glGetString(GL_VENDOR)
+		+ std::string(": ") + (const char*)glGetString(GL_RENDERER);
+	std::string title = "TankEngine [" + graphicalDeviceInfo + "]";
+	glfwSetWindowTitle(m_window, title.c_str());
 }
 
 void Editor::initImGui()

@@ -19,10 +19,11 @@ namespace Tank
 	public:
 		Framebuffer(int w, int h);
 		~Framebuffer();
+		void checkStatus() const;
 		GLuint getTexColBuf() const noexcept { return m_texColBuf; }
 		constexpr int getW() const noexcept { return m_w; }
 		constexpr int getH() const noexcept { return m_h; }
-		void update();
+		void update() const;
 		void rescale(int w, int h);
 	};
 }

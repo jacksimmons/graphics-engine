@@ -15,11 +15,6 @@ namespace Tank
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
 	}
 
-	void SceneView::rescale(int w, int h) const
-	{
-		m_fb->rescale(w, h);
-	}
-
 	void SceneView::draw() const
 	{
 		int fbW = m_fb->getW(), fbH = m_fb->getH();
@@ -37,7 +32,11 @@ namespace Tank
 			ImGui::BeginChild("SceneRender");
 
 			ImVec2 wsize = ImGui::GetWindowSize();
-			rescale((int)wsize.x - 10, (int)wsize.y - 10);
+			int fbWNew = wsize.x - 10;
+			int fbHNew = wsize.y - 10;
+
+			if (fbWNew != fbW || fbHNew != fbH)
+				rescale(fbWNew, fbHNew);
 
 			ImVec2 fbsize = ImVec2((float)fbW, (float)fbH);
 			ImTextureID imTex = (ImTextureID)(intptr_t)m_fb->getTexColBuf();
@@ -46,5 +45,10 @@ namespace Tank
 			ImGui::EndChild();
 		}
 		ImGui::End();
+	}
+
+	void SceneView::rescale(int w, int h) const
+	{
+		m_fb->rescale(w, h);
 	}
 }

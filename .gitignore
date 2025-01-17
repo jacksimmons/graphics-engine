@@ -1,13 +1,27 @@
 .vs/
-.github/
+*.dir/
+**/bin/*
+**/bin-int/*
+Release/
+Debug/
+x64/
+x32/
+FileExplorer*/
+out/
 
-bin/
-bin-int/
-*.vcxproj.user
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+CMakeUserPresets.json
 
-# glm ignores
-glm/doc/
-glm/test/
-
-# imgui ignores
-imgui/docs/
+*.vcxproj
+*.vcxproj.filters
+*.sln
