@@ -23,7 +23,7 @@ namespace Tank
 	void Inspector::drawInspector() const
 	{
 		ImGui::Begin("Inspector");
-		
+
 		if (m_inspectedNode)
 		{
 			Transform *transform = m_inspectedNode->getTransform();

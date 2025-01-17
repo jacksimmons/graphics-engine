@@ -62,12 +62,6 @@ float vertices[] = {
 };
 
 
-unsigned int indices[] = {  // note that we start from 0!
-	0, 1, 3,   // first triangle
-	1, 2, 3    // second triangle
-};
-
-
 namespace Tank
 {
 	Model::Model(std::string name, std::string vsName, std::string fsName) : Node(name)
@@ -78,15 +72,11 @@ namespace Tank
 		// ===== INIT VBO/VAO =====
 		glGenVertexArrays(1, &m_vao);
 		glGenBuffers(1, &m_vbo);
-		glGenBuffers(1, &m_ebo);
 
 		glBindVertexArray(m_vao);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 		// Position
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
