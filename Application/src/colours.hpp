@@ -3,5 +3,9 @@
 
 namespace Tank
 {
-	extern ImColor TITLE;
+	class Colour
+	{
+	public:
+		static constexpr ImColor TITLE = ImColor(0, 100, 255);
+	};
 }

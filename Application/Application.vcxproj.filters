@@ -114,6 +114,9 @@
     <ClInclude Include="src\nodes\light.hpp">
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
+    <ClInclude Include="src\widget.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file.cpp">
@@ -145,9 +148,6 @@
     </ClCompile>
     <ClCompile Include="src\scene.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\nodes\camera.cpp">
-      <Filter>Source Files\nodes</Filter>
     </ClCompile>
     <ClCompile Include="src\nodes\node.cpp">
       <Filter>Source Files\nodes</Filter>
@@ -188,7 +188,10 @@
     <ClCompile Include="src\nodes\light.cpp">
       <Filter>Source Files\nodes</Filter>
     </ClCompile>
-    <ClCompile Include="debugging.cpp">
+    <ClCompile Include="src\nodes\camera.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

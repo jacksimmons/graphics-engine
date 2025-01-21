@@ -102,8 +102,10 @@ namespace Tank
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		addTexture("awesomeface.png", GL_RGBA, "material.diffuse");
-		addTexture("specular.png", GL_RGBA, "material.specular");
+		if (!addTexture("awesomeface.png", GL_RGBA, "material.diffuse"))
+			TE_CORE_ERROR("Failed to load diffuse texture.");
+		if (!addTexture("specular.png", GL_RGBA, "material.specular"))
+			TE_CORE_ERROR("Failed to load specular texture.");
 	}
 
 	bool Model::addTexture(std::string filename, GLenum mode, std::string uniformName)
@@ -124,7 +126,6 @@ namespace Tank
 			return true;
 		}
 
-		TE_CORE_ERROR("Failed to add texture.");
 		return false;
 	}
 
@@ -148,7 +149,6 @@ namespace Tank
 		m_shader->setVec3("viewPos", cam->getTransformedEye());
 		m_shader->setVec3("objectCol", { 1.0f, 1.0f, 1.0f });
 
-		m_shader->setVec3("material.specular", { 0.5f, 0.5f, 0.5f });
 		m_shader->setFloat("material.shininess", 32.0f);
 
 		std::vector<Light *> lights = Scene::getActiveScene()->getActiveLights();
