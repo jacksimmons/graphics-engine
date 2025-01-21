@@ -162,9 +162,9 @@
     <ClInclude Include="src\shader.hpp" />
     <ClInclude Include="src\texture.hpp" />
     <ClInclude Include="src\transform.hpp" />
+    <ClInclude Include="src\widget.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="debugging.cpp" />
     <ClCompile Include="include\glad\glad.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="include\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -177,10 +177,10 @@
     <ClCompile Include="src\editor.cpp" />
     <ClCompile Include="src\file.cpp" />
     <ClCompile Include="src\framebuffer.cpp" />
+    <ClCompile Include="src\nodes\camera.cpp" />
     <ClCompile Include="src\nodes\light.cpp" />
     <ClCompile Include="src\nodes\scene_view.cpp" />
     <ClCompile Include="src\key_input.cpp" />
-    <ClCompile Include="src\nodes\camera.cpp" />
     <ClCompile Include="src\nodes\hierarchy.cpp" />
     <ClCompile Include="src\nodes\inspector.cpp" />
     <ClCompile Include="src\nodes\model.cpp" />
@@ -189,6 +189,7 @@
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\transform.cpp" />
+    <ClCompile Include="src\widget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\lightCubeShader.frag" />

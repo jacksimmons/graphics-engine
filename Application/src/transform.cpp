@@ -8,7 +8,7 @@ namespace Tank
 		m_modelMatrix = glm::identity<glm::mat4>();
 		m_scale = { 1,1,1 };
 		m_rotation = glm::identity<glm::quat>();
-		m_translation = { 1,1,1 };
+		m_translation = { 0,0,0 };
 	}
 
 	void Transform::updateModelMatrix()

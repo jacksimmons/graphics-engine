@@ -11,6 +11,7 @@ namespace Tank
 	{
 	}
 
+
 	void Hierarchy::draw() const
 	{
 		Node *root = Tank::Scene::getActiveScene()->getRoot();
@@ -22,6 +23,11 @@ namespace Tank
 		Node::draw();
 	}
 
+
+	/// <summary>
+	/// Generates buttons for all children of the current node, at a given
+	/// indentation depth (based on the generation depth).
+	/// </summary>
 	void Hierarchy::drawRecursive(Node *node) const
 	{
 		// Base case.
@@ -59,6 +65,7 @@ namespace Tank
 			ImGui::TreePop();
 		}
 	}
+
 
 	void Hierarchy::drawNodeContextMenu(Node **node, Inspector *inspector) const
 	{

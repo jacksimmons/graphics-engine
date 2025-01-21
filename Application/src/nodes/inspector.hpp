@@ -5,27 +5,20 @@
 
 namespace Tank
 {
+	class Model; class Camera; class Light;
 	class Inspector : public Node
 	{
 		friend class Hierarchy;
-		// Members
 	private:
 		Node *m_inspectedNode;
 
-
-		// Methods
 	private:
-		void drawInspector() const;
-		/// <summary>
-		/// Recurse over all descendants of node, and if any match to the inspected
-		/// node, set the inspected node to nullptr (to reflect the deletion).
-		/// </summary>
+		void drawNodeSection() const;
+		void drawModelSection(Model *model) const;
+		void drawCameraSection(Camera *camera) const;
+		void drawLightSection(Light *light) const;
 		void onNodeDeleted(Node *node);
 	protected:
-		/// <summary>
-		/// Generates buttons for all children of the current node, at a given
-		/// indentation depth (based on the generation depth).
-		/// </summary>
 		void draw() const override;
 	public:
 		Inspector(std::string name);

@@ -156,7 +156,7 @@ void Editor::loadScene()
 	// Lights
 	glm::vec3 amb{ 0.1f, 0.1f, 0.1f };
 	glm::vec3 diff{ 0.5f, 0.5f, 0.5f };
-	glm::vec3 spec{ 1.0f, 1.0f, 1.0f };
+	glm::vec3 spec{ 0.1f, 0.1f, 0.1f };
 	glm::vec3 pointLightPositions[]
 	{
 		glm::vec3(0.7f,  0.2f,  2.0f),
@@ -169,10 +169,12 @@ void Editor::loadScene()
 	for (int i = 0; i < 4; i++)
 	{
 		std::string name = "PtLight" + std::to_string(i);
+		auto lightCube = std::make_unique<Tank::Model>("PtLightContainer" + std::to_string(i), "lightCubeShader.vert", "lightCubeShader.frag");
 		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-		light->getTransform()->setTranslation(pointLightPositions[i]);
 		m_scene->addLight(light.get());
-		lightRoot->addChild(std::move(light));
+		lightCube->getTransform()->setTranslation(pointLightPositions[i]);
+		lightCube->addChild(std::move(light));
+		lightRoot->addChild(std::move(lightCube));
 	}
 
 	// Initialise input. Must be done after scene.

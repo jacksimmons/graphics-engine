@@ -138,10 +138,14 @@
     <ClInclude Include="src\core.hpp" />
     <ClInclude Include="src\engine.hpp" />
     <ClInclude Include="src\entry_point.hpp" />
+    <ClInclude Include="src\layer.hpp" />
+    <ClInclude Include="src\layer_stack.hpp" />
     <ClInclude Include="src\log.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application.cpp" />
+    <ClCompile Include="src\layer.cpp" />
+    <ClCompile Include="src\layer_stack.cpp" />
     <ClCompile Include="src\log.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
