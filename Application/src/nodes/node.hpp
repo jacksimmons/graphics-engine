@@ -21,7 +21,7 @@ namespace Tank
 
 	// Member Functions
 	protected:
-		virtual void draw() const;
+		virtual void draw();
 	public:
 		Node(std::string name);
 		
@@ -44,6 +44,10 @@ namespace Tank
 		Node *getChild(std::string name) const;
 		// Get child by index.
 		Node *getChild(int index) const;
+		// Get child of parent by name.
+		Node *getSibling(std::string name) const { return getParent()->getChild(name); }
+		// Get child of parent by index.
+		Node *getSibling(int index) const { return getParent()->getChild(index); }
 
 		Transform *getTransform() const { return m_transform.get(); }
 

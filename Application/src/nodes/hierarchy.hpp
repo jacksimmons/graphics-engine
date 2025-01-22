@@ -1,13 +1,13 @@
 #pragma once
 #include <memory>
-#include "nodes/node.hpp"
+#include "nodes/ui.hpp"
 
 
 namespace Tank
 {
 	class Inspector;
 
-	class Hierarchy : public Node
+	class Hierarchy : public UI
 	{
 		// Methods
 	private:
@@ -15,7 +15,7 @@ namespace Tank
 		/// Draws a tree node for the node provided, then calls itself for each
 		/// of its children. Draws a leaf instead if no children.
 		/// </summary>
-		void drawRecursive(Node *node) const;
+		void drawRecursive(Node *node, int *count) const;
 
 		/// <summary>
 		/// Handles drawing for node context menus. A node context menu is
@@ -30,7 +30,7 @@ namespace Tank
 		/// Generates buttons for all children of the current node, at a given
 		/// indentation depth (based on the generation depth).
 		/// </summary>
-		void draw() const override;
+		void drawUI() override;
 	public:
 		Hierarchy(std::string name);
 	};

@@ -10,8 +10,8 @@ namespace Tank
 {
 	class Node;
 	class Scene;
+	class KeyInput;
 }
-class KeyInput;
 
 
 struct WindowSettings
@@ -31,7 +31,7 @@ private:
 	/// Root node for system UI (Hierarchy, Inspector, etc.)
 	/// </summary>
 	std::unique_ptr<Tank::Node> m_system;
-	std::unique_ptr<KeyInput> m_keyInput;
+	std::unique_ptr<Tank::KeyInput> m_keyInput;
 	std::unique_ptr<Tank::Scene> m_scene;
 	
 	std::unique_ptr<WindowSettings> m_settings;

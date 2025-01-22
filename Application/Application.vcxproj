@@ -151,6 +151,9 @@
     <ClInclude Include="src\framebuffer.hpp" />
     <ClInclude Include="src\key_input.hpp" />
     <ClInclude Include="src\nodes\light.hpp" />
+    <ClInclude Include="src\nodes\models\cube.hpp" />
+    <ClInclude Include="src\nodes\models\primitive.hpp" />
+    <ClInclude Include="src\nodes\ui.hpp" />
     <ClInclude Include="src\transformation.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
     <ClInclude Include="src\nodes\hierarchy.hpp" />
@@ -179,12 +182,15 @@
     <ClCompile Include="src\framebuffer.cpp" />
     <ClCompile Include="src\nodes\camera.cpp" />
     <ClCompile Include="src\nodes\light.cpp" />
+    <ClCompile Include="src\nodes\models\cube.cpp" />
+    <ClCompile Include="src\nodes\models\primitive.cpp" />
     <ClCompile Include="src\nodes\scene_view.cpp" />
     <ClCompile Include="src\key_input.cpp" />
     <ClCompile Include="src\nodes\hierarchy.cpp" />
     <ClCompile Include="src\nodes\inspector.cpp" />
     <ClCompile Include="src\nodes\model.cpp" />
     <ClCompile Include="src\nodes\node.cpp" />
+    <ClCompile Include="src\nodes\ui.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\texture.cpp" />

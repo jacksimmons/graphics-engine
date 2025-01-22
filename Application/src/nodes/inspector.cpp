@@ -9,7 +9,7 @@
 #include "colours.hpp"
 #include "file.hpp"
 #include "widget.hpp"
-#include "nodes/node.hpp"
+#include "nodes/ui.hpp"
 #include "nodes/model.hpp"
 #include "nodes/inspector.hpp"
 #include "nodes/light.hpp"
@@ -17,25 +17,26 @@
 
 namespace Tank
 {
-	Inspector::Inspector(std::string name) : Node(name)
+	Inspector::Inspector(std::string name) : UI(name)
 	{
 		m_inspectedNode = nullptr;
 	}
 
 
-	void Inspector::draw() const
+	void Inspector::drawUI()
 	{
 		ImGui::Begin("Inspector");
 
 		if (m_inspectedNode)
 		{
+			ImGui::TextColored(Colour::TITLE, "Type");
+			ImGui::Text(typeid(*m_inspectedNode).name());
+
 			drawNodeSection();
 
-			// Set to nullptr if cast fails (so if statement is not entered).
-			// Shader Files (if Node is Model)
 			// ! Expensive reads every frame
 			if (Model *model = dynamic_cast<Model *>(m_inspectedNode))
-				drawModelSection(model);
+				typeid(m_inspectedNode);
 
 			// Camera options
 			if (Camera *camera = dynamic_cast<Camera *>(m_inspectedNode))
@@ -59,7 +60,14 @@ namespace Tank
 		const glm::mat4 &modelMatrix = transform->getModelMatrix();
 
 		ImGui::TextColored(Colour::TITLE, "Name");
-		ImGui::Text(m_inspectedNode->getName().c_str());
+		{
+			const size_t size = 100;
+			char buf[size] = "\0";
+			if (ImGui::InputTextWithHint("##Inspector_Name", m_inspectedNode->getName().c_str(), buf, size))
+			{
+				m_inspectedNode->setName(std::string(buf));
+			}
+		}
 
 		if (ImGui::Button("<Snap To>"))
 		{

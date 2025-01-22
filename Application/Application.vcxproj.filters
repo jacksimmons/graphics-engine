@@ -31,6 +31,12 @@
     <Filter Include="Source Files\nodes">
       <UniqueIdentifier>{45b6d0a6-9cf1-4a3c-adee-14ab2839c60d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\nodes\models">
+      <UniqueIdentifier>{60a1f40f-02de-46e1-a8a6-ac362b9329c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nodes\models">
+      <UniqueIdentifier>{d71e33e0-d89f-4ea2-aca4-b279cdd14629}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\glad\glad.h">
@@ -117,6 +123,15 @@
     <ClInclude Include="src\widget.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\nodes\models\primitive.hpp">
+      <Filter>Header Files\nodes\models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\models\cube.hpp">
+      <Filter>Header Files\nodes\models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\ui.hpp">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file.cpp">
@@ -193,6 +208,15 @@
     </ClCompile>
     <ClCompile Include="src\widget.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\models\primitive.cpp">
+      <Filter>Source Files\nodes\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\models\cube.cpp">
+      <Filter>Source Files\nodes\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\ui.cpp">
+      <Filter>Source Files\nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

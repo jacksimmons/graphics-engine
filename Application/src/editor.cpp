@@ -26,6 +26,8 @@
 #include "nodes/scene_view.hpp"
 #include "nodes/inspector.hpp"
 #include "nodes/light.hpp"
+#include "nodes/models/cube.hpp"
+#include "nodes/models/primitive.hpp"
 
 
 // Enable debug output
@@ -60,6 +62,7 @@ Editor::Editor()
 	loadScene();
 }
 
+
 void Editor::initGL()
 {
 	if (!glfwInit())
@@ -84,7 +87,7 @@ void Editor::initGL()
 	glfwMakeContextCurrent(m_window);
 
 	// Initialise callbacks
-	KeyInput::setupKeyInputs(m_window);
+	Tank::KeyInput::setupKeyInputs(m_window);
 	glfwSetFramebufferSizeCallback(m_window, Editor::onWindowSizeChange);
 
 	// Initialise GLAD
@@ -113,6 +116,7 @@ void Editor::initGL()
 	glfwSetWindowTitle(m_window, title.c_str());
 }
 
+
 void Editor::initImGui()
 {
 	// Initialise ImGui
@@ -126,15 +130,16 @@ void Editor::initImGui()
 	ImGui::StyleColorsDark();
 }
 
+
 void Editor::initSystem()
 {
 	m_system = std::make_unique<Tank::Node>("Editor");
 	{
 		m_system->addChild(std::make_unique<Tank::Inspector>("Inspector"));
 		m_system->addChild(std::make_unique<Tank::Hierarchy>("Hierarchy"));
-		m_system->addChild(std::make_unique<Tank::SceneView>("SceneView", m_settings->windowSize, m_settings->windowSize));
 	}
 }
+
 
 void Editor::loadScene()
 {
@@ -142,7 +147,8 @@ void Editor::loadScene()
 	{
 		auto root = std::make_unique<Tank::Node>("Root");
 		root->addChild(std::make_unique<Tank::Camera>("Camera"));
-		root->addChild(std::make_unique<Tank::Model>("Cube", "shader.vert", "shader.frag"));
+		root->addChild(std::make_unique<Tank::Cube>("Awesomeface", "shader.vert", "shader.frag"));
+		root->addChild(std::make_unique<Tank::Primitive>("Line", "shader.vert", "shader.frag"));
 
 		// Create camera and scene
 		Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
@@ -169,7 +175,7 @@ void Editor::loadScene()
 	for (int i = 0; i < 4; i++)
 	{
 		std::string name = "PtLight" + std::to_string(i);
-		auto lightCube = std::make_unique<Tank::Model>("PtLightContainer" + std::to_string(i), "lightCubeShader.vert", "lightCubeShader.frag");
+		auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer" + std::to_string(i), "lightCubeShader.vert", "lightCubeShader.frag");
 		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
 		m_scene->addLight(light.get());
 		lightCube->getTransform()->setTranslation(pointLightPositions[i]);
@@ -178,7 +184,7 @@ void Editor::loadScene()
 	}
 
 	// Initialise input. Must be done after scene.
-	m_keyInput = std::make_unique<KeyInput>(std::vector<int>(
+	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(
 	{
 		GLFW_KEY_ESCAPE,
 		GLFW_KEY_F1,
@@ -197,7 +203,10 @@ void Editor::loadScene()
 		GLFW_KEY_U,
 		GLFW_KEY_O
 	}));
+
+	m_system->addChild(std::make_unique<Tank::SceneView>("SceneView", m_settings->windowSize, m_settings->windowSize, m_keyInput.get()));
 }
+
 
 void Editor::run()
 {	
@@ -243,56 +252,15 @@ void Editor::run()
 	}
 }
 
+
 void Editor::handleKeyInput()
 {
-	if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
+	if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == Tank::KeyState::Pressed)
 		glfwSetWindowShouldClose(m_window, GL_TRUE);
 
-	if (m_keyInput->getKeyState(GLFW_KEY_F1) == KeyState::Pressed)
-		m_keyInput->cycleRenderMode();
-
-	auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
-	if (cam == nullptr) return;
-	float panSpd = cam->getPanSpeed();
-	float rotSpd = cam->getRotSpeed();
-
-	if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Held)
-		cam->translate(glm::vec3(0.0f, panSpd, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_A) == KeyState::Held)
-		cam->translate(glm::vec3(-panSpd, 0.0f, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_S) == KeyState::Held)
-		cam->translate(glm::vec3(0.0f, -panSpd, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_D) == KeyState::Held)
-		cam->translate(glm::vec3(panSpd, 0.0f, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_Q) == KeyState::Held)
-		cam->translate(glm::vec3(0.0f, 0.0f, panSpd));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_E) == KeyState::Held)
-		cam->translate(glm::vec3(0.0f, 0.0f, -panSpd));
-
-
-	if (m_keyInput->getKeyState(GLFW_KEY_J) == KeyState::Held)
-		cam->rotate(glm::vec3(-rotSpd, 0.0f, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_L) == KeyState::Held)
-		cam->rotate(glm::vec3(rotSpd, 0.0f, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_I) == KeyState::Held)
-		cam->rotate(glm::vec3(0.0f, rotSpd, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_K) == KeyState::Held)
-		cam->rotate(glm::vec3(0.0f, -rotSpd, 0.0f));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_U) == KeyState::Held)
-		cam->rotate(glm::vec3(0.0f, 0.0f, rotSpd));
-
-	if (m_keyInput->getKeyState(GLFW_KEY_O) == KeyState::Held)
-		cam->rotate(glm::vec3(0.0f, 0.0f, -rotSpd));
+	((Tank::SceneView *)m_system->getChild("SceneView"))->handleKeyInput();
 }
+
 
 Editor::~Editor()
 {
@@ -302,6 +270,7 @@ Editor::~Editor()
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
 }
+
 
 std::unique_ptr<Tank::Application> Tank::createApplication()
 {
