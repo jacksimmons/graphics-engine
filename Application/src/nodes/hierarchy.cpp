@@ -7,17 +7,19 @@
 
 namespace Tank
 {
-	Hierarchy::Hierarchy(std::string name) : Node(name)
+	Hierarchy::Hierarchy(std::string name) : UI(name)
 	{
 	}
 
 
-	void Hierarchy::draw() const
+	void Hierarchy::drawUI()
 	{
 		Node *root = Tank::Scene::getActiveScene()->getRoot();
 
 		ImGui::Begin("Hierarchy");
-		drawRecursive(root);
+
+		int count = 0;
+		drawRecursive(root, &count);
 		ImGui::End();
 
 		Node::draw();
@@ -28,12 +30,12 @@ namespace Tank
 	/// Generates buttons for all children of the current node, at a given
 	/// indentation depth (based on the generation depth).
 	/// </summary>
-	void Hierarchy::drawRecursive(Node *node) const
+	void Hierarchy::drawRecursive(Node *node, int *count) const
 	{
 		// Base case.
 		if (!node) return;
 
-		Inspector *inspector = (Inspector*)getParent()->getChild("Inspector");
+		Inspector *inspector = (Inspector*)getSibling("Inspector");
 		int childCount = node->getChildCount();
 
 		// Determine if leaf node.
@@ -41,7 +43,7 @@ namespace Tank
 		if (childCount == 0)
 			flags |= ImGuiTreeNodeFlags_Leaf;
 
-		bool nodeExpanded = ImGui::TreeNodeEx(node->getName().c_str(), flags);
+		bool nodeExpanded = ImGui::TreeNodeEx((node->getName() + "##" + std::to_string(*count)).c_str(), flags);
 		
 		// `node` can be deleted here.
 		drawNodeContextMenu(&node, inspector);
@@ -57,7 +59,7 @@ namespace Tank
 				}
 				for (int i = 0; i < childCount; i++)
 				{
-					drawRecursive(node->getChild(i));
+					drawRecursive(node->getChild(i), &(++(*count)));
 				}
 			}
 			

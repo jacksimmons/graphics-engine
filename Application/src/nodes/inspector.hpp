@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
-#include "nodes/node.hpp"
+#include "nodes/ui.hpp"
 
 
 namespace Tank
 {
 	class Model; class Camera; class Light;
-	class Inspector : public Node
+	class Inspector : public UI
 	{
 		friend class Hierarchy;
 	private:
@@ -19,7 +19,7 @@ namespace Tank
 		void drawLightSection(Light *light) const;
 		void onNodeDeleted(Node *node);
 	protected:
-		void draw() const override;
+		void drawUI() override;
 	public:
 		Inspector(std::string name);
 

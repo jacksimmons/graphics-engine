@@ -63,7 +63,7 @@ namespace Tank
 		return nullptr;
 	}
 
-	void Node::draw() const
+	void Node::draw()
 	{
 		for (auto const &child : m_children)
 		{

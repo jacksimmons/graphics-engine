@@ -6,30 +6,33 @@
 #include "nodes/camera.hpp"
 
 
-enum class KeyState
+namespace Tank
 {
-	Pressed,
-	Held,
-	Released,
-	NotPressed
-};
+	enum class KeyState
+	{
+		Pressed,
+		Held,
+		Released,
+		NotPressed
+	};
 
 
-class KeyInput
-{
-private:
-	static std::vector<KeyInput *> s_instances;
-	static int s_renderMode;
-	std::map<int, KeyState> m_keys;
+	class KeyInput
+	{
+	private:
+		static std::vector<KeyInput *> s_instances;
+		static int s_renderMode;
+		std::map<int, KeyState> m_keys;
 
-	static void callback(GLFWwindow *win, int key, int scancode, int action, int mods);
-	void setKeyState(int key, KeyState state);
-public:
-	KeyInput(std::vector<int> monitoredKeys);
-	~KeyInput();
+		static void callback(GLFWwindow *win, int key, int scancode, int action, int mods);
+		void setKeyState(int key, KeyState state);
+	public:
+		KeyInput(std::vector<int> monitoredKeys);
+		~KeyInput();
 
-	static void setupKeyInputs(GLFWwindow *window);
-	KeyState getKeyState(int key);
-	void cycleRenderMode();
-	void update();
-};
+		static void setupKeyInputs(GLFWwindow *window);
+		KeyState getKeyState(int key);
+		void cycleRenderMode();
+		void update();
+	};
+}

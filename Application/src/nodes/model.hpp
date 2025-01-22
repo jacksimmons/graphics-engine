@@ -19,9 +19,9 @@ namespace Tank
 	protected:
 		std::vector<GLuint> m_textures;
 		std::unique_ptr<Shader> m_shader;
-	public:
-		Model(std::string name, std::string vsName, std::string fsName);
 		bool addTexture(std::string filename, GLenum mode, std::string uniformName);
-		void draw() const override;
+	public:
+		Model(std::string name, std::string vsName, std::string fsName, float *vertices, size_t verticesSize);
+		void draw() override;
 	};
 }

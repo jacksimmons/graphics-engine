@@ -7,10 +7,11 @@
 
 namespace Tank
 {
-	class UIElement : public Node
+	class UI : public Node
 	{
 	public:
-		UIElement(std::string name);
-		virtual void draw() const;
+		UI(std::string name);
+		void draw() override;
+		virtual void drawUI() = 0;
 	};
 }
