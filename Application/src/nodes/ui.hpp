@@ -11,6 +11,8 @@ namespace Tank
 	{
 	public:
 		UI(const std::string &name);
+		virtual ~UI() {};
+
 		void draw() override;
 		virtual void drawUI() = 0;
 	};

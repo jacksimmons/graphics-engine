@@ -26,6 +26,9 @@ namespace Tank
 			const std::string &fsName,
 			float *vertices,
 			size_t verticesSize);
+
+		Shader *getShader() const noexcept { return m_shader.get(); };
+
 		void draw() override;
 	};
 }

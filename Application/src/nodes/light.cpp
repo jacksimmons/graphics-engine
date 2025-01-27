@@ -2,6 +2,7 @@
 #include "transform.hpp"
 #include "shader.hpp"
 #include "scene.hpp"
+#include "log.hpp"
 #include "nodes/light.hpp"
 
 
@@ -12,7 +13,17 @@ namespace Tank
 
 
 	Light::Light(const std::string &name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec) : Node(name),
-		m_ambient(amb), m_diffuse(diff), m_specular(spec), m_index(0) {}
+		m_ambient(amb), m_diffuse(diff), m_specular(spec), m_index(0)
+	{
+		m_scene = Scene::getActiveScene();
+	}
+
+
+	Light::~Light()
+	{
+		TE_CORE_INFO("Destructor called");
+		m_scene->removeLight(this);
+	}
 
 
 	DirLight::DirLight(const std::string &name, glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
@@ -21,6 +32,16 @@ namespace Tank
 		m_index = DirLight::s_count;
 		m_lightArrayName = "dirLights";
 		DirLight::s_count++;
+
+		m_scene->addLight(this);
+	}
+
+
+	DirLight::~DirLight()
+	{
+		TE_CORE_INFO("Dir Destructor called");
+
+		DirLight::s_count--;
 	}
 
 
@@ -40,7 +61,18 @@ namespace Tank
 		m_index = PointLight::s_count;
 		m_lightArrayName = "pointLights";
 		PointLight::s_count++;
+
+		m_scene->addLight(this);
 	}
+
+
+	PointLight::~PointLight()
+	{
+		TE_CORE_INFO("Pt Destructor called");
+
+		PointLight::s_count--;
+	}
+
 
 	void PointLight::updateShader(Shader *shader)
 	{

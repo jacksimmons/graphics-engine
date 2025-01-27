@@ -53,7 +53,7 @@ namespace Tank
 		bool nodeExpanded = ImGui::TreeNodeEx((node->getName() + "##" + std::to_string(*count)).c_str(), flags);
 		
 		// `node` can be deleted here.
-		drawNodeContextMenu(&node, inspector);
+		drawNodeContextMenu(node, inspector);
 		
 		if (nodeExpanded)
 		{
@@ -76,37 +76,38 @@ namespace Tank
 	}
 
 
-	void Hierarchy::drawNodeContextMenu(Node **node, Inspector *inspector) const
+	void Hierarchy::drawNodeContextMenu(Node *node, Inspector *inspector) const
 	{
 		// If item (node) is hovered and right-clicked...
 		if (ImGui::BeginPopupContextItem())
 		{
-			Node *parent = (*node)->getParent();
+			Node *parent = node->getParent();
 
 			// Render Delete button iff node has a parent (is not root).
 			// If Delete is rendered and pressed, this whole statement is true.
 			if (parent && ImGui::MenuItem("Delete Node"))
 			{
 				// Handle graceful degradation before node removal.
-				inspector->onNodeDeleted(*node);
+				inspector->onNodeDeleted(node);
 
 				auto scene = Scene::getActiveScene();
-				scene->onNodeDeleted(*node);
+				scene->onNodeDeleted(node);
 
 				// Detach child from its parent.
-				(*node)->getParent()->removeChild(*node);
-
-				*node = nullptr;
+				if (!node->getParent()->removeChild(node))
+				{
+					TE_CORE_ERROR("Failed to remove child node from parent.");
+				}
 			}
 
 			if (ImGui::BeginMenu("Add Child Node"))
 			{
-				if (ImGui::MenuItem("Node")) buildNode<Node>(*node, "Node");
-				if (ImGui::MenuItem("Cube")) buildNode<Cube>(*node, "Cube");
-				if (ImGui::MenuItem("Primitive (Line)")) buildNode<Primitive>(*node, "Line");
-				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(*node, "PointLight");
-				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(*node, "DirLight");
-				if (ImGui::MenuItem("Camera")) buildNode<Camera>(*node, "Camera");
+				if (ImGui::MenuItem("Node")) buildNode<Node>(node, "Node");
+				if (ImGui::MenuItem("Cube")) buildNode<Cube>(node, "Cube");
+				if (ImGui::MenuItem("Primitive (Line)")) buildNode<Primitive>(node, "Line");
+				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(node, "PointLight");
+				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(node, "DirLight");
+				if (ImGui::MenuItem("Camera")) buildNode<Camera>(node, "Camera");
 
 				ImGui::EndMenu();
 			}

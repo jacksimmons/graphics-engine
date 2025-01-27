@@ -148,7 +148,6 @@ void Editor::loadScene()
 		auto root = std::make_unique<Tank::Node>("Root");
 		root->addChild(std::make_unique<Tank::Camera>("Camera"));
 		root->addChild(std::make_unique<Tank::Cube>("Awesomeface", "shader.vert", "shader.frag"));
-		root->addChild(std::make_unique<Tank::Primitive>("Line", "shader.vert", "shader.frag"));
 
 		// Create camera and scene
 		Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
@@ -171,17 +170,17 @@ void Editor::loadScene()
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
-	auto lightRoot = m_scene->getRoot();
-	for (int i = 0; i < 4; i++)
-	{
-		std::string name = "PtLight" + std::to_string(i);
-		auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer" + std::to_string(i), "lightCubeShader.vert", "lightCubeShader.frag");
-		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-		m_scene->addLight(light.get());
-		lightCube->getTransform()->setTranslation(pointLightPositions[i]);
-		lightCube->addChild(std::move(light));
-		lightRoot->addChild(std::move(lightCube));
-	}
+	//auto lightRoot = m_scene->getRoot();
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	std::string name = "PtLight" + std::to_string(i);
+	//	auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer" + std::to_string(i), "lightCubeShader.vert", "lightCubeShader.frag");
+	//	auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
+	//	m_scene->addLight(light.get());
+	//	lightCube->getTransform()->setTranslation(pointLightPositions[i]);
+	//	lightCube->addChild(std::move(light));
+	//	lightRoot->addChild(std::move(lightCube));
+	//}
 
 	// Initialise input. Must be done after scene.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(
