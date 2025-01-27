@@ -19,7 +19,7 @@
 
 namespace Tank
 {
-	Model::Model(std::string name, std::string vsName, std::string fsName, float *vertices, size_t verticesSize)
+	Model::Model(const std::string &name, const std::string &vsName, const std::string &fsName, float *vertices, size_t verticesSize)
 		: Node(name)
 	{
 		m_shader = std::make_unique<Shader>(vsName, fsName);

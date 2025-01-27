@@ -29,7 +29,7 @@ namespace Tank
 		float m_panSpeed;
 		float m_rotSpeed;
 	public:
-		Camera(std::string name,
+		Camera(const std::string &name,
 			glm::vec3 eye = { 0, 0, 3 },
 			glm::vec3 centre = { 0, 0, 0 },
 			glm::vec3 up = { 0, 1, 0 });

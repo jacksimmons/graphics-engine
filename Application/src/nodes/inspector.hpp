@@ -21,7 +21,7 @@ namespace Tank
 	protected:
 		void drawUI() override;
 	public:
-		Inspector(std::string name);
+		Inspector(const std::string &name);
 
 		void setInspectedNode(Node *node) noexcept { m_inspectedNode = node; }
 	};

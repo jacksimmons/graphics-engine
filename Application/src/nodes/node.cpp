@@ -7,7 +7,7 @@
 
 namespace Tank
 {
-	Node::Node(std::string name = "Node")
+	Node::Node(const std::string &name = "Node")
 	{
 		m_name = name;
 		m_transform = std::make_unique<Transform>();

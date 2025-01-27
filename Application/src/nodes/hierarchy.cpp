@@ -14,7 +14,7 @@
 
 namespace Tank
 {
-	Hierarchy::Hierarchy(std::string name) : UI(name)
+	Hierarchy::Hierarchy(const std::string &name) : UI(name)
 	{
 	}
 

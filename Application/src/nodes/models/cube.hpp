@@ -7,7 +7,7 @@ namespace Tank
 	class Cube : public Model
 	{
 	public:
-		Cube(std::string name, std::string vsName="shader.vert", std::string fsName="shader.frag");
+		Cube(const std::string &name, const std::string &vsName="shader.vert", const std::string &fsName="shader.frag");
 
 	private:
 		static constexpr float s_vertices[] = {

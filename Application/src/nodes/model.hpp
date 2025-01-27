@@ -21,7 +21,11 @@ namespace Tank
 		std::unique_ptr<Shader> m_shader;
 		bool addTexture(std::string filename, GLenum mode, std::string uniformName);
 	public:
-		Model(std::string name, std::string vsName, std::string fsName, float *vertices, size_t verticesSize);
+		Model(const std::string &name,
+			const std::string &vsName,
+			const std::string &fsName,
+			float *vertices,
+			size_t verticesSize);
 		void draw() override;
 	};
 }
