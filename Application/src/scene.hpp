@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include <map>
+#include <functional>
 
 
 namespace Tank
@@ -9,7 +9,7 @@ namespace Tank
 	class Node;
 	class Camera;
 	class Light;
-
+	class Shader;
 	class Scene
 	{
 		friend class Hierarchy;
@@ -40,12 +40,18 @@ namespace Tank
 		// the active camera.
 		Scene(std::unique_ptr<Node> root, Camera *cam);
 		~Scene();
+
 		Node *getRoot() const noexcept { return m_root.get(); }
+		
 		Camera *getActiveCamera() const noexcept { return m_activeCamera; }
 		
 		void addLight(Light *);
+		void removeLight(Light *);
 		std::vector<Light *> getActiveLights() const { return m_activeLights; }
 
+		void forEachNode(std::function<void(Node*)> forEach) const;
+		void updateShaders() const;
+		
 		void update();
 	};
 }

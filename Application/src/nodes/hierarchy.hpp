@@ -28,8 +28,7 @@ namespace Tank
 		/// This allows the user to Delete Nodes (leading to *node
 		/// = nullptr).
 		/// </summary>
-		/// <param name="node"></param>
-		void drawNodeContextMenu(Node **node, Inspector *inspector) const;
+		void drawNodeContextMenu(Node *node, Inspector *inspector) const;
 
 		/// <summary>
 		/// Creates a new node of the template class, and with the provided node

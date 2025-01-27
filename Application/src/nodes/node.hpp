@@ -24,6 +24,7 @@ namespace Tank
 		virtual void draw();
 	public:
 		Node(const std::string &name);
+		virtual ~Node() {};
 		
 		constexpr void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		constexpr bool getEnabled() const noexcept { return m_enabled; }
