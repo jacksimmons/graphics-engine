@@ -11,7 +11,7 @@
 
 namespace Tank
 {
-	SceneView::SceneView(std::string name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput) : UI(name)
+	SceneView::SceneView(const std::string &name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput) : UI(name)
 	{
 		m_sceneW = sceneViewportSize.x, m_sceneH = sceneViewportSize.y;
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);

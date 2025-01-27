@@ -44,6 +44,6 @@ namespace Tank
 		/// </summary>
 		void drawUI() override;
 	public:
-		Hierarchy(std::string name);
+		Hierarchy(const std::string &name);
 	};
 }

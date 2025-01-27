@@ -16,7 +16,7 @@ namespace Tank
 		// Name of the array in GLSL containing all light structs.
 		std::string m_lightArrayName;
 		Light(
-			std::string name,
+			const std::string &name,
 			glm::vec3 amb = { 1,1,1 },
 			glm::vec3 diff = { 1,1,1 },
 			glm::vec3 spec = { 1,1,1 }
@@ -42,7 +42,7 @@ namespace Tank
 		glm::vec3 m_direction;
 		static int s_count;
 	public:
-		DirLight(std::string name,
+		DirLight(const std::string &name,
 			glm::vec3 dir = { 0,0,1 },
 			glm::vec3 amb = { 1,1,1 },
 			glm::vec3 diff = { 1,1,1 },
@@ -60,7 +60,7 @@ namespace Tank
 	private:
 		static int s_count;
 	public:
-		PointLight(std::string name,
+		PointLight(const std::string &name,
 			glm::vec3 amb = { 1,1,1 },
 			glm::vec3 diff = { 1,1,1 },
 			glm::vec3 spec = { 1,1,1 });

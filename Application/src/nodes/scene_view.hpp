@@ -21,7 +21,10 @@ namespace Tank
 		std::unique_ptr<Framebuffer> m_fb;
 		KeyInput *m_keyInput;
 	public:
-		SceneView(std::string name, glm::ivec2 stdViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput);
+		SceneView(const std::string &name,
+			glm::ivec2 stdViewportSize,
+			glm::ivec2 fbViewportSize,
+			KeyInput *keyInput);
 		void rescale(int w, int h) const;
 		void drawUI() override;
 		constexpr int getSceneW() const noexcept { return m_sceneW; }

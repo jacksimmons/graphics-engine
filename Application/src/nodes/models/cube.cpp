@@ -6,7 +6,7 @@
 
 namespace Tank
 {
-	Cube::Cube(std::string name, std::string vsName, std::string fsName)
+	Cube::Cube(const std::string &name, const std::string &vsName, const std::string &fsName)
 		: Model(name, vsName, fsName, (float *)&Cube::s_vertices, sizeof(Cube::s_vertices))
 	{
 		if (!addTexture("awesomeface.png", GL_RGBA, "material.diffuse"))

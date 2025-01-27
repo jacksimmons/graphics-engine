@@ -4,7 +4,7 @@
 
 namespace Tank
 {
-	UI::UI(std::string name) : Node(name) {}
+	UI::UI(const std::string &name) : Node(name) {}
 
 
 	void UI::draw()

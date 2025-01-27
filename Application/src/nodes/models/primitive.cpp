@@ -5,7 +5,7 @@
 
 namespace Tank
 {
-	Primitive::Primitive(std::string name, std::string vsName, std::string fsName)
+	Primitive::Primitive(const std::string &name, const std::string &vsName, const std::string &fsName)
 		: Model(name, vsName, fsName, (float *)s_vertices, sizeof(s_vertices))
 	{
 	}

@@ -17,7 +17,7 @@
 
 namespace Tank
 {
-	Inspector::Inspector(std::string name) : UI(name)
+	Inspector::Inspector(const std::string &name) : UI(name)
 	{
 		m_inspectedNode = nullptr;
 	}

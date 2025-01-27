@@ -10,10 +10,12 @@ namespace Tank
 	int DirLight::s_count = 0;
 	int PointLight::s_count = 0;
 
-	Light::Light(std::string name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec) : Node(name),
+
+	Light::Light(const std::string &name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec) : Node(name),
 		m_ambient(amb), m_diffuse(diff), m_specular(spec), m_index(0) {}
 
-	DirLight::DirLight(std::string name, glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+
+	DirLight::DirLight(const std::string &name, glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
 		: Light(name, amb, diff, spec), m_direction(dir)
 	{
 		m_index = DirLight::s_count;
@@ -32,7 +34,7 @@ namespace Tank
 	}
 
 
-	PointLight::PointLight(std::string name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+	PointLight::PointLight(const std::string &name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
 		: Light(name, amb, diff, spec)
 	{
 		m_index = PointLight::s_count;
