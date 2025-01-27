@@ -234,6 +234,7 @@ void Editor::run()
 		// Decay input states (comes after handleKeyInput)
 		m_keyInput->update();
 		m_system->update();
+		//ImGui::ShowDemoWindow();
 
 		ImGui::End();
 		ImGui::Render();

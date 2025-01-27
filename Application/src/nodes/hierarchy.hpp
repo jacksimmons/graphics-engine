@@ -1,14 +1,19 @@
 #pragma once
 #include <memory>
+#include <type_traits>
 #include "nodes/ui.hpp"
 
 
 namespace Tank
 {
 	class Inspector;
-
+	class Node;
 	class Hierarchy : public UI
 	{
+		// Fields
+	private:
+		static std::vector<std::type_info> s_nodeTypes;
+
 		// Methods
 	private:
 		/// <summary>
@@ -25,6 +30,13 @@ namespace Tank
 		/// </summary>
 		/// <param name="node"></param>
 		void drawNodeContextMenu(Node **node, Inspector *inspector) const;
+
+		/// <summary>
+		/// Creates a new node of the template class, and with the provided node
+		/// as a parent.
+		/// </summary>
+		template <class T>
+		void buildNode(Node *parent, const std::string &name) const;
 	protected:
 		/// <summary>
 		/// Generates buttons for all children of the current node, at a given

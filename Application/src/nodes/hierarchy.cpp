@@ -1,8 +1,15 @@
+#include <vector>
+#include <typeinfo>
+#include <memory>
 #include <imgui.h>
+#include "log.hpp"
 #include "scene.hpp"
 #include "nodes/hierarchy.hpp"
 #include "nodes/inspector.hpp"
 #include "nodes/camera.hpp"
+#include "nodes/light.hpp"
+#include "nodes/models/cube.hpp"
+#include "nodes/models/primitive.hpp"
 
 
 namespace Tank
@@ -71,9 +78,13 @@ namespace Tank
 
 	void Hierarchy::drawNodeContextMenu(Node **node, Inspector *inspector) const
 	{
+		// If item (node) is hovered and right-clicked...
 		if (ImGui::BeginPopupContextItem())
 		{
 			Node *parent = (*node)->getParent();
+
+			// Render Delete button iff node has a parent (is not root).
+			// If Delete is rendered and pressed, this whole statement is true.
 			if (parent && ImGui::MenuItem("Delete Node"))
 			{
 				// Handle graceful degradation before node removal.
@@ -87,7 +98,28 @@ namespace Tank
 
 				*node = nullptr;
 			}
+
+			if (ImGui::BeginMenu("Add Child Node"))
+			{
+				if (ImGui::MenuItem("Node")) buildNode<Node>(*node, "Node");
+				if (ImGui::MenuItem("Cube")) buildNode<Cube>(*node, "Cube");
+				if (ImGui::MenuItem("Primitive (Line)")) buildNode<Primitive>(*node, "Line");
+				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(*node, "PointLight");
+				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(*node, "DirLight");
+				if (ImGui::MenuItem("Camera")) buildNode<Camera>(*node, "Camera");
+
+				ImGui::EndMenu();
+			}
+			
 			ImGui::EndPopup();
 		}
+	}
+
+
+	template <class T>
+	void Hierarchy::buildNode(Node *parent, const std::string &name) const
+	{
+		std::unique_ptr<Node> child = std::unique_ptr<Node>(new T(name));
+		parent->addChild(std::move(child));
 	}
 }
