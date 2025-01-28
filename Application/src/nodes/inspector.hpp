@@ -24,5 +24,6 @@ namespace Tank
 		Inspector(const std::string &name);
 
 		void setInspectedNode(Node *node) noexcept { m_inspectedNode = node; }
+		Node *getInspectedNode() const noexcept { return m_inspectedNode; }
 	};
 }

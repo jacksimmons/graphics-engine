@@ -14,20 +14,24 @@ namespace Tank
 	private:
 		std::string m_name;
 		bool m_enabled = true;
+		bool m_visible = true;
 	protected:
 		Node *m_parent;
 		std::vector<std::unique_ptr<Node>> m_children;
 		std::unique_ptr<Transform> m_transform;
 
-	// Member Functions
+		// Member Functions
 	protected:
 		virtual void draw();
 	public:
 		Node(const std::string &name);
 		virtual ~Node() {};
-		
+
 		constexpr void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		constexpr bool getEnabled() const noexcept { return m_enabled; }
+
+		constexpr void setVisibility(bool visible) noexcept { m_visible = visible; }
+		constexpr bool getVisibility() const noexcept { return m_visible; }
 
 		void setName(const std::string &name) noexcept { m_name = name; }
 		constexpr const std::string& getName() const noexcept { return m_name; }
@@ -36,6 +40,12 @@ namespace Tank
 		constexpr Node *getParent() const noexcept { return m_parent; }
 
 		size_t getChildCount() const noexcept { return m_children.size(); }
+		typedef std::vector<std::unique_ptr<Node>>::iterator iterator;
+		typedef std::vector<std::unique_ptr<Node>>::const_iterator const_iterator;
+		iterator begin() noexcept { return m_children.begin(); }
+		iterator end() noexcept { return m_children.end(); }
+		const_iterator begin() const noexcept { return m_children.begin(); }
+		const_iterator end() const noexcept { return m_children.end(); }
 
 		// Add an existing child.
 		void addChild(std::unique_ptr<Node> child);

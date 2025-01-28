@@ -39,13 +39,9 @@ namespace Tank
 
 	Node *Node::getChild(std::string name) const
 	{
-		for (int i = 0; i < getChildCount(); i++)
+		for (auto &child : m_children)
 		{
-			Node *child = getChild(i);
-			if (child->getName() == name)
-			{
-				return child;
-			}
+			if (child->getName() == name) return child.get();
 		}
 
 		// No child exists by this name.
@@ -73,9 +69,7 @@ namespace Tank
 
 	void Node::update()
 	{
-		if (m_enabled)
-		{
-			draw();
-		}
+		if (!m_enabled) return;
+		if (m_visible) draw();
 	}
 }
