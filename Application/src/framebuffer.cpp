@@ -63,12 +63,12 @@ namespace Tank
 	/// <summary>
 	/// Render a quad whose texture is the whole scene.
 	/// </summary>
-	void Framebuffer::update() const
+	void Framebuffer::update(float frameDelta) const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Tank::Scene::getActiveScene()->update();
+		Tank::Scene::getActiveScene()->update(frameDelta);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// Disable depth testing so quad renders over everything.

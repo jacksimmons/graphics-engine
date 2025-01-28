@@ -154,6 +154,7 @@
     <ClInclude Include="src\nodes\models\cube.hpp" />
     <ClInclude Include="src\nodes\models\primitive.hpp" />
     <ClInclude Include="src\nodes\ui.hpp" />
+    <ClInclude Include="src\script.hpp" />
     <ClInclude Include="src\transformation.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
     <ClInclude Include="src\nodes\hierarchy.hpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="src\nodes\node.cpp" />
     <ClCompile Include="src\nodes\ui.cpp" />
     <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\script.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\transform.cpp" />

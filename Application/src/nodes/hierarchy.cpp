@@ -52,32 +52,40 @@ namespace Tank
 
 		bool nodeExpanded = ImGui::TreeNodeEx((node->getName() + "##" + std::to_string(*count)).c_str(), flags);
 		
-		// `node` can be deleted here.
-		drawNodeContextMenu(node, inspector);
+		// `node` can be deleted here, if it is then end the iteration.
+		if (!drawNodeContextMenu(node, inspector)) goto cleanup;
 		
 		if (nodeExpanded)
 		{
 			// If node was not deleted this frame...
 			if (node)
 			{
-				if (ImGui::IsItemFocused() && !inspector->getInspectedNode())
+				if (ImGui::IsItemFocused() && inspector->getInspectedNode() != node)
 				{
 					inspector->setInspectedNode(node);
 				}
-				for (int i = 0; i < childCount; i++)
+
+				// Nodes can be deleted during iteration, so cannot use for-each or iterator syntax.
+				for (int i = 0; i < node->getChildCount(); i++)
 				{
 					drawRecursive(node->getChild(i), &(++(*count)));
 				}
 			}
-			
+		}
+
+	cleanup:
+		if (nodeExpanded)
+		{
 			// Need to pop tree even if node was deleted.
 			ImGui::TreePop();
 		}
 	}
 
 
-	void Hierarchy::drawNodeContextMenu(Node *node, Inspector *inspector) const
+	bool Hierarchy::drawNodeContextMenu(Node *node, Inspector *inspector) const
 	{
+		bool nodeSurvives = true;
+
 		// If item (node) is hovered and right-clicked...
 		if (ImGui::BeginPopupContextItem())
 		{
@@ -87,17 +95,19 @@ namespace Tank
 			// If Delete is rendered and pressed, this whole statement is true.
 			if (parent && ImGui::MenuItem("Delete Node"))
 			{
-				// Handle graceful degradation before node removal.
-				inspector->onNodeDeleted(node);
-
 				auto scene = Scene::getActiveScene();
 				scene->onNodeDeleted(node);
+
+				// Handle graceful degradation before node removal.
+				inspector->onNodeDeleted(node);
 
 				// Detach child from its parent.
 				if (!node->getParent()->removeChild(node))
 				{
 					TE_CORE_ERROR("Failed to remove child node from parent.");
 				}
+
+				nodeSurvives = false;
 			}
 
 			if (ImGui::BeginMenu("Add Child Node"))
@@ -105,16 +115,8 @@ namespace Tank
 				if (ImGui::MenuItem("Node")) buildNode<Node>(node, "Node");
 				if (ImGui::MenuItem("Cube")) buildNode<Cube>(node, "Cube");
 				if (ImGui::MenuItem("Primitive (Line)")) buildNode<Primitive>(node, "Line");
-				if (ImGui::MenuItem("Point Light"))
-				{
-					Node *light = buildNode<PointLight>(node, "PointLight");
-					light->addChild(std::make_unique<Cube>("Cube", "lightCubeShader.vert", "lightCubeShader.frag"));
-				}
-				if (ImGui::MenuItem("Directional Light"))
-				{
-					Node *light = buildNode<DirLight>(node, "DirLight");
-					light->addChild(std::make_unique<Cube>("Cube", "lightCubeShader.vert", "lightCubeShader.frag"));
-				}
+				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(node, "PointLight");
+				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(node, "DirLight");
 				if (ImGui::MenuItem("Camera")) buildNode<Camera>(node, "Camera");
 
 				ImGui::EndMenu();
@@ -122,6 +124,8 @@ namespace Tank
 			
 			ImGui::EndPopup();
 		}
+
+		return nodeSurvives;
 	}
 
 

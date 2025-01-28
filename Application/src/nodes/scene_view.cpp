@@ -24,11 +24,6 @@ namespace Tank
 	{
 		int fbW = m_fb->getW(), fbH = m_fb->getH();
 
-		// Set viewport to fbo, render into fbo, set viewport to std.
-		glViewport(0, 0, fbW, fbH);
-		m_fb->update();
-		glViewport(0, 0, m_sceneW, m_sceneH);
-
 		// Just sets default panel-window size.
 		ImGui::SetNextWindowSize(ImVec2(fbW + 10.0f, fbH + 10.0f), ImGuiCond_FirstUseEver);
 
@@ -51,6 +46,19 @@ namespace Tank
 			ImGui::EndChild();
 		}
 		ImGui::End();
+	}
+
+
+	void SceneView::update(float frameDelta)
+	{
+		int fbW = m_fb->getW(), fbH = m_fb->getH();
+
+		// Set viewport to fbo, render into fbo, set viewport to std.
+		glViewport(0, 0, fbW, fbH);
+		m_fb->update(frameDelta);
+		glViewport(0, 0, m_sceneW, m_sceneH);
+
+		UI::update(frameDelta);
 	}
 
 

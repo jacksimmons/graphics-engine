@@ -26,6 +26,7 @@ namespace Tank
 			glm::ivec2 fbViewportSize,
 			KeyInput *keyInput);
 		void rescale(int w, int h) const;
+		void update(float frameDelta) override;
 		void drawUI() override;
 		constexpr int getSceneW() const noexcept { return m_sceneW; }
 		constexpr int getSceneH() const noexcept { return m_sceneH; }

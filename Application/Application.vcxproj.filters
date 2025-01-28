@@ -132,6 +132,9 @@
     <ClInclude Include="src\nodes\ui.hpp">
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
+    <ClInclude Include="src\script.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="src\nodes\ui.cpp">
       <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
