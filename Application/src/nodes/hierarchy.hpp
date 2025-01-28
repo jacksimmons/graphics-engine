@@ -35,7 +35,7 @@ namespace Tank
 		/// as a parent.
 		/// </summary>
 		template <class T>
-		void buildNode(Node *parent, const std::string &name) const;
+		Node *buildNode(Node *parent, const std::string &name) const;
 	protected:
 		/// <summary>
 		/// Generates buttons for all children of the current node, at a given

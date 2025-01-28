@@ -60,7 +60,7 @@ namespace Tank
 			// If node was not deleted this frame...
 			if (node)
 			{
-				if (ImGui::IsItemFocused())
+				if (ImGui::IsItemFocused() && !inspector->getInspectedNode())
 				{
 					inspector->setInspectedNode(node);
 				}
@@ -105,8 +105,16 @@ namespace Tank
 				if (ImGui::MenuItem("Node")) buildNode<Node>(node, "Node");
 				if (ImGui::MenuItem("Cube")) buildNode<Cube>(node, "Cube");
 				if (ImGui::MenuItem("Primitive (Line)")) buildNode<Primitive>(node, "Line");
-				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(node, "PointLight");
-				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(node, "DirLight");
+				if (ImGui::MenuItem("Point Light"))
+				{
+					Node *light = buildNode<PointLight>(node, "PointLight");
+					light->addChild(std::make_unique<Cube>("Cube", "lightCubeShader.vert", "lightCubeShader.frag"));
+				}
+				if (ImGui::MenuItem("Directional Light"))
+				{
+					Node *light = buildNode<DirLight>(node, "DirLight");
+					light->addChild(std::make_unique<Cube>("Cube", "lightCubeShader.vert", "lightCubeShader.frag"));
+				}
 				if (ImGui::MenuItem("Camera")) buildNode<Camera>(node, "Camera");
 
 				ImGui::EndMenu();
@@ -118,9 +126,11 @@ namespace Tank
 
 
 	template <class T>
-	void Hierarchy::buildNode(Node *parent, const std::string &name) const
+	Node *Hierarchy::buildNode(Node *parent, const std::string &name) const
 	{
 		std::unique_ptr<Node> child = std::unique_ptr<Node>(new T(name));
+		Node *ref = child.get();
 		parent->addChild(std::move(child));
+		return ref;
 	}
 }

@@ -34,11 +34,9 @@ namespace Tank
 
 			drawNodeSection();
 
-			// ! Expensive reads every frame
 			if (Model *model = dynamic_cast<Model *>(m_inspectedNode))
-				typeid(m_inspectedNode);
+				drawModelSection(model);
 
-			// Camera options
 			if (Camera *camera = dynamic_cast<Camera *>(m_inspectedNode))
 				drawCameraSection(camera);
 
@@ -58,6 +56,12 @@ namespace Tank
 	{
 		Transform *transform = m_inspectedNode->getTransform();
 		const glm::mat4 &modelMatrix = transform->getModelMatrix();
+
+		bool enabled = m_inspectedNode->getEnabled();
+		if (ImGui::Checkbox("Enabled", &enabled)) m_inspectedNode->setEnabled(enabled);
+
+		bool visible = m_inspectedNode->getVisibility();
+		if (ImGui::Checkbox("Visible", &visible)) m_inspectedNode->setVisibility(visible);
 
 		ImGui::TextColored(Colour::TITLE, "Name");
 		{
@@ -229,10 +233,9 @@ namespace Tank
 	/// </summary>
 	void Inspector::onNodeDeleted(Node *node)
 	{
-		int childCount = node->getChildCount();
-		for (int i = 0; i < childCount; i++)
+		for (auto &child : *node)
 		{
-			onNodeDeleted(node->getChild(i));
+			onNodeDeleted(child.get());
 		}
 
 		if (node == m_inspectedNode)
