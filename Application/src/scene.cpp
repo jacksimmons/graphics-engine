@@ -22,41 +22,18 @@ namespace Tank
 		m_root = nullptr;
 	}
 
-	void Scene::update()
+	void Scene::update(float frameDelta)
 	{
 		// Ignore rendering updates if no camera is active.
 		if (m_activeCamera == nullptr) return;
 
-		m_root->update();
-		m_activeCamera->update();
-	}
-
-	void Scene::forEachNode(std::function<void(Node *)> forEach) const
-	{
-		Node *node = getRoot();
-
-		std::stack<Node *> nodeStack;
-		nodeStack.push(node);
-
-		while (!nodeStack.empty())
-		{
-			// Pop the top node from the stack, and perform `forEach`.
-			node = nodeStack.top();
-			nodeStack.pop();
-			forEach(node);
-			TE_CORE_INFO(node->getName());
-
-			// Add all its children to the stack.
-			for (int i = 0; i < node->getChildCount(); i++)
-			{
-				nodeStack.push(node->getChild(i));
-			}
-		}
+		m_root->update(frameDelta);
+		m_activeCamera->update(frameDelta);
 	}
 
 	void Scene::updateShaders() const
 	{
-		forEachNode([this](Node *node)
+		m_root->forEachDescendant([this](Node *node)
 		{
 			for (Light *light : m_activeLights)
 			{

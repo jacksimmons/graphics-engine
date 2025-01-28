@@ -27,8 +27,9 @@ namespace Tank
 		/// displayed when a node is right-clicked in the hierarchy.
 		/// This allows the user to Delete Nodes (leading to *node
 		/// = nullptr).
+		/// Returns true if the node survives, false if it is destroyed.
 		/// </summary>
-		void drawNodeContextMenu(Node *node, Inspector *inspector) const;
+		bool drawNodeContextMenu(Node *node, Inspector *inspector) const;
 
 		/// <summary>
 		/// Creates a new node of the template class, and with the provided node

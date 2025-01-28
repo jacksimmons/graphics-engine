@@ -5,20 +5,29 @@
 #include <glm/mat4x4.hpp>
 
 #include "transform.hpp"
+#include "script.hpp"
 
 
 namespace Tank
 {
+	class IScript;
 	class Node
 	{
 	private:
 		std::string m_name;
+		/// <summary>
+		/// If false, Node::update isn't invoked for this Node and all children.
+		/// </summary>
 		bool m_enabled = true;
+		/// <summary>
+		/// If false, Node::draw isn't invoked for this Node only.
+		/// </summary>
 		bool m_visible = true;
 	protected:
 		Node *m_parent;
-		std::vector<std::unique_ptr<Node>> m_children;
 		std::unique_ptr<Transform> m_transform;
+		std::vector<std::unique_ptr<Node>> m_children;
+		std::vector<std::unique_ptr<IScript>> m_scripts;
 
 		// Member Functions
 	protected:
@@ -38,6 +47,8 @@ namespace Tank
 
 		constexpr void setParent(Node *parent) noexcept { m_parent = parent; }
 		constexpr Node *getParent() const noexcept { return m_parent; }
+
+		Transform *getTransform() const { return m_transform.get(); }
 
 		size_t getChildCount() const noexcept { return m_children.size(); }
 		typedef std::vector<std::unique_ptr<Node>>::iterator iterator;
@@ -60,8 +71,13 @@ namespace Tank
 		// Get child of parent by index.
 		Node *getSibling(int index) const { return getParent()->getChild(index); }
 
-		Transform *getTransform() const { return m_transform.get(); }
+		void forEachDescendant(std::function<void(Node *)> forEach, std::function<bool()> terminate = nullptr);
 
-		virtual void update();
+		size_t getScriptCount() const noexcept { return m_scripts.size(); }
+		void addScript(std::unique_ptr<IScript> script);
+		bool removeScript(IScript *script);
+		IScript *getScript(int index) const { return m_scripts[index].get(); }
+
+		virtual void update(float frameDelta);
 	};
 }

@@ -1,9 +1,9 @@
 #pragma once
+#include "nodes/model.hpp"
 
 
 namespace Tank
 {
-	class Model;
 	class Cube : public Model
 	{
 	public:

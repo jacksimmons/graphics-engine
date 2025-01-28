@@ -11,6 +11,7 @@
 #include <imgui/backends/imgui_impl_glfw.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <chrono>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "editor.hpp"
@@ -28,6 +29,7 @@
 #include "nodes/light.hpp"
 #include "nodes/models/cube.hpp"
 #include "nodes/models/primitive.hpp"
+#include "script.hpp"
 
 
 // Enable debug output
@@ -147,7 +149,10 @@ void Editor::loadScene()
 	{
 		auto root = std::make_unique<Tank::Node>("Root");
 		root->addChild(std::make_unique<Tank::Camera>("Camera"));
-		root->addChild(std::make_unique<Tank::Cube>("Awesomeface", "shader.vert", "shader.frag"));
+
+		auto cube = std::make_unique<Tank::Cube>("Awesomeface", "shader.vert", "shader.frag");
+		cube->addScript(std::make_unique<Tank::NewScript>(cube.get()));
+		root->addChild(std::move(cube));
 
 		// Create camera and scene
 		Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
@@ -169,6 +174,17 @@ void Editor::loadScene()
 		glm::vec3(-4.0f,  2.0f, -12.0f),
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
+
+	//Tank::Node *root = Tank::Scene::getActiveScene()->getRoot();
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	std::string name = "PtLight" + std::to_string(i);
+	//	auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer" + std::to_string(i), "lightCubeShader.vert", "lightCubeShader.frag");
+	//	auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
+	//	lightCube->getTransform()->setTranslation(pointLightPositions[i]);
+	//	lightCube->addChild(std::move(light));
+	//	root->addChild(std::move(lightCube));
+	//}
 
 	// Initialise input. Must be done after scene.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(
@@ -198,10 +214,15 @@ void Editor::loadScene()
 void Editor::run()
 {	
 	ImGuiIO &io = ImGui::GetIO();
+	auto frameStart = std::clock();
+	auto frameEnd = std::clock();
+	float lastFrameDelta = 0;
 
 	// ===== MAINLOOP =====
 	while (!glfwWindowShouldClose(m_window))
 	{
+		frameStart = std::clock();
+
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -220,7 +241,7 @@ void Editor::run()
 		handleKeyInput();
 		// Decay input states (comes after handleKeyInput)
 		m_keyInput->update();
-		m_system->update();
+		m_system->update(lastFrameDelta);
 		//ImGui::ShowDemoWindow();
 
 		ImGui::End();
@@ -237,6 +258,9 @@ void Editor::run()
 
 		// Double buffering
 		glfwSwapBuffers(m_window);
+
+		frameEnd = std::clock();
+		lastFrameDelta = (frameEnd - frameStart) / (float)CLOCKS_PER_SEC;
 	}
 }
 

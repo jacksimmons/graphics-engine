@@ -1,8 +1,12 @@
 #include <iostream>
+#include <stack>
+#include <algorithm>
 #include <GLFW/glfw3.h>
 
 #include "node.hpp"
+#include "log.hpp"
 #include "transform.hpp"
+#include "script.hpp"
 
 
 namespace Tank
@@ -59,17 +63,66 @@ namespace Tank
 		return nullptr;
 	}
 
-	void Node::draw()
+	void Node::forEachDescendant(std::function<void(Node *)> forEach, std::function<bool()> terminate)
 	{
-		for (auto const &child : m_children)
+		std::stack<Node *> nodeStack;
+		nodeStack.push(this);
+
+		while (!nodeStack.empty())
 		{
-			child->draw();
+			// Exit early if necessary
+			if (terminate && terminate()) return;
+
+			// Pop the top node from the stack, and perform `forEach`.
+			Node *node = nodeStack.top();
+			nodeStack.pop();
+			forEach(node);
+
+			// Add all its children to the stack.
+			for (int i = 0; i < node->getChildCount(); i++)
+			{
+				nodeStack.push(node->getChild(i));
+			}
 		}
 	}
 
-	void Node::update()
+	void Node::addScript(std::unique_ptr<IScript> script)
+	{
+		m_scripts.push_back(std::move(script));
+	}
+
+	bool Node::removeScript(IScript *script)
+	{
+		for (int i = 0; i < m_scripts.size(); i++)
+		{
+			if (m_scripts[i].get() == script)
+			{
+				m_scripts.erase(m_scripts.begin() + i);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
+	void Node::draw()
+	{
+	}
+
+	void Node::update(float frameDelta)
 	{
 		if (!m_enabled) return;
 		if (m_visible) draw();
+
+		for (auto const &script : m_scripts)
+		{
+			script->update(frameDelta);
+		}
+
+		for (auto const &child : m_children)
+		{
+			child->update(frameDelta);
+		}
 	}
 }

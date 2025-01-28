@@ -58,10 +58,12 @@ namespace Tank
 		const glm::mat4 &modelMatrix = transform->getModelMatrix();
 
 		bool enabled = m_inspectedNode->getEnabled();
-		if (ImGui::Checkbox("Enabled", &enabled)) m_inspectedNode->setEnabled(enabled);
+		if (ImGui::Checkbox("Enabled", &enabled))
+			m_inspectedNode->setEnabled(enabled);
 
 		bool visible = m_inspectedNode->getVisibility();
-		if (ImGui::Checkbox("Visible", &visible)) m_inspectedNode->setVisibility(visible);
+		if (ImGui::Checkbox("Visible", &visible))
+			m_inspectedNode->setVisibility(visible);
 
 		ImGui::TextColored(Colour::TITLE, "Name");
 		{
@@ -71,6 +73,17 @@ namespace Tank
 			{
 				m_inspectedNode->setName(std::string(buf));
 			}
+		}
+
+		ImGui::TextColored(Colour::TITLE, "Scripts");
+		size_t scriptCount = m_inspectedNode->getScriptCount();
+		for (int i = 0; i < scriptCount; i++)
+		{
+			ImGui::Text(typeid(m_inspectedNode->getScript(i)).name());
+		}
+		if (scriptCount == 0)
+		{
+			ImGui::Text("None");
 		}
 
 		if (ImGui::Button("<Snap To>"))
@@ -233,14 +246,16 @@ namespace Tank
 	/// </summary>
 	void Inspector::onNodeDeleted(Node *node)
 	{
-		for (auto &child : *node)
-		{
-			onNodeDeleted(child.get());
-		}
-
-		if (node == m_inspectedNode)
-		{
-			m_inspectedNode = nullptr;
-		}
+		node->forEachDescendant(
+			[this](Node *node)
+			{
+				if (node == m_inspectedNode)
+					m_inspectedNode = nullptr;
+			},
+			[this]()
+			{
+				return m_inspectedNode == nullptr;
+			}
+		);
 	}
 }

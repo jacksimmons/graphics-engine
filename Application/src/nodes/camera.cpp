@@ -20,7 +20,7 @@ namespace Tank
 		m_panSpeed = 0.01f;
 		m_rotSpeed = 0.01f;
 
-		update();
+		//! update();
 	}
 
 	void Camera::setPosition(glm::vec3 pos)
@@ -72,7 +72,7 @@ namespace Tank
 	/// 3. Rotate the up vector around origin with R.
 	/// Combining these gives the view matrix.
 	/// </summary>
-	void Camera::update()
+	void Camera::update(float _)
 	{
 		// Transformed vector
 		glm::vec3 t_centre = getTransformedCentre();
