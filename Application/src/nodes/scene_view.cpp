@@ -6,6 +6,7 @@
 #include "scene.hpp"
 #include "framebuffer.hpp"
 #include "key_input.hpp"
+#include "static/time.hpp"
 #include "nodes/scene_view.hpp"
 
 
@@ -80,42 +81,43 @@ namespace Tank
 		if (m_keyInput->getKeyState(GLFW_KEY_F1) == KeyState::Pressed)
 			m_keyInput->cycleRenderMode();
 
+		float frameDelta = Time::getFrameDelta();
 
 		if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Held)
-			cam->translate(glm::vec3(0.0f, panSpd, 0.0f));
+			cam->translate(glm::vec3(0.0f, frameDelta * panSpd, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_A) == KeyState::Held)
-			cam->translate(glm::vec3(-panSpd, 0.0f, 0.0f));
+			cam->translate(glm::vec3(-frameDelta * panSpd, 0.0f, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_S) == KeyState::Held)
-			cam->translate(glm::vec3(0.0f, -panSpd, 0.0f));
+			cam->translate(glm::vec3(0.0f, -frameDelta * panSpd, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_D) == KeyState::Held)
-			cam->translate(glm::vec3(panSpd, 0.0f, 0.0f));
+			cam->translate(glm::vec3(frameDelta * panSpd, 0.0f, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_Q) == KeyState::Held)
-			cam->translate(glm::vec3(0.0f, 0.0f, panSpd));
+			cam->translate(glm::vec3(0.0f, 0.0f, frameDelta * panSpd));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_E) == KeyState::Held)
-			cam->translate(glm::vec3(0.0f, 0.0f, -panSpd));
+			cam->translate(glm::vec3(0.0f, 0.0f, -frameDelta * panSpd));
 
 
 		if (m_keyInput->getKeyState(GLFW_KEY_J) == KeyState::Held)
-			cam->rotate(glm::vec3(-rotSpd, 0.0f, 0.0f));
+			cam->rotate(glm::vec3(-frameDelta * rotSpd, 0.0f, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_L) == KeyState::Held)
-			cam->rotate(glm::vec3(rotSpd, 0.0f, 0.0f));
+			cam->rotate(glm::vec3(frameDelta * rotSpd, 0.0f, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_I) == KeyState::Held)
-			cam->rotate(glm::vec3(0.0f, rotSpd, 0.0f));
+			cam->rotate(glm::vec3(0.0f, frameDelta * rotSpd, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_K) == KeyState::Held)
-			cam->rotate(glm::vec3(0.0f, -rotSpd, 0.0f));
+			cam->rotate(glm::vec3(0.0f, -frameDelta * rotSpd, 0.0f));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_U) == KeyState::Held)
-			cam->rotate(glm::vec3(0.0f, 0.0f, rotSpd));
+			cam->rotate(glm::vec3(0.0f, 0.0f, frameDelta * rotSpd));
 
 		if (m_keyInput->getKeyState(GLFW_KEY_O) == KeyState::Held)
-			cam->rotate(glm::vec3(0.0f, 0.0f, -rotSpd));
+			cam->rotate(glm::vec3(0.0f, 0.0f, -frameDelta * rotSpd));
 	}
 }

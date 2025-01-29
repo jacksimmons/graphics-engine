@@ -33,6 +33,8 @@ namespace Tank
 
 		glDepthMask(GL_FALSE);
 		m_shader->use();
+
+		// Remove translation section of the transformation
 		m_shader->setMat4("view", glm::mat4(glm::mat3(cam->getView())));
 		m_shader->setMat4("proj", cam->getProj());
 		glBindVertexArray(m_vao);

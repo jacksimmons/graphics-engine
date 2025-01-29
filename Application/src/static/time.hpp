@@ -4,10 +4,9 @@
 
 namespace Tank
 {
-	class Application;
 	class Time
 	{
-		friend class Application; // Applications can modify time values
+		friend class Editor; // Applications can modify time values
 	private:
 		static float s_frameDelta;
 		static void setFrameDelta(std::clock_t lastFrameStart, std::clock_t lastFrameEnd)
