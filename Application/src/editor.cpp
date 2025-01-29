@@ -30,6 +30,7 @@
 #include "nodes/light.hpp"
 #include "nodes/models/cube.hpp"
 #include "nodes/models/primitive.hpp"
+#include "nodes/cube_map.hpp"
 #include "static/time.hpp"
 
 
@@ -150,6 +151,7 @@ void Editor::loadScene()
 	{
 		auto root = std::make_unique<Tank::Node>("Root");
 		root->addChild(std::make_unique<Tank::Camera>("Camera"));
+		root->addChild(std::make_unique<Tank::Skybox>("Skybox"));
 
 		auto cube = std::make_unique<Tank::Cube>("Awesomeface", "shader.vert", "shader.frag");
 		cube->addScript(std::make_unique<Tank::NewScript>(cube.get()));
@@ -176,16 +178,16 @@ void Editor::loadScene()
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
-	//Tank::Node *root = Tank::Scene::getActiveScene()->getRoot();
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	std::string name = "PtLight" + std::to_string(i);
-	//	auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer" + std::to_string(i), "lightCubeShader.vert", "lightCubeShader.frag");
-	//	auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-	//	lightCube->getTransform()->setTranslation(pointLightPositions[i]);
-	//	lightCube->addChild(std::move(light));
-	//	root->addChild(std::move(lightCube));
-	//}
+	Tank::Node *root = Tank::Scene::getActiveScene()->getRoot();
+	for (int i = 0; i < 4; i++)
+	{
+		std::string name = "PtLight";
+		auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer", "lightCubeShader.vert", "lightCubeShader.frag");
+		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
+		lightCube->getTransform()->setTranslation(pointLightPositions[1]);
+		lightCube->addChild(std::move(light));
+		root->addChild(std::move(lightCube));
+	}
 
 	// Initialise input. Must be done after scene.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(

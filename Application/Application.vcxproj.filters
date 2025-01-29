@@ -144,6 +144,12 @@
     <ClInclude Include="src\static\time.hpp">
       <Filter>Header Files\static</Filter>
     </ClInclude>
+    <ClInclude Include="src\nodes\cube_map.hpp">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\textured_node.hpp">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file.cpp">
@@ -236,6 +242,12 @@
     <ClCompile Include="src\static\time.cpp">
       <Filter>Source Files\static</Filter>
     </ClCompile>
+    <ClCompile Include="src\nodes\cube_map.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\textured_node.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\shader.frag">
@@ -248,6 +260,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="src\shaders\lightCubeShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="src\shaders\skybox.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="src\shaders\skybox.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

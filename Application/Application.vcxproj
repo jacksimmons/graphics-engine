@@ -150,9 +150,11 @@
     <ClInclude Include="src\file.hpp" />
     <ClInclude Include="src\framebuffer.hpp" />
     <ClInclude Include="src\key_input.hpp" />
+    <ClInclude Include="src\nodes\cube_map.hpp" />
     <ClInclude Include="src\nodes\light.hpp" />
     <ClInclude Include="src\nodes\models\cube.hpp" />
     <ClInclude Include="src\nodes\models\primitive.hpp" />
+    <ClInclude Include="src\nodes\textured_node.hpp" />
     <ClInclude Include="src\nodes\ui.hpp" />
     <ClInclude Include="src\script.hpp" />
     <ClInclude Include="src\static\time.hpp" />
@@ -183,6 +185,7 @@
     <ClCompile Include="src\file.cpp" />
     <ClCompile Include="src\framebuffer.cpp" />
     <ClCompile Include="src\nodes\camera.cpp" />
+    <ClCompile Include="src\nodes\cube_map.cpp" />
     <ClCompile Include="src\nodes\light.cpp" />
     <ClCompile Include="src\nodes\models\cube.cpp" />
     <ClCompile Include="src\nodes\models\primitive.cpp" />
@@ -192,6 +195,7 @@
     <ClCompile Include="src\nodes\inspector.cpp" />
     <ClCompile Include="src\nodes\model.cpp" />
     <ClCompile Include="src\nodes\node.cpp" />
+    <ClCompile Include="src\nodes\textured_node.cpp" />
     <ClCompile Include="src\nodes\ui.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\script.cpp" />
@@ -202,6 +206,8 @@
     <ClCompile Include="src\widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shaders\skybox.frag" />
+    <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\lightCubeShader.frag" />
     <None Include="src\shaders\lightCubeShader.vert" />
     <None Include="src\shaders\shader.frag" />

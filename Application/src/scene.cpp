@@ -31,20 +31,6 @@ namespace Tank
 		m_activeCamera->update();
 	}
 
-	void Scene::updateShaders() const
-	{
-		m_root->forEachDescendant([this](Node *node)
-		{
-			for (Light *light : m_activeLights)
-			{
-				if (Model *model = dynamic_cast<Model *>(node))
-				{
-					Shader *shader = model->getShader();
-					light->updateShader(shader);
-				}
-			}
-		});
-	}
 
 	void Scene::addLight(Light *light)
 	{
@@ -54,8 +40,8 @@ namespace Tank
 		}
 		
 		m_activeLights.push_back(light);
-		updateShaders();
 	}
+
 
 	void Scene::removeLight(Light *light)
 	{
@@ -63,13 +49,13 @@ namespace Tank
 		if (it != m_activeLights.end())
 		{
 			m_activeLights.erase(it);
-			updateShaders();
 		}
 		else
 		{
 			TE_CORE_WARN("Light was not found in this scene.");
 		}
 	}
+
 
 	void Scene::onNodeDeleted(Node *deleted) noexcept
 	{

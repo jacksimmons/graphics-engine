@@ -49,8 +49,6 @@ namespace Tank
 		void addLight(Light *);
 		void removeLight(Light *);
 		std::vector<Light *> getActiveLights() const { return m_activeLights; }
-
-		void updateShaders() const;
 		
 		void update();
 	};

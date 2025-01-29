@@ -33,13 +33,13 @@ namespace Tank
 		virtual void updateShader(Shader *) = 0;
 		std::string getLightStruct() { return m_lightArrayName + "[" + std::to_string(m_index) + "]"; };
 
-		void setAmbient(glm::vec3 ambient) { m_ambient = ambient; m_scene->updateShaders(); }
+		void setAmbient(glm::vec3 ambient) { m_ambient = ambient; }
 		glm::vec3 getAmbient() const { return m_ambient; }
 		
-		void setDiffuse(glm::vec3 diffuse) { m_diffuse = diffuse; m_scene->updateShaders(); }
+		void setDiffuse(glm::vec3 diffuse) { m_diffuse = diffuse; }
 		glm::vec3 getDiffuse() const { return m_diffuse; }
 		
-		void setSpecular(glm::vec3 specular) { m_specular = specular; m_scene->updateShaders(); }
+		void setSpecular(glm::vec3 specular) { m_specular = specular; }
 		glm::vec3 getSpecular() const { return m_specular; }
 	};
 
@@ -59,7 +59,7 @@ namespace Tank
 
 		void updateShader(Shader *) override;
 
-		void setDirection(glm::vec3 direction) { m_direction = direction; m_scene->updateShaders(); }
+		void setDirection(glm::vec3 direction) { m_direction = direction; }
 		glm::vec3 getDirection() const { return m_direction; }
 	};
 
