@@ -20,10 +20,8 @@
 namespace Tank
 {
 	Model::Model(const std::string &name, const std::string &vsName, const std::string &fsName, float *vertices, size_t verticesSize)
-		: Node(name)
+		: TexturedNode(name, vsName, fsName)
 	{
-		m_shader = std::make_unique<Shader>(vsName, fsName);
-
 		// ===== INIT VBO/VAO =====
 		glGenVertexArrays(1, &m_vao);
 		glGenBuffers(1, &m_vbo);
@@ -59,28 +57,6 @@ namespace Tank
 	}
 
 
-	bool Model::addTexture(std::string filename, GLenum mode, std::string uniformName)
-	{
-		size_t rawTexNum = m_textures.size();
-		if (rawTexNum > 31) return false;
-
-		int texNum = (int)rawTexNum;
-		GLuint texID;
-
-		if (Texture::fromFile(filename, GL_TEXTURE0 + texNum, mode, &texID))
-		{
-			m_textures.push_back(texID);
-
-			m_shader->use();
-			m_shader->setInt(uniformName, texNum);
-			m_shader->unuse();
-			return true;
-		}
-
-		return false;
-	}
-
-
 	void Model::draw()
 	{
 		for (int i = 0; i < m_textures.size(); i++)
@@ -109,12 +85,19 @@ namespace Tank
 			lights[i]->updateShader(m_shader.get());
 		}
 
-		glBindVertexArray(m_vao);
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
 		m_shader->unuse();
 
-		Node::draw();
+		TexturedNode::draw();
+	}
+
+
+	void Model::update()
+	{
+		for (Light *light : Scene::getActiveScene()->getActiveLights())
+		{
+			light->updateShader(m_shader.get());
+		}
+
+		Node::update();
 	}
 }

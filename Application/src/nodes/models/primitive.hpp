@@ -9,6 +9,8 @@ namespace Tank
 	{
 	public:
 		Primitive(const std::string &name, const std::string &vsName="shader.vert", const std::string &fsName="shader.frag");
+
+		virtual void draw() override;
 	private:
 		static constexpr float s_vertices[] = {
 			// positions          // normals           // texture coords
