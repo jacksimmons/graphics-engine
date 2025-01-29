@@ -39,10 +39,10 @@ static void GLAPIENTRY msgCallback(GLenum source,
 	GLenum type, GLenum id, GLenum severity, GLsizei length, const GLchar* message,
 	const void* userParam)
 {
-	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-		type, severity, message
-	);
+	//fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+	//	(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+	//	type, severity, message
+	//);
 }
 
 
@@ -178,16 +178,16 @@ void Editor::loadScene()
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
-	Tank::Node *root = Tank::Scene::getActiveScene()->getRoot();
-	for (int i = 0; i < 4; i++)
-	{
-		std::string name = "PtLight";
-		auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer", "lightCubeShader.vert", "lightCubeShader.frag");
-		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-		lightCube->getTransform()->setTranslation(pointLightPositions[1]);
-		lightCube->addChild(std::move(light));
-		root->addChild(std::move(lightCube));
-	}
+	//Tank::Node *root = Tank::Scene::getActiveScene()->getRoot();
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	std::string name = "PtLight";
+	//	auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer", "lightCubeShader.vert", "lightCubeShader.frag");
+	//	auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
+	//	lightCube->getTransform()->setTranslation(pointLightPositions[1]);
+	//	lightCube->addChild(std::move(light));
+	//	root->addChild(std::move(lightCube));
+	//}
 
 	// Initialise input. Must be done after scene.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(
@@ -263,8 +263,7 @@ void Editor::run()
 		glfwSwapBuffers(m_window);
 
 		frameEnd = std::clock();
-		
-		lastFrameDelta = (frameEnd - frameStart) / (float)CLOCKS_PER_SEC;
+		Tank::Time::setFrameDelta(frameStart, frameEnd);
 	}
 }
 

@@ -17,10 +17,8 @@ namespace Tank
 		m_centre = centre;
 		m_up = up;
 
-		m_panSpeed = 0.01f;
-		m_rotSpeed = 0.01f;
-
-		//! update();
+		m_panSpeed = 1;
+		m_rotSpeed = 1;
 	}
 
 	void Camera::setPosition(glm::vec3 pos)
