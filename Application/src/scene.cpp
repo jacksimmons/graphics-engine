@@ -22,13 +22,13 @@ namespace Tank
 		m_root = nullptr;
 	}
 
-	void Scene::update(float frameDelta)
+	void Scene::update()
 	{
 		// Ignore rendering updates if no camera is active.
 		if (m_activeCamera == nullptr) return;
 
-		m_root->update(frameDelta);
-		m_activeCamera->update(frameDelta);
+		m_root->update();
+		m_activeCamera->update();
 	}
 
 	void Scene::updateShaders() const

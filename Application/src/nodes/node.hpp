@@ -78,6 +78,6 @@ namespace Tank
 		bool removeScript(IScript *script);
 		IScript *getScript(int index) const { return m_scripts[index].get(); }
 
-		virtual void update(float frameDelta);
+		virtual void update();
 	};
 }

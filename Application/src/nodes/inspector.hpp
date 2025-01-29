@@ -5,7 +5,7 @@
 
 namespace Tank
 {
-	class Model; class Camera; class Light;
+	class Model; class Camera; class Light; class DirLight;
 	class Inspector : public UI
 	{
 		friend class Hierarchy;
@@ -17,6 +17,7 @@ namespace Tank
 		void drawModelSection(Model *model) const;
 		void drawCameraSection(Camera *camera) const;
 		void drawLightSection(Light *light) const;
+		void drawDirLightSection(DirLight *dir) const;
 		void onNodeDeleted(Node *node);
 	protected:
 		void drawUI() override;

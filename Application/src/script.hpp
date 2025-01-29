@@ -14,7 +14,7 @@ namespace Tank
 
 		virtual void setEnabled(bool enabled) noexcept = 0;
 		virtual bool getEnabled() const noexcept = 0;
-		virtual void update(float) = 0;
+		virtual void update() = 0;
 	};
 
 	template <class T>
@@ -29,13 +29,13 @@ namespace Tank
 
 		void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		bool getEnabled() const noexcept { return m_enabled; }
-		virtual void update(float frameDelta) override = 0;
+		virtual void update() override = 0;
 	};
 
 	class NewScript : public Script<Cube>
 	{
 	public:
 		NewScript(Cube *node);
-		virtual void update(float frameDelta) override;
+		virtual void update() override;
 	};
 }

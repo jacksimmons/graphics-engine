@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include "log.hpp"
 #include "scene.hpp"
+#include "colours.hpp"
 #include "nodes/hierarchy.hpp"
 #include "nodes/inspector.hpp"
 #include "nodes/camera.hpp"
@@ -50,11 +51,17 @@ namespace Tank
 		if (childCount == 0)
 			flags |= ImGuiTreeNodeFlags_Leaf;
 
+		// Add node name to the tree, clicking on this node will set `nodeExpanded` to true if not a leaf node.
+		ImVec4 nodeNameCol = Colour::NORMAL;
+		if (!node->getEnabled()) nodeNameCol = Colour::DISABLED;
+		ImGui::PushStyleColor(ImGuiCol_Text, nodeNameCol);
 		bool nodeExpanded = ImGui::TreeNodeEx((node->getName() + "##" + std::to_string(*count)).c_str(), flags);
+		ImGui::PopStyleColor();
 		
-		// `node` can be deleted here, if it is then end the iteration.
+		// Draw the right-click options, if user is right-clicking and hovering. If node gets deleted here, return.
 		if (!drawNodeContextMenu(node, inspector)) goto cleanup;
 		
+		// If node was clicked on in the tree, display its children (and further descendants if their parent has previously been expanded).
 		if (nodeExpanded)
 		{
 			// If node was not deleted this frame...

@@ -52,6 +52,6 @@ namespace Tank
 
 		void updateShaders() const;
 		
-		void update(float frameDelta);
+		void update();
 	};
 }

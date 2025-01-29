@@ -91,7 +91,7 @@ namespace Tank
 
 		m_shader->use();
 
-		glm::mat4 model = getTransform()->getModelMatrix();
+		glm::mat4 model = getTransform()->getWorldMatrix();
 		m_shader->setMat4("model", model);
 		m_shader->setMat3("normalMatrix", glm::mat3(glm::inverseTranspose(model)));
 

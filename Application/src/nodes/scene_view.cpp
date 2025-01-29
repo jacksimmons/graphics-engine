@@ -49,16 +49,16 @@ namespace Tank
 	}
 
 
-	void SceneView::update(float frameDelta)
+	void SceneView::update()
 	{
 		int fbW = m_fb->getW(), fbH = m_fb->getH();
 
 		// Set viewport to fbo, render into fbo, set viewport to std.
 		glViewport(0, 0, fbW, fbH);
-		m_fb->update(frameDelta);
+		m_fb->update();
 		glViewport(0, 0, m_sceneW, m_sceneH);
 
-		UI::update(frameDelta);
+		UI::update();
 	}
 
 

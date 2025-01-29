@@ -50,6 +50,6 @@ namespace Tank
 		void setRotSpeed(float speed) noexcept { m_rotSpeed = speed; }
 		float getRotSpeed() const noexcept { return m_rotSpeed; }
 
-		void update(float) override;
+		void update() override;
 	};
 }

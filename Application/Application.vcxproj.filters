@@ -37,6 +37,12 @@
     <Filter Include="Header Files\nodes\models">
       <UniqueIdentifier>{d71e33e0-d89f-4ea2-aca4-b279cdd14629}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\static">
+      <UniqueIdentifier>{6f15d493-931d-4c19-b290-eed2bc435a80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\static">
+      <UniqueIdentifier>{3b5de89f-9540-4c2e-8ae1-c5ccdbfff755}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\glad\glad.h">
@@ -135,6 +141,9 @@
     <ClInclude Include="src\script.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\static\time.hpp">
+      <Filter>Header Files\static</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file.cpp">
@@ -223,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="src\script.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\static\time.cpp">
+      <Filter>Source Files\static</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

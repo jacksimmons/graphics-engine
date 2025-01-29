@@ -34,6 +34,7 @@ namespace Tank
 
 			drawNodeSection();
 
+			// Draw Node subclass sections
 			if (Model *model = dynamic_cast<Model *>(m_inspectedNode))
 				drawModelSection(model);
 
@@ -55,7 +56,7 @@ namespace Tank
 	void Inspector::drawNodeSection() const
 	{
 		Transform *transform = m_inspectedNode->getTransform();
-		const glm::mat4 &modelMatrix = transform->getModelMatrix();
+		const glm::mat4 &modelMatrix = transform->getWorldMatrix();
 
 		bool enabled = m_inspectedNode->getEnabled();
 		if (ImGui::Checkbox("Enabled", &enabled))
@@ -185,14 +186,14 @@ namespace Tank
 
 		ImGui::TextColored(Colour::TITLE, "Camera Pan Speed");
 		float panSpd = camera->getPanSpeed();
-		if (ImGui::InputFloat("##Camera_PanSpd", &panSpd))
+		if (ImGui::InputFloat("##Inspector_Camera_PanSpd", &panSpd))
 		{
 			camera->setPanSpeed(panSpd);
 		}
 
 		ImGui::TextColored(Colour::TITLE, "Camera Rotation Speed");
 		float rotSpd = camera->getRotSpeed();
-		if (ImGui::InputFloat("##Camera_RotSpd", &rotSpd))
+		if (ImGui::InputFloat("##Inspector_Camera_RotSpd", &rotSpd))
 		{
 			camera->setRotSpeed(rotSpd);
 		}
@@ -207,7 +208,7 @@ namespace Tank
 
 		ImGui::TextColored(Colour::TITLE, "Ambient Intensity (RGB)");
 		Widget::vec3Input(
-			"##Inspector_Ambient",
+			"##Inspector_Light_Ambient",
 			light->getAmbient(),
 			[&light](glm::vec3 newAmbient)
 			{
@@ -218,7 +219,7 @@ namespace Tank
 
 		ImGui::TextColored(Colour::TITLE, "Diffuse Intensity (RGB)");
 		Widget::vec3Input(
-			"##Inspector_Diffuse",
+			"##Inspector_Light_Diffuse",
 			light->getDiffuse(),
 			[&light](glm::vec3 newDiffuse)
 			{
@@ -229,7 +230,7 @@ namespace Tank
 
 		ImGui::TextColored(Colour::TITLE, "Specular Intensity (RGB)");
 		Widget::vec3Input(
-			"##Inspector_Specular",
+			"##Inspector_Light_Specular",
 			light->getSpecular(),
 			[&light](glm::vec3 newSpecular)
 			{
@@ -237,6 +238,26 @@ namespace Tank
 			}
 		);
 		//ImGui::Text(glm::to_string(light->getSpecular()).c_str());
+
+		// Draw Light subclass sections
+		if (DirLight *dir = dynamic_cast<DirLight *>(light))
+		{
+			drawDirLightSection(dir);
+		}
+	}
+
+
+	void Inspector::drawDirLightSection(DirLight *dir) const
+	{
+		ImGui::TextColored(Colour::TITLE, "Light Direction");
+		Widget::vec3Input(
+			"##Inspector_DirLight_Direction",
+			dir->getDirection(),
+			[&dir](glm::vec3 newDirection)
+			{
+				dir->setDirection(newDirection);
+			}
+		);
 	}
 
 

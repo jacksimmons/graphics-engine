@@ -21,6 +21,7 @@
 #include "texture.hpp"
 #include "framebuffer.hpp"
 #include "transform.hpp"
+#include "script.hpp"
 #include "nodes/node.hpp"
 #include "nodes/model.hpp"
 #include "nodes/hierarchy.hpp"
@@ -29,7 +30,7 @@
 #include "nodes/light.hpp"
 #include "nodes/models/cube.hpp"
 #include "nodes/models/primitive.hpp"
-#include "script.hpp"
+#include "static/time.hpp"
 
 
 // Enable debug output
@@ -241,7 +242,7 @@ void Editor::run()
 		handleKeyInput();
 		// Decay input states (comes after handleKeyInput)
 		m_keyInput->update();
-		m_system->update(lastFrameDelta);
+		m_system->update();
 		//ImGui::ShowDemoWindow();
 
 		ImGui::End();
@@ -260,6 +261,7 @@ void Editor::run()
 		glfwSwapBuffers(m_window);
 
 		frameEnd = std::clock();
+		
 		lastFrameDelta = (frameEnd - frameStart) / (float)CLOCKS_PER_SEC;
 	}
 }

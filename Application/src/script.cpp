@@ -1,6 +1,7 @@
 #include <type_traits>
 #include "script.hpp"
 #include "log.hpp"
+#include "static/time.hpp"
 #include "nodes/node.hpp"
 #include "nodes/models/cube.hpp"
 
@@ -23,9 +24,9 @@ namespace Tank
 	NewScript::NewScript(Cube *cube) : Script(cube) {}
 
 
-	void NewScript::update(float frameDelta)
+	void NewScript::update()
 	{
 		auto transform = m_node->getTransform();
-		transform->setTranslation(glm::vec3{ frameDelta, 0, 0 });
+		transform->setTranslation(glm::vec3{ Time::getFrameDelta(), 0, 0 });
 	}
 }
