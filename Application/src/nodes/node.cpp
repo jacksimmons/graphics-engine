@@ -7,6 +7,7 @@
 #include "log.hpp"
 #include "transform.hpp"
 #include "script.hpp"
+#include "static/time.hpp"
 
 
 namespace Tank
@@ -14,7 +15,7 @@ namespace Tank
 	Node::Node(const std::string &name = "Node")
 	{
 		m_name = name;
-		m_transform = std::make_unique<Transform>();
+		m_transform = std::make_unique<Transform>(this);
 		m_parent = nullptr;
 	}
 
@@ -110,19 +111,19 @@ namespace Tank
 	{
 	}
 
-	void Node::update(float frameDelta)
+	void Node::update()
 	{
 		if (!m_enabled) return;
 		if (m_visible) draw();
 
 		for (auto const &script : m_scripts)
 		{
-			script->update(frameDelta);
+			script->update();
 		}
 
 		for (auto const &child : m_children)
 		{
-			child->update(frameDelta);
+			child->update();
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace Tank
 		GLuint getTexColBuf() const noexcept { return m_texColBuf; }
 		constexpr int getW() const noexcept { return m_w; }
 		constexpr int getH() const noexcept { return m_h; }
-		void update(float frameDelta) const;
+		void update() const;
 		void rescale(int w, int h);
 	};
 }

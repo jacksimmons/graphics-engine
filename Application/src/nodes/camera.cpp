@@ -72,7 +72,7 @@ namespace Tank
 	/// 3. Rotate the up vector around origin with R.
 	/// Combining these gives the view matrix.
 	/// </summary>
-	void Camera::update(float _)
+	void Camera::update()
 	{
 		// Transformed vector
 		glm::vec3 t_centre = getTransformedCentre();

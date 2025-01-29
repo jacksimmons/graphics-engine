@@ -155,6 +155,7 @@
     <ClInclude Include="src\nodes\models\primitive.hpp" />
     <ClInclude Include="src\nodes\ui.hpp" />
     <ClInclude Include="src\script.hpp" />
+    <ClInclude Include="src\static\time.hpp" />
     <ClInclude Include="src\transformation.hpp" />
     <ClInclude Include="src\nodes\camera.hpp" />
     <ClInclude Include="src\nodes\hierarchy.hpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\script.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\static\time.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\transform.cpp" />
     <ClCompile Include="src\widget.cpp" />
