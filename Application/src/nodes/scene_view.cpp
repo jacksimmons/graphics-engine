@@ -1,4 +1,5 @@
 #include <format>
+#include <functional>
 #include <imgui.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -11,6 +12,7 @@
 #include "static/time.hpp"
 #include "nodes/scene_view.hpp"
 #include "nodes/ui/console.hpp"
+#include "colours.hpp"
 
 
 namespace Tank
@@ -145,7 +147,14 @@ namespace Tank
 		}
 
 		glPolygonMode(GL_FRONT_AND_BACK, m_polygonMode);
-		dynamic_cast<Console*>(getSibling("Console"))->addLine(std::format("Set GL polygon mode to {}",
-			m_polygonMode == GL_FILL ? "FILL" : (m_polygonMode == GL_POINT ? "POINT" : "LINE")));
+		std::string line = std::format("Set GL polygon mode to {}",
+			m_polygonMode == GL_FILL ? "FILL" : (m_polygonMode == GL_POINT ? "POINT" : "LINE"));
+
+		dynamic_cast<Console*>(getSibling("Console"))->addLine(
+			[this, line]()
+			{
+				ImGui::TextColored(Colour::ERR, line.c_str());
+			}
+		);
 	}
 }

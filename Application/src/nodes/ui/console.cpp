@@ -1,10 +1,11 @@
 #include <string>
+#include <imgui.h>
 #include "console.hpp"
 
 
 namespace Tank
 {
-	Console::Console(const std::string &name) : Panel(name){}
+	Console::Console(const std::string &name) : Panel(name, ImGuiWindowFlags_None, true){}
 
 
 	void Console::drawPanel()
@@ -12,12 +13,12 @@ namespace Tank
 		std::string linesAsStr;
 		for (auto line : m_lines)
 		{
-			ImGui::Text(line.c_str());
+			line();
 		}
 	}
 
 
-	void Console::addLine(const std::string &line)
+	void Console::addLine(std::function<void()> line)
 	{
 		m_lines.push_back(line);
 
