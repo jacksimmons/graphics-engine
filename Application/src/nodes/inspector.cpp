@@ -17,16 +17,14 @@
 
 namespace Tank
 {
-	Inspector::Inspector(const std::string &name) : UI(name)
+	Inspector::Inspector(const std::string &name) : Panel(name)
 	{
 		m_inspectedNode = nullptr;
 	}
 
 
-	void Inspector::drawUI()
+	void Inspector::drawPanel()
 	{
-		ImGui::Begin("Inspector");
-
 		if (m_inspectedNode)
 		{
 			ImGui::TextColored(Colour::TITLE, "Type");
@@ -43,10 +41,7 @@ namespace Tank
 
 			if (Light *light = dynamic_cast<Light *>(m_inspectedNode))
 				drawLightSection(light);
-		}
-
-		ImGui::End();
-		Node::draw();
+		}	
 	}
 
 	

@@ -1,6 +1,8 @@
+#include <format>
 #include <imgui.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stdio.h>
 
 #include "log.hpp"
 #include "scene.hpp"
@@ -8,16 +10,18 @@
 #include "key_input.hpp"
 #include "static/time.hpp"
 #include "nodes/scene_view.hpp"
+#include "nodes/ui/console.hpp"
 
 
 namespace Tank
 {
-	SceneView::SceneView(const std::string &name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput) : UI(name)
+	SceneView::SceneView(const std::string &name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput) : Panel(name)
 	{
 		m_sceneW = sceneViewportSize.x, m_sceneH = sceneViewportSize.y;
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
 		m_keyInput = keyInput;
 		m_isFocussed = false;
+		m_polygonMode = GL_FILL;
 	}
 
 
@@ -27,26 +31,29 @@ namespace Tank
 
 		// Just sets default panel-window size.
 		ImGui::SetNextWindowSize(ImVec2(fbW + 10.0f, fbH + 10.0f), ImGuiCond_FirstUseEver);
+		Panel::drawUI();
+	}
 
-		ImGui::Begin("SceneView");
-		{
-			ImGui::BeginChild("SceneRender");
-			m_isFocussed = ImGui::IsWindowFocused();
 
-			ImVec2 wsize = ImGui::GetWindowSize();
-			int fbWNew = wsize.x - 10;
-			int fbHNew = wsize.y - 10;
+	void SceneView::drawPanel()
+	{
+		int fbW = m_fb->getW(), fbH = m_fb->getH();
 
-			if (fbWNew != fbW || fbHNew != fbH)
-				rescale(fbWNew, fbHNew);
+		ImGui::BeginChild("SceneRender");
+		m_isFocussed = ImGui::IsWindowFocused();
 
-			ImVec2 fbsize = ImVec2((float)fbW, (float)fbH);
-			ImTextureID imTex = (ImTextureID)(intptr_t)m_fb->getTexColBuf();
+		ImVec2 wsize = ImGui::GetWindowSize();
+		int fbWNew = wsize.x - 10;
+		int fbHNew = wsize.y - 10;
 
-			ImGui::Image(imTex, fbsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-			ImGui::EndChild();
-		}
-		ImGui::End();
+		if (fbWNew != fbW || fbHNew != fbH)
+			rescale(fbWNew, fbHNew);
+
+		ImVec2 fbsize = ImVec2((float)fbW, (float)fbH);
+		ImTextureID imTex = (ImTextureID)(intptr_t)m_fb->getTexColBuf();
+
+		ImGui::Image(imTex, fbsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+		ImGui::EndChild();
 	}
 
 
@@ -69,7 +76,7 @@ namespace Tank
 	}
 
 	
-	void SceneView::handleKeyInput() const
+	void SceneView::handleKeyInput()
 	{
 		if (!m_isFocussed) return;
 
@@ -79,7 +86,7 @@ namespace Tank
 		float rotSpd = cam->getRotSpeed();
 
 		if (m_keyInput->getKeyState(GLFW_KEY_F1) == KeyState::Pressed)
-			m_keyInput->cycleRenderMode();
+			cyclePolygonMode();
 
 		float frameDelta = Time::getFrameDelta();
 
@@ -119,5 +126,26 @@ namespace Tank
 
 		if (m_keyInput->getKeyState(GLFW_KEY_O) == KeyState::Held)
 			cam->rotate(glm::vec3(0.0f, 0.0f, -frameDelta * rotSpd));
+	}
+
+
+	void SceneView::cyclePolygonMode()
+	{
+		switch (m_polygonMode)
+		{
+		case GL_FILL:
+			m_polygonMode = GL_POINT;
+			break;
+		case GL_POINT:
+			m_polygonMode = GL_LINE;
+			break;
+		case GL_LINE:
+			m_polygonMode = GL_FILL;
+			break;
+		}
+
+		glPolygonMode(GL_FRONT_AND_BACK, m_polygonMode);
+		dynamic_cast<Console*>(getSibling("Console"))->addLine(std::format("Set GL polygon mode to {}",
+			m_polygonMode == GL_FILL ? "FILL" : (m_polygonMode == GL_POINT ? "POINT" : "LINE")));
 	}
 }

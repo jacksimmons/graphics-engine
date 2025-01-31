@@ -1,14 +1,14 @@
 #pragma once
 #include <memory>
 #include <type_traits>
-#include "nodes/ui.hpp"
+#include "nodes/ui/panel.hpp"
 
 
 namespace Tank
 {
 	class Inspector;
 	class Node;
-	class Hierarchy : public UI
+	class Hierarchy : public Panel
 	{
 		// Fields
 	private:
@@ -42,7 +42,7 @@ namespace Tank
 		/// Generates buttons for all children of the current node, at a given
 		/// indentation depth (based on the generation depth).
 		/// </summary>
-		void drawUI() override;
+		virtual void drawPanel() override;
 	public:
 		Hierarchy(const std::string &name);
 	};

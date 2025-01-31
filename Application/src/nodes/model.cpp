@@ -70,7 +70,7 @@ namespace Tank
 		auto cam = Scene::getActiveScene()->getActiveCamera();
 		auto P = cam->getProj();
 		auto V = cam->getView();
-		auto M = getTransform()->getModelMatrix();
+		auto M = getTransform()->getWorldMatrix();
 		auto VM = V * M;
 		m_shader->setMat4("PVM", P * VM);
 		m_shader->setMat4("VM", VM);

@@ -15,22 +15,17 @@
 
 namespace Tank
 {
-	Hierarchy::Hierarchy(const std::string &name) : UI(name)
+	Hierarchy::Hierarchy(const std::string &name) : Panel(name)
 	{
 	}
 
 
-	void Hierarchy::drawUI()
+	void Hierarchy::drawPanel()
 	{
 		Node *root = Tank::Scene::getActiveScene();
 
-		ImGui::Begin("Hierarchy");
-
 		int count = 0;
 		drawRecursive(root, &count);
-		ImGui::End();
-
-		Node::draw();
 	}
 
 

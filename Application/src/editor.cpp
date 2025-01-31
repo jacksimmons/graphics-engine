@@ -27,6 +27,7 @@
 #include "nodes/hierarchy.hpp"
 #include "nodes/scene_view.hpp"
 #include "nodes/inspector.hpp"
+#include "nodes/ui/console.hpp"
 #include "nodes/light.hpp"
 #include "nodes/models/cube.hpp"
 #include "nodes/models/primitive.hpp"
@@ -207,6 +208,7 @@ void Editor::loadScene()
 	}));
 
 	m_system->addChild(std::make_unique<Tank::SceneView>("SceneView", m_settings->windowSize, m_settings->windowSize, m_keyInput.get()));
+	m_system->addChild(std::make_unique<Tank::Console>("Console"));
 }
 
 
