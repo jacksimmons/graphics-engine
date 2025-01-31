@@ -8,6 +8,7 @@ namespace Tank
 {
 	Camera::Camera(const std::string &name, glm::vec3 eye, glm::vec3 centre, glm::vec3 up) : Node(name)
 	{
+		// Create a perspective projection for this camera.
 		m_P = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 		m_V = glm::mat4(1.0f);
 		m_R = glm::mat4(1.0f);
