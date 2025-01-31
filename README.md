@@ -1,5 +1,5 @@
 # Preview
-![image](https://github.com/jacksimmons/tank-engine/assets/56202789/b035e9df-3a38-41ab-b9d4-6ea552802694)
+![image](https://github.com/user-attachments/assets/f4dd5926-2f28-4ce0-931a-19453fdd9489)
 
 # Setup
 Open the .sln file in Visual Studio 2022, and build Engine application, to generate .lib and .dll files for the Application. 
