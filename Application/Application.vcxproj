@@ -109,7 +109,7 @@
       <PreprocessorDefinitions>PLATFORM_WINDOWS;GLM_ENABLE_EXPERIMENTAL;_DEBUG;_CONSOLE;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Engine/src;$(ProjectDir)include/glm;$(SolutionDir)include;$(ProjectDir)include;$(ProjectDir)include/imgui;$(ProjectDir)include/imgui/backends;$(ProjectDir)src</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,6 +156,8 @@
     <ClInclude Include="src\nodes\models\primitive.hpp" />
     <ClInclude Include="src\nodes\textured_node.hpp" />
     <ClInclude Include="src\nodes\ui.hpp" />
+    <ClInclude Include="src\nodes\ui\console.hpp" />
+    <ClInclude Include="src\nodes\ui\panel.hpp" />
     <ClInclude Include="src\script.hpp" />
     <ClInclude Include="src\static\time.hpp" />
     <ClInclude Include="src\transformation.hpp" />
@@ -197,6 +199,8 @@
     <ClCompile Include="src\nodes\node.cpp" />
     <ClCompile Include="src\nodes\textured_node.cpp" />
     <ClCompile Include="src\nodes\ui.cpp" />
+    <ClCompile Include="src\nodes\ui\console.cpp" />
+    <ClCompile Include="src\nodes\ui\panel.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\script.cpp" />
     <ClCompile Include="src\shader.cpp" />

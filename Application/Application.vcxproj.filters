@@ -43,6 +43,12 @@
     <Filter Include="Source Files\static">
       <UniqueIdentifier>{3b5de89f-9540-4c2e-8ae1-c5ccdbfff755}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\nodes\ui">
+      <UniqueIdentifier>{0a5bdd0d-39e1-4b95-9728-ddf631fe85f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nodes\ui">
+      <UniqueIdentifier>{8b451d7c-9ad9-4083-a4fc-b4dc964e6428}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\glad\glad.h">
@@ -96,12 +102,6 @@
     <ClInclude Include="src\editor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\nodes\hierarchy.hpp">
-      <Filter>Header Files\nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\nodes\inspector.hpp">
-      <Filter>Header Files\nodes</Filter>
-    </ClInclude>
     <ClInclude Include="include\imgui\backends\imgui_impl_opengl3.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
@@ -110,9 +110,6 @@
     </ClInclude>
     <ClInclude Include="include\imgui\backends\imgui_impl_glfw.h">
       <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\nodes\scene_view.hpp">
-      <Filter>Header Files\nodes</Filter>
     </ClInclude>
     <ClInclude Include="src\framebuffer.hpp">
       <Filter>Header Files</Filter>
@@ -135,9 +132,6 @@
     <ClInclude Include="src\nodes\models\cube.hpp">
       <Filter>Header Files\nodes\models</Filter>
     </ClInclude>
-    <ClInclude Include="src\nodes\ui.hpp">
-      <Filter>Header Files\nodes</Filter>
-    </ClInclude>
     <ClInclude Include="src\script.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,6 +143,24 @@
     </ClInclude>
     <ClInclude Include="src\nodes\textured_node.hpp">
       <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\ui\panel.hpp">
+      <Filter>Header Files\nodes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\hierarchy.hpp">
+      <Filter>Header Files\nodes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\inspector.hpp">
+      <Filter>Header Files\nodes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\ui.hpp">
+      <Filter>Header Files\nodes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\scene_view.hpp">
+      <Filter>Header Files\nodes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodes\ui\console.hpp">
+      <Filter>Header Files\nodes\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,23 +203,14 @@
     <ClCompile Include="src\editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\nodes\hierarchy.cpp">
-      <Filter>Source Files\nodes</Filter>
-    </ClCompile>
     <ClCompile Include="include\imgui\imgui_demo.cpp">
       <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\nodes\inspector.cpp">
-      <Filter>Source Files\nodes</Filter>
     </ClCompile>
     <ClCompile Include="include\imgui\backends\imgui_impl_glfw.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="include\imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\nodes\scene_view.cpp">
-      <Filter>Source Files\nodes</Filter>
     </ClCompile>
     <ClCompile Include="src\framebuffer.cpp">
       <Filter>Source Files</Filter>
@@ -233,9 +236,6 @@
     <ClCompile Include="src\nodes\models\cube.cpp">
       <Filter>Source Files\nodes\models</Filter>
     </ClCompile>
-    <ClCompile Include="src\nodes\ui.cpp">
-      <Filter>Source Files\nodes</Filter>
-    </ClCompile>
     <ClCompile Include="src\script.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -247,6 +247,24 @@
     </ClCompile>
     <ClCompile Include="src\nodes\textured_node.cpp">
       <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\ui\panel.cpp">
+      <Filter>Source Files\nodes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\ui.cpp">
+      <Filter>Source Files\nodes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\scene_view.cpp">
+      <Filter>Source Files\nodes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\inspector.cpp">
+      <Filter>Source Files\nodes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\hierarchy.cpp">
+      <Filter>Source Files\nodes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\nodes\ui\console.cpp">
+      <Filter>Source Files\nodes\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

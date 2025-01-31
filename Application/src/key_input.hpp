@@ -21,7 +21,6 @@ namespace Tank
 	{
 	private:
 		static std::vector<KeyInput *> s_instances;
-		static int s_renderMode;
 		std::map<int, KeyState> m_keys;
 
 		static void callback(GLFWwindow *win, int key, int scancode, int action, int mods);
@@ -32,7 +31,6 @@ namespace Tank
 
 		static void setupKeyInputs(GLFWwindow *window);
 		KeyState getKeyState(int key);
-		void cycleRenderMode();
 		void update();
 	};
 }

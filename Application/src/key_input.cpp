@@ -8,7 +8,6 @@ namespace Tank
 {
 	// Initialisation of s_instances must be done in cpp.
 	std::vector<KeyInput *> KeyInput::s_instances;
-	int KeyInput::s_renderMode = GL_FILL;
 
 
 	KeyInput::KeyInput(std::vector<int> monitoredKeys)
@@ -85,25 +84,6 @@ namespace Tank
 
 		// endif
 		return result;
-	}
-
-
-	void KeyInput::cycleRenderMode()
-	{
-		switch (s_renderMode)
-		{
-		case GL_FILL:
-			s_renderMode = GL_POINT;
-			break;
-		case GL_POINT:
-			s_renderMode = GL_LINE;
-			break;
-		case GL_LINE:
-			s_renderMode = GL_FILL;
-			break;
-		}
-
-		glPolygonMode(GL_FRONT_AND_BACK, s_renderMode);
 	}
 
 
