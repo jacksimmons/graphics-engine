@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include "nodes/node.hpp"
 
 
 namespace Tank
@@ -11,7 +12,7 @@ namespace Tank
 	class Light;
 	class Shader;
 
-	class Scene
+	class Scene : public Node
 	{
 		friend class Hierarchy;
 		// Static
@@ -31,7 +32,6 @@ namespace Tank
 
 		// Instance
 	private:
-		std::unique_ptr<Node> m_root;
 		Camera *m_activeCamera;
 		std::vector<Light *> m_activeLights;
 
@@ -39,17 +39,15 @@ namespace Tank
 	public:
 		// A Scene has ownership of the entire Node hierarchy, and a reference to
 		// the active camera.
-		Scene(std::unique_ptr<Node> root, Camera *cam);
-		~Scene();
-
-		Node *getRoot() const noexcept { return m_root.get(); }
+		Scene(const std::string &name = "Scene");
 		
 		Camera *getActiveCamera() const noexcept { return m_activeCamera; }
+		void setActiveCamera(Camera *camera) noexcept { m_activeCamera = camera; }
 		
 		void addLight(Light *);
 		void removeLight(Light *);
 		std::vector<Light *> getActiveLights() const { return m_activeLights; }
 		
-		void update();
+		virtual void update() override;
 	};
 }

@@ -1,23 +1,22 @@
 #version 460 core
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec2 aTexCoords;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
+layout (location = 2) in vec2 tex_coords;
 
-out vec3 Normal;
-out vec3 FragPos;
-out vec2 TexCoords;
+out vec3 frag_normal;
+out vec3 frag_pos;
+out vec2 frag_tex_coords;
 
-uniform mat4 proj;
-uniform mat4 view;
-uniform mat4 model;
-uniform mat3 normalMatrix; // inversetranspose(model)
+uniform mat4 PVM;
+uniform mat4 VM;
+uniform mat4 VM_it;
 
 
 void main()
 {
-    Normal = normalMatrix * aNormal;
-    FragPos = vec3(model * vec4(aPos, 1.0));
-    TexCoords = aTexCoords;
+    gl_Position = PVM * vec4(position, 1.0);
 
-    gl_Position = proj * view * vec4(FragPos, 1.0);
+    frag_pos = vec3(VM * vec4(position, 1.0f));
+    frag_normal = vec3(VM_it * vec4(normalize(normal), 1.0f));
+    frag_tex_coords = tex_coords;
 }

@@ -155,14 +155,16 @@ namespace Tank
 		std::string vshader;
 		if (File::readAllLines("src/shaders" / vertPath, &vshader))
 		{
-			ImGui::Text(vshader.c_str());
+			// https://github.com/ocornut/imgui/issues/2429
+			ImGui::TextUnformatted(vshader.c_str());
 		}
 
 		ImGui::TextColored(Colour::TITLE, "Fragment Shader");
 		std::string fshader;
 		if (File::readAllLines("src/shaders" / fragPath, &fshader))
 		{
-			ImGui::Text(fshader.c_str());
+			// https://github.com/ocornut/imgui/issues/2429
+			ImGui::TextUnformatted(fshader.c_str());
 		}
 	}
 

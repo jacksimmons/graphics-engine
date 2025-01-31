@@ -22,7 +22,7 @@ namespace Tank
 
 	void Hierarchy::drawUI()
 	{
-		Node *root = Tank::Scene::getActiveScene()->getRoot();
+		Node *root = Tank::Scene::getActiveScene();
 
 		ImGui::Begin("Hierarchy");
 

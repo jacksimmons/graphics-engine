@@ -47,7 +47,8 @@ namespace Tank
 
 
 	Skybox::Skybox(const std::string &name)
-		: CubeMap(name, "skybox.vert", "skybox.frag", { "skybox/right.jpg", "skybox/left.jpg", "skybox/top.jpg", "skybox/bottom.jpg", "skybox/front.jpg", "skybox/back.jpg" })
+		// ! Bottom and top are switched
+		: CubeMap(name, "skybox.vert", "skybox.frag", { "skybox/right.jpg", "skybox/left.jpg", "skybox/bottom.jpg", "skybox/top.jpg", "skybox/front.jpg", "skybox/back.jpg" })
 	{
 	}
 }
