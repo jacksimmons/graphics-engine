@@ -148,7 +148,7 @@ namespace Tank
 
 		ImGui::TextColored(Colour::TITLE, "Vertex Shader");
 		std::string vshader;
-		if (File::readAllLines("src/shaders" / vertPath, &vshader))
+		if (File::readAllLines("shaders" / vertPath, &vshader))
 		{
 			// https://github.com/ocornut/imgui/issues/2429
 			ImGui::TextUnformatted(vshader.c_str());
@@ -156,7 +156,7 @@ namespace Tank
 
 		ImGui::TextColored(Colour::TITLE, "Fragment Shader");
 		std::string fshader;
-		if (File::readAllLines("src/shaders" / fragPath, &fshader))
+		if (File::readAllLines("shaders" / fragPath, &fshader))
 		{
 			// https://github.com/ocornut/imgui/issues/2429
 			ImGui::TextUnformatted(fshader.c_str());

@@ -1,5 +1,4 @@
 #pragma once
-#ifdef PLATFORM_WINDOWS
 #include <iostream>
 #include <memory>
 
@@ -21,4 +20,3 @@ int main(int argc, char **argv)
 		spdlog::shutdown();
 	}
 }
-#endif

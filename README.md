@@ -1,9 +1,15 @@
 # Preview
 ![image](https://github.com/user-attachments/assets/f4dd5926-2f28-4ce0-931a-19453fdd9489)
 
-# Setup
-Open the .sln file in Visual Studio 2022, and build Engine application, to generate .lib and .dll files for the Application. 
-Then run the solution. 
+# Use
+[Generate project files with Premake]https://premake.github.io/docs/Using-Premake#using-premake-to-generate-project-files
+Premake executable is located in `vendor/bin/premake`.
+
+# Supported Platforms
+    Microsoft Visual Studio 2005-2022
+    GNU Make, including Cygwin and MinGW
+    Xcode
+    Codelite
 
 # Modules Used
 [Dear ImGui](https://github.com/ocornut/imgui)  
