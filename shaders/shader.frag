@@ -30,11 +30,11 @@ struct PointLight
 
 uniform Material material;
 
-#define NUM_DIR_LIGHTS 1
-uniform DirLight dirLights[NUM_DIR_LIGHTS];
-
-#define NUM_POINT_LIGHTS 1
-uniform PointLight pointLights[NUM_POINT_LIGHTS];
+#define MAX_LIGHTS 64
+uniform int num_dir_lights;
+uniform DirLight dirLights[MAX_LIGHTS];
+uniform int num_point_lights;
+uniform PointLight pointLights[MAX_LIGHTS];
 
 uniform vec3 tex_scale;
 uniform mat4 V;
@@ -62,7 +62,7 @@ void main()
 //    }
 
     // Point lights
-    for (int i = 0; i < NUM_POINT_LIGHTS; i++)
+    for (int i = 0; i < num_point_lights; i++)
     {
         result += calcPointLight(pointLights[i], norm_normal, frag_pos);
     }

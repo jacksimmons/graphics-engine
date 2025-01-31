@@ -61,6 +61,8 @@ namespace Tank
 
 		void setDirection(glm::vec3 direction) { m_direction = direction; }
 		glm::vec3 getDirection() const { return m_direction; }
+
+		static int getCount() { return s_count; }
 	};
 
 
@@ -76,5 +78,7 @@ namespace Tank
 		~PointLight();
 
 		void updateShader(Shader *) override;
+
+		static int getCount() { return s_count; }
 	};
 }

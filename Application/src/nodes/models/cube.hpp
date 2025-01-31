@@ -7,7 +7,13 @@ namespace Tank
 	class Cube : public Model
 	{
 	public:
-		Cube(const std::string &name, const std::string &vsName="shader.vert", const std::string &fsName="shader.frag");
+		Cube(
+			const std::string &name,
+			const std::string &vsName="lightCubeShader.vert",
+			const std::string &fsName="lightCubeShader.frag",
+			const std::string &diffuse = "",
+			const std::string &specular = ""
+		);
 
 		virtual void draw() override;
 

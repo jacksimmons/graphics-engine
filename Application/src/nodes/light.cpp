@@ -31,16 +31,20 @@ namespace Tank
 	{
 		m_index = DirLight::s_count;
 		m_lightArrayName = "dirLights";
-		DirLight::s_count++;
 
+		if (DirLight::s_count >= 64)
+		{
+			TE_CORE_WARN("Reached limit of DirLight lights; this light will not apply to shaders.");
+			return;
+		}
+
+		DirLight::s_count++;
 		m_scene->addLight(this);
 	}
 
 
 	DirLight::~DirLight()
 	{
-		TE_CORE_INFO("Dir Destructor called");
-
 		DirLight::s_count--;
 	}
 
@@ -60,8 +64,14 @@ namespace Tank
 	{
 		m_index = PointLight::s_count;
 		m_lightArrayName = "pointLights";
-		PointLight::s_count++;
 
+		if (PointLight::s_count >= 64)
+		{
+			TE_CORE_WARN("Reached limit of PointLight lights; this light will not apply to shaders.");
+			return;
+		}
+
+		PointLight::s_count++;
 		m_scene->addLight(this);
 	}
 
