@@ -155,8 +155,12 @@ void Editor::loadScene()
 		scene->addChild(std::make_unique<Tank::Skybox>("Skybox"));
 		scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
-		auto cube = std::make_unique<Tank::Cube>("Awesomeface", "shader.vert", "shader.frag");
+		auto cube = std::make_unique<Tank::Cube>("Container", "shader.vert", "shader.frag");
 		scene->addChild(std::move(cube));
+		auto floor = std::make_unique<Tank::Cube>("Floor");
+		floor->getTransform()->setScale({ 100, 0.1, 100 });
+		floor->getTransform()->setTranslation({ 0, -0.55, 0 });
+		scene->addChild(std::move(floor));
 
 		// Set the active scene and m_scene
 		Tank::Scene::setActiveScene(scene.get());
@@ -169,7 +173,7 @@ void Editor::loadScene()
 	glm::vec3 spec{ 0.1f, 0.1f, 0.1f };
 	glm::vec3 pointLightPositions[]
 	{
-		glm::vec3(0.7f,  0.2f,  2.0f),
+		glm::vec3(0.7f,  3.0f,  2.0f),
 		glm::vec3(2.3f, -3.3f, -4.0f),
 		glm::vec3(-4.0f,  2.0f, -12.0f),
 		glm::vec3(0.0f,  0.0f, -3.0f)
@@ -181,7 +185,7 @@ void Editor::loadScene()
 		std::string name = "PtLight";
 		auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer", "lightCubeShader.vert", "lightCubeShader.frag");
 		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-		lightCube->getTransform()->setTranslation(pointLightPositions[1]);
+		lightCube->getTransform()->setTranslation(pointLightPositions[0]);
 		lightCube->addChild(std::move(light));
 		root->addChild(std::move(lightCube));
 	}

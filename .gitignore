@@ -1,13 +1,12 @@
 .vs/
 *.dir/
 **/bin/*
-**/bin-int/*
+**/out/*
 Release/
 Debug/
 x64/
 x32/
-FileExplorer*/
-out/
+**/*.vcxproj*
 
 CMakeLists.txt.user
 CMakeCache.txt

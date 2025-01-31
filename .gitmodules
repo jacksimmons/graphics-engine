@@ -7,3 +7,6 @@
 [submodule "Application/include/glm"]
 	path = Application/include/glm
 	url = https://github.com/g-truc/glm
+[submodule "Application/include/assimp"]
+	path = Application/include/assimp
+	url = https://github.com/assimp/assimp
