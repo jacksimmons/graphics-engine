@@ -19,7 +19,6 @@ namespace Tank
 		glm::vec3 m_scale;
 		glm::vec3 m_translation;
 
-		glm::mat4 getModelMatrix() const;
 	public:
 		Transform(Node *owner = nullptr);
 		virtual ~Transform() {};
@@ -28,6 +27,7 @@ namespace Tank
 		/// Recursively pre-multiplies the model matrix by parent's getWorldMatrix result.
 		/// </summary>
 		glm::mat4 getWorldMatrix() const;
+		glm::mat4 getModelMatrix() const;
 
 		const glm::quat& getRotation() const { return m_rotation; }
 		const glm::vec3& getScale() const { return m_scale; }

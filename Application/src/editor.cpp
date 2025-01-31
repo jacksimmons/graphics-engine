@@ -39,10 +39,10 @@ static void GLAPIENTRY msgCallback(GLenum source,
 	GLenum type, GLenum id, GLenum severity, GLsizei length, const GLchar* message,
 	const void* userParam)
 {
-	//fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-	//	(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-	//	type, severity, message
-	//);
+	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message
+	);
 }
 
 
@@ -149,17 +149,13 @@ void Editor::loadScene()
 {
 	// Create nodes
 	{
-		auto root = std::make_unique<Tank::Node>("Root");
-		root->addChild(std::make_unique<Tank::Camera>("Camera"));
-		root->addChild(std::make_unique<Tank::Skybox>("Skybox"));
+		auto scene = std::make_unique<Tank::Scene>();
+		scene->addChild(std::make_unique<Tank::Camera>("Camera"));
+		scene->addChild(std::make_unique<Tank::Skybox>("Skybox"));
+		scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
 		auto cube = std::make_unique<Tank::Cube>("Awesomeface", "shader.vert", "shader.frag");
-		cube->addScript(std::make_unique<Tank::NewScript>(cube.get()));
-		root->addChild(std::move(cube));
-
-		// Create camera and scene
-		Tank::Camera *cam = dynamic_cast<Tank::Camera *>(root->getChild("Camera"));
-		auto scene = std::make_unique<Tank::Scene>(std::move(root), cam);
+		scene->addChild(std::move(cube));
 
 		// Set the active scene and m_scene
 		Tank::Scene::setActiveScene(scene.get());
@@ -178,16 +174,16 @@ void Editor::loadScene()
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
-	//Tank::Node *root = Tank::Scene::getActiveScene()->getRoot();
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	std::string name = "PtLight";
-	//	auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer", "lightCubeShader.vert", "lightCubeShader.frag");
-	//	auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-	//	lightCube->getTransform()->setTranslation(pointLightPositions[1]);
-	//	lightCube->addChild(std::move(light));
-	//	root->addChild(std::move(lightCube));
-	//}
+	Tank::Node *root = Tank::Scene::getActiveScene();
+	for (int i = 0; i < 1; i++)
+	{
+		std::string name = "PtLight";
+		auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer", "lightCubeShader.vert", "lightCubeShader.frag");
+		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
+		lightCube->getTransform()->setTranslation(pointLightPositions[1]);
+		lightCube->addChild(std::move(light));
+		root->addChild(std::move(lightCube));
+	}
 
 	// Initialise input. Must be done after scene.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(
@@ -245,6 +241,7 @@ void Editor::run()
 		// Decay input states (comes after handleKeyInput)
 		m_keyInput->update();
 		m_system->update();
+		//m_scene->update();
 		//ImGui::ShowDemoWindow();
 
 		ImGui::End();

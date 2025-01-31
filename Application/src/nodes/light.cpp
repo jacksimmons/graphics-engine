@@ -48,10 +48,10 @@ namespace Tank
 	void DirLight::updateShader(Shader *shader)
 	{
 		std::string str = getLightStruct();
-		shader->setVec3(str + ".ambient", m_ambient);
-		shader->setVec3(str + ".diffuse", m_diffuse);
-		shader->setVec3(str + ".specular", m_specular);
-		shader->setVec3(str + ".direction", m_direction);
+		shader->setVec3(str + ".Ia", m_ambient);
+		shader->setVec3(str + ".Id", m_diffuse);
+		shader->setVec3(str + ".Is", m_specular);
+		shader->setVec3(str + ".dir", m_direction);
 	}
 
 
@@ -77,10 +77,10 @@ namespace Tank
 	void PointLight::updateShader(Shader *shader)
 	{
 		std::string str = getLightStruct();
-		shader->setVec3(str + ".ambient", m_ambient);
-		shader->setVec3(str + ".diffuse", m_diffuse);
-		shader->setVec3(str + ".specular", m_specular);
-		shader->setVec3(str + ".position", getTransform()->getTranslation());
+		shader->setVec3(str + ".Ia", m_ambient);
+		shader->setVec3(str + ".Id", m_diffuse);
+		shader->setVec3(str + ".Is", m_specular);
+		shader->setVec3(str + ".pos", Mat4::getTranslation(getTransform()->getWorldMatrix()));
 		shader->setFloat(str + ".constant", 1.0f);
 		shader->setFloat(str + ".linear", 0.0f);
 		shader->setFloat(str + ".quadratic", 0.0f);

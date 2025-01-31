@@ -67,22 +67,20 @@ namespace Tank
 
 		m_shader->use();
 
-		glm::mat4 model = getTransform()->getWorldMatrix();
-		m_shader->setMat4("model", model);
-		m_shader->setMat3("normalMatrix", glm::mat3(glm::inverseTranspose(model)));
-
 		auto cam = Scene::getActiveScene()->getActiveCamera();
-		m_shader->setMat4("view", cam->getView());
-		m_shader->setMat4("proj", cam->getProj());
-		m_shader->setVec3("viewPos", cam->getTransformedEye());
-		m_shader->setVec3("objectCol", { 1.0f, 1.0f, 1.0f });
+		auto P = cam->getProj();
+		auto V = cam->getView();
+		auto M = getTransform()->getModelMatrix();
+		auto VM = V * M;
+		m_shader->setMat4("PVM", P * VM);
+		m_shader->setMat4("VM", VM);
+		m_shader->setMat4("VM_it", glm::inverseTranspose(VM));
+		m_shader->setVec3("tex_scale", glm::vec3{ 1, 1, 1 });
+		m_shader->setFloat("material.Ns", 32.0f);
 
-		m_shader->setFloat("material.shininess", 32.0f);
-
-		std::vector<Light *> lights = Scene::getActiveScene()->getActiveLights();
-		for (int i = 0; i < lights.size(); i++)
+		for (Light *light : Scene::getActiveScene()->getActiveLights())
 		{
-			lights[i]->updateShader(m_shader.get());
+			light->updateShader(m_shader.get());
 		}
 
 		m_shader->unuse();
@@ -93,11 +91,6 @@ namespace Tank
 
 	void Model::update()
 	{
-		for (Light *light : Scene::getActiveScene()->getActiveLights())
-		{
-			light->updateShader(m_shader.get());
-		}
-
 		Node::update();
 	}
 }
