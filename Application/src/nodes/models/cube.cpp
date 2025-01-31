@@ -6,12 +6,12 @@
 
 namespace Tank
 {
-	Cube::Cube(const std::string &name, const std::string &vsName, const std::string &fsName)
+	Cube::Cube(const std::string &name, const std::string &vsName, const std::string &fsName, const std::string &diffuse, const std::string &specular)
 		: Model(name, vsName, fsName, (float *)&Cube::s_vertices, sizeof(Cube::s_vertices))
 	{
-		if (!addTexture("textures/container.png", GL_RGBA, "material.diffuse"))
+		if (diffuse.size() > 0 && !addTexture(diffuse, GL_RGBA, "material.diffuse"))
 			TE_CORE_ERROR("Failed to load diffuse texture.");
-		if (!addTexture("textures/specular.png", GL_RGBA, "material.specular"))
+		if (specular.size() > 0 && !addTexture(specular, GL_RGBA, "material.specular"))
 			TE_CORE_ERROR("Failed to load specular texture.");
 	}
 

@@ -155,9 +155,9 @@ void Editor::loadScene()
 		scene->addChild(std::make_unique<Tank::Skybox>("Skybox"));
 		scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
-		auto cube = std::make_unique<Tank::Cube>("Container", "shader.vert", "shader.frag");
+		auto cube = std::make_unique<Tank::Cube>("Container", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
 		scene->addChild(std::move(cube));
-		auto floor = std::make_unique<Tank::Cube>("Floor");
+		auto floor = std::make_unique<Tank::Cube>("Floor", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
 		floor->getTransform()->setScale({ 100, 0.1, 100 });
 		floor->getTransform()->setTranslation({ 0, -0.55, 0 });
 		scene->addChild(std::move(floor));

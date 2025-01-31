@@ -83,6 +83,8 @@ namespace Tank
 		{
 			light->updateShader(m_shader.get());
 		}
+		m_shader->setInt("num_dir_lights", DirLight::getCount());
+		m_shader->setInt("num_point_lights", PointLight::getCount());
 
 		m_shader->unuse();
 
