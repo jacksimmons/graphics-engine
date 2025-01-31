@@ -37,7 +37,7 @@ uniform DirLight dirLights[NUM_DIR_LIGHTS];
 uniform PointLight pointLights[NUM_POINT_LIGHTS];
 
 uniform vec3 tex_scale;
-uniform mat4 VM;
+uniform mat4 V;
 
 in vec3 frag_normal;
 in vec3 frag_pos;
@@ -96,7 +96,7 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 dirToView)
 
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
 {
-    vec3 light_dir = normalize((VM * vec4(light.pos, 1.0f)).xyz - frag_pos);
+    vec3 light_dir = normalize((V * vec4(light.pos, 1.0f)).xyz - frag_pos);
     vec3 camera_dir = -normalize(frag_pos);
 
     // === Ambient Reflection
@@ -116,7 +116,7 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
     // The `reflect` function expects a vector pointing out from
     // the light source. It is then reflected over the normal.
     float spec = 0.0f;
-    int blinn = 1;
+    int blinn = 0;
     if (blinn == 0)
     {
         // Phong

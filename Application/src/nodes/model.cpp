@@ -74,6 +74,7 @@ namespace Tank
 		auto VM = V * M;
 		m_shader->setMat4("PVM", P * VM);
 		m_shader->setMat4("VM", VM);
+		m_shader->setMat4("V", V);
 		m_shader->setMat4("VM_it", glm::inverseTranspose(VM));
 		m_shader->setVec3("tex_scale", glm::vec3{ 1, 1, 1 });
 		m_shader->setFloat("material.Ns", 32.0f);
