@@ -5,6 +5,8 @@
 #include "textured_node.hpp"
 #include "scene.hpp"
 #include "camera.hpp"
+#include "log.hpp"
+#include "texture.hpp"
 
 
 namespace Tank
@@ -31,15 +33,16 @@ namespace Tank
 	{
 		Camera *cam = Scene::getActiveScene()->getActiveCamera();
 
-		glDepthMask(GL_FALSE);
 		m_shader->use();
-
 		// Remove translation section of the transformation
 		m_shader->setMat4("view", glm::mat4(glm::mat3(cam->getView())));
 		m_shader->setMat4("proj", cam->getProj());
+
+		glDepthMask(GL_FALSE);
 		glBindVertexArray(m_vao);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, m_textures[0]);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, m_textures[0]->getTexID());
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
 		glDepthMask(GL_TRUE);
 
 		TexturedNode::draw();

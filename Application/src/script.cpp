@@ -27,6 +27,6 @@ namespace Tank
 	void NewScript::update()
 	{
 		auto transform = m_node->getTransform();
-		transform->setTranslation(glm::vec3{ Time::getFrameDelta(), 0, 0 });
+		transform->setLocalTranslation(glm::vec3{ Time::getFrameDelta(), 0, 0 });
 	}
 }

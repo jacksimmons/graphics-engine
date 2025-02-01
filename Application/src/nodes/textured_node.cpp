@@ -1,9 +1,11 @@
 #include <array>
 #include <string>
+#include <memory>
 #include "texture.hpp"
 #include "shader.hpp"
 #include "node.hpp"
 #include "textured_node.hpp"
+#include "texture.hpp"
 
 
 namespace Tank
@@ -16,15 +18,11 @@ namespace Tank
 
 	bool TexturedNode::addTexture(const std::string &filename, GLenum mode, const std::string &uniformName)
 	{
-		size_t rawTexNum = m_textures.size();
-		if (rawTexNum > 31) return false;
-
-		int texNum = (int)rawTexNum;
-		GLuint texID;
-
-		if (Texture::fromFile(filename, GL_TEXTURE0 + texNum, mode, &texID))
+		int texNum = Texture::getTexCount();
+		auto tex = Texture::fromFile(filename, GL_TEXTURE0 + texNum, mode);
+		if (tex.has_value())
 		{
-			m_textures.push_back(texID);
+			m_textures.push_back(std::move(tex.value()));
 
 			m_shader->use();
 			m_shader->setInt(uniformName, texNum);
@@ -38,15 +36,11 @@ namespace Tank
 
 	bool TexturedNode::addCubeMapTexture(const std::array<std::string, 6> &filenames, GLenum mode, const std::string &uniformName)
 	{
-		size_t rawTexNum = m_textures.size();
-		if (rawTexNum > 31) return false;
-
-		int texNum = (int)rawTexNum;
-		GLuint texID;
-
-		if (Texture::cubeMapFromFile(filenames, GL_TEXTURE0 + texNum, mode, &texID))
+		int texNum = Texture::getTexCount();
+		auto tex = Texture::cubeMapFromFile(filenames, GL_TEXTURE0 + texNum, mode);
+		if (tex.has_value())
 		{
-			m_textures.push_back(texID);
+			m_textures.push_back(std::move(tex.value()));
 
 			m_shader->use();
 			m_shader->setInt(uniformName, texNum);

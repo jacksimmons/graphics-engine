@@ -158,9 +158,10 @@ void Editor::loadScene()
 		auto cube = std::make_unique<Tank::Cube>("Container", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
 		scene->addChild(std::move(cube));
 		auto floor = std::make_unique<Tank::Cube>("Floor", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
-		floor->getTransform()->setScale({ 100, 0.1, 100 });
-		floor->getTransform()->setTranslation({ 0, -0.55, 0 });
+		floor->getTransform()->setLocalScale({ 100, 0.1, 100 });
+		floor->getTransform()->setLocalTranslation({ 0, -0.55, 0 });
 		scene->addChild(std::move(floor));
+
 
 		// Set the active scene and m_scene
 		Tank::Scene::setActiveScene(scene.get());
@@ -183,11 +184,9 @@ void Editor::loadScene()
 	for (int i = 0; i < 1; i++)
 	{
 		std::string name = "PtLight";
-		auto lightCube = std::make_unique<Tank::Cube>("PtLightContainer", "lightCubeShader.vert", "lightCubeShader.frag");
 		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-		lightCube->getTransform()->setTranslation(pointLightPositions[0]);
-		lightCube->addChild(std::move(light));
-		root->addChild(std::move(lightCube));
+		light->getTransform()->setLocalTranslation(pointLightPositions[0]);
+		root->addChild(std::move(light));
 	}
 
 	// Initialise input. Must be done after scene.

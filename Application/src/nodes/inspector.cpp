@@ -51,7 +51,7 @@ namespace Tank
 	void Inspector::drawNodeSection() const
 	{
 		Transform *transform = m_inspectedNode->getTransform();
-		const glm::mat4 &modelMatrix = transform->getWorldMatrix();
+		const glm::mat4 &modelMatrix = transform->getWorldModelMatrix();
 
 		bool enabled = m_inspectedNode->getEnabled();
 		if (ImGui::Checkbox("Enabled", &enabled))
@@ -87,8 +87,9 @@ namespace Tank
 			auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
 			if (cam != nullptr)
 			{
-				cam->setPosition(transform->getTranslation());
-				cam->setRotation(transform->getRotation());
+				glm::mat4 worldMatrix = transform->getWorldModelMatrix();
+				cam->setPosition(Mat4::getTranslation(worldMatrix));
+				cam->setRotation(Mat4::getTranslation(worldMatrix));
 			}
 		}
 
@@ -109,30 +110,30 @@ namespace Tank
 		ImGui::TextColored(Colour::TITLE, "Translation");
 		Widget::vec3Input(
 			"##Inspector_Translation",
-			transform->getTranslation(),
+			transform->getLocalTranslation(),
 			[&transform](glm::vec3 newTranslation)
 			{
-				transform->setTranslation(newTranslation);
+				transform->setLocalTranslation(newTranslation);
 			}
 		);
 
 		ImGui::TextColored(Colour::TITLE, "Scale");
 		Widget::vec3Input(
 			"##Inspector_Scale",
-			transform->getScale(),
+			transform->getLocalScale(),
 			[&transform](glm::vec3 newScale)
 			{
-				transform->setScale(newScale);
+				transform->setLocalScale(newScale);
 			}
 		);
 
 		ImGui::TextColored(Colour::TITLE, "Rotation (Euler Angles)");
 		Widget::vec3Input(
 			"##Inspector_Rotation_EulerAngles",
-			glm::eulerAngles(transform->getRotation()),
+			glm::eulerAngles(transform->getLocalRotation()),
 			[&transform](glm::vec3 newRotation)
 			{
-				transform->setRotation(Quat::fromAngleAxis(newRotation));
+				transform->setLocalRotation(Quat::fromAngleAxis(newRotation));
 			}
 		);
 	}

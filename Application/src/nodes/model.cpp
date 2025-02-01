@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <array>
 #include <memory>
+#include <algorithm>
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -45,15 +46,6 @@ namespace Tank
 		// Texture coords
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
-
-		// Textures
-		float borderColour[] = { 1.0f, 1.0f, 0.0f, 1.0f };
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColour);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
 
@@ -61,8 +53,8 @@ namespace Tank
 	{
 		for (int i = 0; i < m_textures.size(); i++)
 		{
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+			glActiveTexture(m_textures[i]->getTexPos());
+			glBindTexture(GL_TEXTURE_2D, m_textures[i]->getTexID());
 		}
 
 		m_shader->use();
@@ -70,7 +62,7 @@ namespace Tank
 		auto cam = Scene::getActiveScene()->getActiveCamera();
 		auto P = cam->getProj();
 		auto V = cam->getView();
-		auto M = getTransform()->getWorldMatrix();
+		auto M = getTransform()->getWorldModelMatrix();
 		auto VM = V * M;
 		m_shader->setMat4("PVM", P * VM);
 		m_shader->setMat4("VM", VM);

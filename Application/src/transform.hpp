@@ -26,16 +26,16 @@ namespace Tank
 		/// <summary>
 		/// Recursively pre-multiplies the model matrix by parent's getWorldMatrix result.
 		/// </summary>
-		glm::mat4 getWorldMatrix() const;
-		glm::mat4 getModelMatrix() const;
+		glm::mat4 getWorldModelMatrix() const;
+		glm::mat4 getLocalModelMatrix() const;
 
-		const glm::quat& getRotation() const { return m_rotation; }
-		const glm::vec3& getScale() const { return m_scale; }
-		const glm::vec3& getTranslation() const { return m_translation; }
+		const glm::quat& getLocalRotation() const { return m_rotation; }
+		const glm::vec3& getLocalScale() const { return m_scale; }
+		const glm::vec3& getLocalTranslation() const { return m_translation; }
 
-		void setRotation(const glm::quat &rot) { m_rotation = rot; }
-		void setScale(const glm::vec3 &scale) { m_scale = scale; }
-		void setTranslation(const glm::vec3 &trans) { m_translation = trans; }
+		void setLocalRotation(const glm::quat &rot) { m_rotation = rot; }
+		void setLocalScale(const glm::vec3 &scale) { m_scale = scale; }
+		void setLocalTranslation(const glm::vec3 &trans) { m_translation = trans; }
 		void setOwner(Node *owner) { m_owner = owner; }
 	};
 }

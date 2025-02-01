@@ -4,6 +4,7 @@
 #include "scene.hpp"
 #include "log.hpp"
 #include "nodes/light.hpp"
+#include "nodes/models/sprite.hpp"
 
 
 namespace Tank
@@ -16,6 +17,7 @@ namespace Tank
 		m_ambient(amb), m_diffuse(diff), m_specular(spec), m_index(0)
 	{
 		m_scene = Scene::getActiveScene();
+		addChild(std::move(std::make_unique<Sprite>("Gizmo", "textures/light_source.png", "textures/light_source.png")));
 	}
 
 
@@ -90,7 +92,7 @@ namespace Tank
 		shader->setVec3(str + ".Ia", m_ambient);
 		shader->setVec3(str + ".Id", m_diffuse);
 		shader->setVec3(str + ".Is", m_specular);
-		shader->setVec3(str + ".pos", Mat4::getTranslation(getTransform()->getWorldMatrix()));
+		shader->setVec3(str + ".pos", Mat4::getTranslation(getTransform()->getWorldModelMatrix()));
 		shader->setFloat(str + ".constant", 1.0f);
 		shader->setFloat(str + ".linear", 0.0f);
 		shader->setFloat(str + ".quadratic", 0.0f);
