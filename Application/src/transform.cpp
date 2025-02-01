@@ -14,7 +14,7 @@ namespace Tank
 	}
 
 
-	glm::mat4 Transform::getModelMatrix() const
+	glm::mat4 Transform::getLocalModelMatrix() const
 	{
 		return (glm::translate(glm::identity<glm::mat4>(), m_translation)
 			* glm::scale(glm::identity<glm::mat4>(), m_scale)
@@ -22,13 +22,13 @@ namespace Tank
 	}
 
 
-	glm::mat4 Transform::getWorldMatrix() const
+	glm::mat4 Transform::getWorldModelMatrix() const
 	{
 		if (m_owner->getParent())
 		{
-			return m_owner->getParent()->getTransform()->getWorldMatrix() * getModelMatrix();
+			return m_owner->getParent()->getTransform()->getWorldModelMatrix() * getLocalModelMatrix();
 		}
 
-		return getModelMatrix();
+		return getLocalModelMatrix();
 	}
 }

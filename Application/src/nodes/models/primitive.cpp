@@ -13,12 +13,12 @@ namespace Tank
 
 	void Primitive::draw()
 	{
+		Model::draw();
+
 		m_shader->use();
 		glBindVertexArray(m_vao);
 		glDrawArrays(GL_LINES, 0, 2);
 		glBindVertexArray(0);
 		m_shader->unuse();
-
-		Model::draw();
 	}
 }
