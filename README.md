@@ -1,15 +1,16 @@
 # Preview
 ![image](https://github.com/user-attachments/assets/f4dd5926-2f28-4ce0-931a-19453fdd9489)
 
-# Use
-[Generate project files with Premake](https://premake.github.io/docs/Using-Premake#using-premake-to-generate-project-files)
-Premake executable is located in vendor.
-
-# Supported Platforms
+# Requirements
+CMake
+One of the following platforms:
     Microsoft Visual Studio 2005-2022
     GNU Make, including Cygwin and MinGW
     Xcode
     Codelite
+
+# Use
+Run Premake using vendor/premake/premake5 (platform).
 
 # Modules Used
 [Dear ImGui](https://github.com/ocornut/imgui)  

@@ -45,8 +45,8 @@ namespace Tank
 		m_isFocussed = ImGui::IsWindowFocused();
 
 		ImVec2 wsize = ImGui::GetWindowSize();
-		int fbWNew = wsize.x - 10;
-		int fbHNew = wsize.y - 10;
+		int fbWNew = (int)wsize.x - 10;
+		int fbHNew = (int)wsize.y - 10;
 
 		if (fbWNew != fbW || fbHNew != fbH)
 			rescale(fbWNew, fbHNew);

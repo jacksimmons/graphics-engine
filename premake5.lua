@@ -7,6 +7,12 @@ workspace "TankEnginePremake"
     filter { "platforms:Win64" }
         system "Windows"
         architecture "x86_64"
+    filter "configurations:Debug"
+        defines { "DEBUG" }  
+        symbols "On"
+    filter "configurations:Release"
+        defines { "NDEBUG" }
+        optimize "On"
 
 project "Engine"
     kind "SharedLib"
@@ -16,12 +22,6 @@ project "Engine"
     targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
     files { "%{prj.name}/src/**.hpp", "%{prj.name}/src/**.cpp" } 
     defines { "BUILD_DLL" }
-    filter "configurations:Debug"
-        defines { "DEBUG" }  
-        symbols "On"
-    filter "configurations:Release"
-        defines { "NDEBUG" }
-        optimize "On"
 
 project "Application"
     kind "ConsoleApp"
@@ -30,15 +30,16 @@ project "Application"
     objdir "obj/%{cfg.buildcfg}"
     targetdir "bin/%{cfg.buildcfg}"
     libdirs { "bin/%{cfg.buildcfg}", "%{prj.name}/lib" }
-    links { "Engine", "opengl32", "glfw3", "glfw3dll" }
-    defines { "GLM_ENABLE_EXPERIMENTAL" }
+    links { "Engine", "opengl32", "glfw3", "glfw3dll", "assimp" }
+    defines { "GLM_ENABLE_EXPERIMENTAL", "FMT_UNICODE=0" }
     includedirs { "include",
         "Engine/src",
         "%{prj.name}/src",
         "%{prj.name}/include",
         "%{prj.name}/include/glm",
         "%{prj.name}/include/imgui",
-        "%{prj.name}/include/imgui/backends"
+        "%{prj.name}/include/imgui/backends",
+        "vendor/assimp/include"
     }
     files {
         "%{prj.name}/src/**.hpp",
@@ -54,5 +55,7 @@ project "Application"
     }
     prebuildcommands {
         "{COPYFILE} Engine/bin/%{cfg.buildcfg}/Engine.dll bin/%{cfg.buildcfg}/Engine.dll",
-        "{COPYFILE} Engine/bin/%{cfg.buildcfg}/Engine.lib bin/%{cfg.buildcfg}/Engine.lib"
+        "{COPYFILE} Engine/bin/%{cfg.buildcfg}/Engine.lib bin/%{cfg.buildcfg}/Engine.lib",
+        "{COPYFILE} vendor/assimp/lib/x64/assimp-vc143-mt.lib bin/%{cfg.buildcfg}/assimp-vc143-mt.lib",
+        "{COPYFILE} vendor/assimp/bin/x64/assimp-vc143-mt.dll bin/%{cfg.buildcfg}/assimp-vc143-mt.dll"
     }
