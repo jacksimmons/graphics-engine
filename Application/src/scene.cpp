@@ -13,6 +13,7 @@ namespace Tank
 
 	Scene::Scene(const std::string &name) : Node(name)
 	{
+		m_activeCamera = nullptr;
 	}
 
 

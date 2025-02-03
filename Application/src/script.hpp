@@ -4,8 +4,6 @@
 namespace Tank
 {
 	class Node;
-	class Cube;
-
 	class IScript
 	{
 	public:
@@ -30,12 +28,5 @@ namespace Tank
 		void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		bool getEnabled() const noexcept { return m_enabled; }
 		virtual void update() override = 0;
-	};
-
-	class NewScript : public Script<Cube>
-	{
-	public:
-		NewScript(Cube *node);
-		virtual void update() override;
 	};
 }

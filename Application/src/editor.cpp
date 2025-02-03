@@ -2,6 +2,8 @@
 #include <cmath>
 #include <iostream>
 #include <memory>
+#include <chrono>
+#include <format>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -11,7 +13,6 @@
 #include <imgui/backends/imgui_impl_glfw.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <chrono>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "editor.hpp"
@@ -22,6 +23,7 @@
 #include "framebuffer.hpp"
 #include "transform.hpp"
 #include "script.hpp"
+#include "log.hpp"
 #include "nodes/node.hpp"
 #include "nodes/model.hpp"
 #include "nodes/hierarchy.hpp"
@@ -29,8 +31,6 @@
 #include "nodes/inspector.hpp"
 #include "nodes/ui/console.hpp"
 #include "nodes/light.hpp"
-#include "nodes/models/cube.hpp"
-#include "nodes/models/primitive.hpp"
 #include "nodes/cube_map.hpp"
 #include "static/time.hpp"
 
@@ -40,10 +40,9 @@ static void GLAPIENTRY msgCallback(GLenum source,
 	GLenum type, GLenum id, GLenum severity, GLsizei length, const GLchar* message,
 	const void* userParam)
 {
-	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-		type, severity, message
-	);
+	TE_CORE_ERROR(std::format("GL CALLBACK: {} type = {}, severity = {}, message = {}",
+		type == GL_DEBUG_TYPE_ERROR ? "**GL ERROR**" : "",
+		type, severity, message));
 }
 
 
@@ -110,7 +109,6 @@ void Editor::initGL()
 	glEnable(GL_DEPTH_TEST);
 
 	// Enable debug output
-	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(msgCallback, nullptr);
 
@@ -155,13 +153,14 @@ void Editor::loadScene()
 		scene->addChild(std::make_unique<Tank::Skybox>("Skybox"));
 		scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
-		auto cube = std::make_unique<Tank::Cube>("Container", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
-		scene->addChild(std::move(cube));
-		auto floor = std::make_unique<Tank::Cube>("Floor", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
-		floor->getTransform()->setLocalScale({ 100, 0.1, 100 });
-		floor->getTransform()->setLocalTranslation({ 0, -0.55, 0 });
-		scene->addChild(std::move(floor));
-
+		auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "models/backpack/backpack.obj");
+		scene->addChild(std::move(backpack));
+		//auto cube = std::make_unique<Tank::Cube>("Container", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
+		//scene->addChild(std::move(cube));
+		//auto floor = std::make_unique<Tank::Cube>("Floor", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
+		//floor->getTransform()->setLocalScale({ 100, 0.1, 100 });
+		//floor->getTransform()->setLocalTranslation({ 0, -0.55, 0 });
+		//scene->addChild(std::move(floor));
 
 		// Set the active scene and m_scene
 		Tank::Scene::setActiveScene(scene.get());

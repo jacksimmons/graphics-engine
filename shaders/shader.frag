@@ -1,8 +1,9 @@
 #version 460 core
+#define MAX_TEXTURES 2
 struct Material
 {
-    sampler2D Kd;
-    sampler2D Ks;
+    sampler2D[MAX_TEXTURES] diffuse;
+    sampler2D[MAX_TEXTURES] specular;
     float Ns;
 };
 
@@ -100,7 +101,11 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
     vec3 camera_dir = -normalize(frag_pos);
 
     // === Ambient Reflection
-    vec3 ambient = light.Ia * vec3(texture(material.Kd, frag_tex_coords * tex_scale.xy));
+    vec3 ambient;
+    for (int i = 0; i < MAX_TEXTURES; i++)
+    {
+        ambient += light.Ia * vec3(texture(material.diffuse[i], frag_tex_coords * tex_scale.xy));
+    }
 
     // === Diffuse Reflection
     // A . B = |A||B|cos(theta)
@@ -109,7 +114,11 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
     // If the angle > 90 deg, then dot product becomes negative.
     // max function ensures negative lighting does not occur (which is undefined).
     float angle_normal_light = max(dot(normal, light_dir), 0.0f);
-    vec3 diffuse = light.Id * vec3(texture(material.Kd, frag_tex_coords * tex_scale.xy)) * angle_normal_light;
+    vec3 diffuse;
+    for (int i = 0; i < MAX_TEXTURES; i++)
+    {
+        diffuse += light.Id * vec3(texture(material.diffuse[i], frag_tex_coords * tex_scale.xy)) * angle_normal_light;
+    }
 
     // === Specular Reflection
     // Need to negate light_dir, as it points toward the light.
@@ -130,8 +139,13 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
         spec = pow(max(dot(normal, halfway_dir), 0.0f), material.Ns);
     }
 
-    vec3 specular = light.Is * vec3(texture(material.Ks, frag_tex_coords * tex_scale.xy)) * spec;
     
+    vec3 specular;
+    for (int i = 0; i < MAX_TEXTURES; i++)
+    {
+        specular += light.Is * vec3(texture(material.specular[i], frag_tex_coords * tex_scale.xy)) * spec;
+    }
+
     // Overwrite specular component if exponent is 0
     if (material.Ns == 0) {
         specular = vec3(0.0f);

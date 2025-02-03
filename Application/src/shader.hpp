@@ -34,7 +34,7 @@ namespace Tank
 	{
 	private:
 		GLuint m_id;
-		GLuint getLoc(const std::string &name) const { return glGetUniformLocation(m_id, name.c_str()); }
+		GLint getLoc(const std::string &name) const { return glGetUniformLocation(m_id, name.c_str()); }
 
 		// Filepath of shader files
 		std::filesystem::path m_vsPath;

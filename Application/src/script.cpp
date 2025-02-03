@@ -3,7 +3,6 @@
 #include "log.hpp"
 #include "static/time.hpp"
 #include "nodes/node.hpp"
-#include "nodes/models/cube.hpp"
 
 
 namespace Tank
@@ -18,15 +17,5 @@ namespace Tank
 		}
 
 		m_node = node;
-	}
-
-
-	NewScript::NewScript(Cube *cube) : Script(cube) {}
-
-
-	void NewScript::update()
-	{
-		auto transform = m_node->getTransform();
-		transform->setLocalTranslation(glm::vec3{ Time::getFrameDelta(), 0, 0 });
 	}
 }

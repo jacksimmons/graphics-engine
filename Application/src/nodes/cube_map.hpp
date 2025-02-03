@@ -1,18 +1,20 @@
 #pragma once
+#include <memory>
 #include <glad/glad.h>
 #include "shader.hpp"
-#include "textured_node.hpp"
+#include "node.hpp"
 
 
 namespace Tank
 {
-	class Node;
-	class CubeMap : public TexturedNode
+	class Node; class Texture;
+	class CubeMap : public Node
 	{
 	private:
 		GLuint m_vao;
 		GLuint m_vbo;
-
+		std::unique_ptr<Shader> m_shader;
+		std::unique_ptr<Texture> m_texture;
 	public:
 		CubeMap(const std::string &name, const std::string &vsName, const std::string &fsName, const std::array<std::string, 6> &textureNames);
 

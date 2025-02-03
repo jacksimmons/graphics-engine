@@ -7,7 +7,7 @@ namespace Tank
 {
 	namespace Mat4
 	{
-		inline const glm::quat &getRotation(const glm::mat4 &mat)
+		inline glm::quat getRotation(const glm::mat4 &mat)
 		{
 			glm::vec3 _;
 			glm::vec4 __;

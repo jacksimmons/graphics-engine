@@ -89,7 +89,7 @@ namespace Tank
 			{
 				glm::mat4 worldMatrix = transform->getWorldModelMatrix();
 				cam->setPosition(Mat4::getTranslation(worldMatrix));
-				cam->setRotation(Mat4::getTranslation(worldMatrix));
+				cam->setRotation(Mat4::getRotation(worldMatrix));
 			}
 		}
 

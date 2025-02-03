@@ -9,8 +9,6 @@
 #include "nodes/inspector.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/light.hpp"
-#include "nodes/models/cube.hpp"
-#include "nodes/models/primitive.hpp"
 
 
 namespace Tank
@@ -39,7 +37,7 @@ namespace Tank
 		if (!node) return;
 
 		Inspector *inspector = (Inspector*)getSibling("Inspector");
-		int childCount = node->getChildCount();
+		size_t childCount = node->getChildCount();
 
 		// Determine if leaf node.
 		ImGuiTreeNodeFlags flags = 0;
@@ -115,8 +113,6 @@ namespace Tank
 			if (ImGui::BeginMenu("Add Child Node"))
 			{
 				if (ImGui::MenuItem("Node")) buildNode<Node>(node, "Node");
-				if (ImGui::MenuItem("Cube")) buildNode<Cube>(node, "Cube");
-				if (ImGui::MenuItem("Primitive (Line)")) buildNode<Primitive>(node, "Line");
 				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(node, "PointLight");
 				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(node, "DirLight");
 				if (ImGui::MenuItem("Camera")) buildNode<Camera>(node, "Camera");
