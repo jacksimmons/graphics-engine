@@ -223,15 +223,12 @@ void Editor::run()
 		ImGui::SetNextWindowSize(io.DisplaySize);
 		
 		ImGui::Begin("##Main", nullptr, m_settings->mainWinFlags);
-
-		//ImGui::ShowDemoWindow();
+		ImGui::ShowDemoWindow();
 
 		handleKeyInput();
 		// Decay input states (comes after handleKeyInput)
 		m_keyInput->update();
 		m_system->update();
-		//m_scene->update();
-		//ImGui::ShowDemoWindow();
 
 		ImGui::End();
 		ImGui::Render();

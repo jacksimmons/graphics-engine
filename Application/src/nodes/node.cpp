@@ -19,6 +19,18 @@ namespace Tank
 		m_parent = nullptr;
 	}
 
+
+	const std::string& Node::getPath() const
+	{
+		if (m_parent)
+		{
+			return m_parent->getPath() + "/" + m_name;
+		}
+
+		return std::string("");
+	}
+
+
 	void Node::addChild(std::unique_ptr<Node> child)
 	{
 		child->m_parent = this;

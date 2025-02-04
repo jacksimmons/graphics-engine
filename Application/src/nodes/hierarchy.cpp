@@ -23,7 +23,7 @@ namespace Tank
 		Node *root = Tank::Scene::getActiveScene();
 
 		int count = 0;
-		drawRecursive(root, &count);
+		drawTreeNode(root, &count);
 	}
 
 
@@ -31,7 +31,7 @@ namespace Tank
 	/// Generates buttons for all children of the current node, at a given
 	/// indentation depth (based on the generation depth).
 	/// </summary>
-	void Hierarchy::drawRecursive(Node *node, int *count) const
+	void Hierarchy::drawTreeNode(Node *node, int *count) const
 	{
 		// Base case.
 		if (!node) return;
@@ -53,20 +53,12 @@ namespace Tank
 		bool nodeExpanded = ImGui::TreeNodeEx((node->getName() + "##" + std::to_string(*count)).c_str(), flags);
 		ImGui::PopStyleColor();
 		
-		// When the user is dragging this tree-node.
-		if (ImGui::BeginDragDropSource())
-		{
-			ImGui::SetDragDropPayload("HIERARCHY_NODE", (void*)node, sizeof(Node));
-			ImGui::Text(node->getName().c_str());
-			ImGui::EndDragDropSource();
-		}
-
-		// Set the inspected node if necessary.
+		// Set the inspected node if necessary: If clicking the non-arrow part of the tree-node, and once the
+		// click is complete, and if the tree-node's corresponding node differs from the inspected node.
 		if (
 			!ImGui::IsItemToggledOpen() &&
 			ImGui::IsItemFocused() &&
 			!ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
-			!ImGui::GetDragDropPayload() &&
 			inspector->getInspectedNode() != node)
 		{
 			inspector->setInspectedNode(node);
@@ -81,7 +73,7 @@ namespace Tank
 			// Nodes can be deleted during iteration, so cannot use for-each or iterator syntax.
 			for (int i = 0; i < node->getChildCount(); i++)
 			{
-				drawRecursive(node->getChild(i), &(++(*count)));
+				drawTreeNode(node->getChild(i), &(++(*count)));
 			}
 		}
 

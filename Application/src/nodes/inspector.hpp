@@ -11,14 +11,15 @@ namespace Tank
 		friend class Hierarchy;
 	private:
 		Node *m_inspectedNode;
+		bool m_setPropertyValuePanelActive = false;
 
 	private:
-		void drawNodeSection() const;
-		void drawSceneSection(Scene *scene) const;
-		void drawModelSection(Model *model) const;
-		void drawCameraSection(Camera *camera) const;
-		void drawLightSection(Light *light) const;
-		void drawDirLightSection(DirLight *dir) const;
+		void drawNodeSection();
+		void drawSceneSection(Scene *scene);
+		void drawModelSection(Model *model);
+		void drawCameraSection(Camera *camera);
+		void drawLightSection(Light *light);
+		void drawDirLightSection(DirLight *dir);
 		void onNodeDeleted(Node *node);
 	protected:
 		virtual void drawPanel() override;

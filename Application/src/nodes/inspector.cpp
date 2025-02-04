@@ -12,6 +12,7 @@
 #include "nodes/model.hpp"
 #include "nodes/inspector.hpp"
 #include "nodes/light.hpp"
+#include "nodes/camera.hpp"
 #include "nodes/ui/ui.hpp"
 #include "nodes/ui/console.hpp"
 
@@ -48,52 +49,11 @@ namespace Tank
 		}	
 	}
 
-
-	/// <summary>
-	/// Draws a section specifically for the root node.
-	/// </summary>
-	void Inspector::drawSceneSection(Scene *scene) const
-	{
-		ImGui::TextColored(Colour::TITLE, "Active Camera");
-
-		std::string cameraName;
-		ImColor cameraNameCol;
-		Camera *activeCamera = scene->getActiveCamera();
-		if (activeCamera)
-		{
-			cameraName = activeCamera->getName();
-			cameraNameCol = Colour::NORMAL;
-		}
-		else
-		{
-			cameraName = "NULL";
-			cameraNameCol = Colour::DISABLED;
-		}
-		ImGui::TextColored(cameraNameCol, cameraName.c_str());
-
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("HIERARCHY_NODE"))
-			{
-				if (Camera *camera = dynamic_cast<Camera *>((Node*)(payload->Data)))
-				{
-					scene->setActiveCamera(camera);
-				}
-			}
-			else
-			{
-				((Console*)getParent()->getChild("Console"))->addLine([]() { ImGui::TextColored(Colour::ERR, "Failed to receive payload."); });
-			}
-
-			ImGui::EndDragDropTarget();
-		}
-	}
-
 	
 	/// <summary>
 	/// Draws inspector section that is present for all Nodes.
 	/// </summary>
-	void Inspector::drawNodeSection() const
+	void Inspector::drawNodeSection()
 	{
 		Transform *transform = m_inspectedNode->getTransform();
 		const glm::mat4 &modelMatrix = transform->getWorldModelMatrix();
@@ -183,9 +143,64 @@ namespace Tank
 
 
 	/// <summary>
+	/// Draws a section specifically for the root node.
+	/// </summary>
+	void Inspector::drawSceneSection(Scene *scene)
+	{
+		ImGui::TextColored(Colour::TITLE, "Active Camera");
+
+		// Determine active camera text name and colour.
+		std::string cameraName;
+		ImColor cameraNameCol;
+		Camera *activeCamera = scene->getActiveCamera();
+		if (activeCamera)
+		{
+			cameraName = activeCamera->getName();
+			cameraNameCol = Colour::NORMAL;
+		}
+		else
+		{
+			cameraName = "NULL";
+			cameraNameCol = Colour::DISABLED;
+		}
+		
+		ImGui::SetNextItemAllowOverlap();
+		ImGui::TextColored(cameraNameCol, cameraName.c_str());
+		ImGui::SameLine();
+
+		// Display a button to change the active camera.
+		// Clicking on it loads a list of all Camera nodes descending from this scene.
+		if (ImGui::SmallButton("Set##INSPECTOR_SCENE_SET_CAM") || m_setPropertyValuePanelActive)
+		{
+			m_setPropertyValuePanelActive = true;
+
+			ImGui::OpenPopup("##INSPECTOR_SCENE_SET_CAM_LIST");
+			if (ImGui::BeginPopup("##INSPECTOR_SCENE_SET_CAM_LIST"))
+			{
+				scene->forEachDescendant(
+					[&scene, this](Node *node)
+					{
+						if (Camera *cam = dynamic_cast<Camera *>(node))
+						{
+							if (ImGui::Button((cam->getName() + "##INSPECTOR_SCENE_SET_CAM_LIST_BTN").c_str()))
+							{
+								scene->setActiveCamera(cam);
+								m_setPropertyValuePanelActive = false;
+							}
+						}
+					}
+				);
+
+				ImGui::EndPopup();
+			}
+		}
+	}
+
+
+	/// <summary>
 	/// Draws inspector section that is present for all Models.
 	/// </summary>
-	void Inspector::drawModelSection(Model *model) const
+	void Inspector::drawModelSection(Model *model)
 	{
 		std::filesystem::path fragPath = model->m_shader->getFragPath();
 		std::filesystem::path vertPath = model->m_shader->getVertPath();
@@ -225,7 +240,7 @@ namespace Tank
 	/// <summary>
 	/// Draws inspector section that is present for all Cameras.
 	/// </summary>
-	void Inspector::drawCameraSection(Camera *camera) const
+	void Inspector::drawCameraSection(Camera *camera)
 	{
 		ImGui::TextColored(Colour::TITLE, "Camera Eye");
 		glm::vec3 eye = camera->getTransformedEye();
@@ -255,7 +270,7 @@ namespace Tank
 	}
 
 
-	void Inspector::drawLightSection(Light *light) const
+	void Inspector::drawLightSection(Light *light)
 	{
 		ImGui::TextColored(Colour::TITLE, "Light Struct");
 		std::string lightStruct = light->getLightStruct();
@@ -302,7 +317,7 @@ namespace Tank
 	}
 
 
-	void Inspector::drawDirLightSection(DirLight *dir) const
+	void Inspector::drawDirLightSection(DirLight *dir)
 	{
 		ImGui::TextColored(Colour::TITLE, "Light Direction");
 		Widget::vec3Input(

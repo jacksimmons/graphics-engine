@@ -20,7 +20,7 @@ namespace Tank
 		/// Draws a tree node for the node provided, then calls itself for each
 		/// of its children. Draws a leaf instead if no children.
 		/// </summary>
-		void drawRecursive(Node *node, int *count) const;
+		void drawTreeNode(Node *node, int *count) const;
 
 		/// <summary>
 		/// Handles drawing for node context menus. A node context menu is
