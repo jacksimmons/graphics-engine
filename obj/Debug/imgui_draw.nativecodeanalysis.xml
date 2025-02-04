@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Git\tank-engine\Application\include\imgui\</FILEPATH>
+      <FILENAME>imstb_truetype.h</FILENAME>
+      <LINE>2148</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>26819</DEFECTCODE>
+    <DESCRIPTION>Unannotated fallthrough between switch labels (es.78).</DESCRIPTION>
+    <FUNCTION>stbtt__run_charstring</FUNCTION>
+    <DECORATED>?stbtt__run_charstring@@YAHPEBUstbtt_fontinfo@@HPEAUstbtt__csctx@@@Z</DECORATED>
+    <FUNCLINE>2015</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

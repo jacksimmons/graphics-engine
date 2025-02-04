@@ -1,0 +1,9 @@
+C:\Git\tank-engine\Application\src\editor.cpp;C:\Git\tank-engine\obj\Debug\editor.obj
+C:\Git\tank-engine\include\glad\glad.cpp;C:\Git\tank-engine\obj\Debug\glad.obj
+C:\Git\tank-engine\include\imgui\backends\imgui_impl_glfw.cpp;C:\Git\tank-engine\obj\Debug\imgui_impl_glfw.obj
+C:\Git\tank-engine\include\imgui\backends\imgui_impl_opengl3.cpp;C:\Git\tank-engine\obj\Debug\imgui_impl_opengl3.obj
+C:\Git\tank-engine\include\imgui\imgui.cpp;C:\Git\tank-engine\obj\Debug\imgui.obj
+C:\Git\tank-engine\include\imgui\imgui_demo.cpp;C:\Git\tank-engine\obj\Debug\imgui_demo.obj
+C:\Git\tank-engine\include\imgui\imgui_draw.cpp;C:\Git\tank-engine\obj\Debug\imgui_draw.obj
+C:\Git\tank-engine\include\imgui\imgui_tables.cpp;C:\Git\tank-engine\obj\Debug\imgui_tables.obj
+C:\Git\tank-engine\include\imgui\imgui_widgets.cpp;C:\Git\tank-engine\obj\Debug\imgui_widgets.obj

@@ -1,0 +1,67 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.40.33811.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imgui_tables.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "4c79838d1dbe1309fdb73ae95b6aa19311302b7ed1a4ba444218bd3a7d925578"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imgui.h"
+          },
+          "hashes": {
+            "sha-256": "7e96b3adf4ffd425093c7fda806cb8791521d0ee208da8e86b49766e5fa2a9db"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imconfig.h"
+          },
+          "hashes": {
+            "sha-256": "07428116edfc8ac1a32ca64ab0f4c04ce831f4b4f7e4b95531d7306dcc4d2323"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imgui_internal.h"
+          },
+          "hashes": {
+            "sha-256": "6f3f93c147b05474b1e9f78e9f15167cfc92a998a76311506e78cf5f9df2dee7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imstb_textedit.h"
+          },
+          "hashes": {
+            "sha-256": "6cba69d37c5fb83c4a4a48fcd7bd77f05ad2325de6bc81af59b671b7ee30aa6c"
+          }
+        }
+      ]
+    }
+  ]
+}

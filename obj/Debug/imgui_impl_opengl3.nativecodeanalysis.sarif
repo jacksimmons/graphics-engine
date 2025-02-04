@@ -1,0 +1,156 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Return value ignored: 'sscanf'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Application/include/imgui/backends/imgui_impl_opengl3_loader.h"
+                },
+                "region": {
+                  "startLine": 801,
+                  "startColumn": 13,
+                  "endLine": 801,
+                  "endColumn": 65
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "parse_version",
+                  "decoratedName": "parse_version",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Return value ignored: 'sscanf'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Application/include/imgui/backends/imgui_impl_opengl3.cpp"
+                },
+                "region": {
+                  "startLine": 314,
+                  "startColumn": 9,
+                  "endLine": 314,
+                  "endColumn": 50
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui_ImplOpenGL3_Init",
+                  "decoratedName": "?ImGui_ImplOpenGL3_Init@@YA_NPEBD@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Return value ignored: 'sscanf'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Application/include/imgui/backends/imgui_impl_opengl3.cpp"
+                },
+                "region": {
+                  "startLine": 774,
+                  "startColumn": 5,
+                  "endLine": 774,
+                  "endColumn": 51
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui_ImplOpenGL3_CreateDeviceObjects",
+                  "decoratedName": "?ImGui_ImplOpenGL3_CreateDeviceObjects@@YA_NXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.40.33811.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Git/tank-engine/Application/include/imgui/backends/imgui_impl_opengl3_loader.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "ecf8d76caa4324e2099b410b7ae1c7f8735c6b4d7f1347c877469bd32cc6aaf4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Git/tank-engine/Application/include/imgui/backends/imgui_impl_opengl3.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "8ec15a34a2acfd0869309bac92cab6c33f0d7d5032bee52e91d34f3847c4112c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imgui.h"
+          },
+          "hashes": {
+            "sha-256": "7e96b3adf4ffd425093c7fda806cb8791521d0ee208da8e86b49766e5fa2a9db"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imconfig.h"
+          },
+          "hashes": {
+            "sha-256": "07428116edfc8ac1a32ca64ab0f4c04ce831f4b4f7e4b95531d7306dcc4d2323"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/backends/imgui_impl_opengl3.h"
+          },
+          "hashes": {
+            "sha-256": "033f93b79d2605a66dd37d2eba7510a2d1593b98c5b1b229f61c5130ae6b4a9b"
+          }
+        }
+      ]
+    }
+  ]
+}

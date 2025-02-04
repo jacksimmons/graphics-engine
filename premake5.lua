@@ -17,45 +17,66 @@ workspace "TankEnginePremake"
 project "Engine"
     kind "SharedLib"
     language "C++"
-    includedirs { "%{prj.name}/include" }
+    cppdialect "C++20"
+    libdirs {
+        "%{prj.name}/bin/%{cfg.buildcfg}"
+    }
+    links { "assimp-vc143-mt", "opengl32", "glfw3", "glfw3dll" }
+    includedirs {
+        "include",
+        "include/imgui",
+        "include/imgui/backends",
+        "%{prj.name}/include",
+        "%{prj.name}/src",
+        "vendor/assimp/include",
+    }
+    files {
+        "include/stb_image.h",
+        "%{prj.name}/src/**.hpp",
+        "%{prj.name}/src/**.cpp",
+        "include/imgui/imgui.cpp",
+        "include/imgui/imgui_demo.cpp",
+        "include/imgui/imgui_draw.cpp",
+        "include/imgui/imgui_tables.cpp",
+        "include/imgui/imgui_widgets.cpp",
+        "include/imgui/backends/imgui_impl_glfw.cpp",
+        "include/imgui/backends/imgui_impl_opengl3.cpp",
+        "include/glad/glad.cpp",
+    }
+    defines { "BUILD_DLL", "GLM_ENABLE_EXPERIMENTAL", "FMT_UNICODE=0" }
     objdir "%{prj.name}/obj/%{cfg.buildcfg}"
     targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
-    files { "%{prj.name}/src/**.hpp", "%{prj.name}/src/**.cpp" } 
-    defines { "BUILD_DLL" }
 
 project "Application"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
-    objdir "obj/%{cfg.buildcfg}"
-    targetdir "bin/%{cfg.buildcfg}"
-    libdirs { "bin/%{cfg.buildcfg}", "%{prj.name}/lib" }
-    links { "Engine", "opengl32", "glfw3", "glfw3dll", "assimp" }
-    defines { "GLM_ENABLE_EXPERIMENTAL", "FMT_UNICODE=0" }
-    includedirs { "include",
+    libdirs { "bin/%{cfg.buildcfg}" }
+    links { "Engine", "glfw3", "glfw3dll" }
+    includedirs {
         "Engine/src",
+        "include",
+        "include/imgui",
+        "include/imgui/backends",
         "%{prj.name}/src",
         "%{prj.name}/include",
-        "%{prj.name}/include/glm",
-        "%{prj.name}/include/imgui",
-        "%{prj.name}/include/imgui/backends",
-        "vendor/assimp/include"
     }
     files {
+        "include/stb_image.h",
         "%{prj.name}/src/**.hpp",
         "%{prj.name}/src/**.cpp",
-        "%{prj.name}/include/imgui/imgui.cpp",
-        "%{prj.name}/include/imgui/imgui_demo.cpp",
-        "%{prj.name}/include/imgui/imgui_draw.cpp",
-        "%{prj.name}/include/imgui/imgui_tables.cpp",
-        "%{prj.name}/include/imgui/imgui_widgets.cpp",
-        "%{prj.name}/include/imgui/backends/imgui_impl_glfw.cpp",
-        "%{prj.name}/include/imgui/backends/imgui_impl_opengl3.cpp",
-        "%{prj.name}/include/glad/glad.cpp",
+        "include/imgui/imgui.cpp",
+        "include/imgui/imgui_demo.cpp",
+        "include/imgui/imgui_draw.cpp",
+        "include/imgui/imgui_tables.cpp",
+        "include/imgui/imgui_widgets.cpp",
+        "include/imgui/backends/imgui_impl_glfw.cpp",
+        "include/imgui/backends/imgui_impl_opengl3.cpp",
+        "include/glad/glad.cpp",
     }
+    defines { "GLM_ENABLE_EXPERIMENTAL", "FMT_UNICODE=0" }
     prebuildcommands {
-        "{COPYFILE} Engine/bin/%{cfg.buildcfg}/Engine.dll bin/%{cfg.buildcfg}/Engine.dll",
-        "{COPYFILE} Engine/bin/%{cfg.buildcfg}/Engine.lib bin/%{cfg.buildcfg}/Engine.lib",
-        "{COPYFILE} vendor/assimp/lib/x64/assimp-vc143-mt.lib bin/%{cfg.buildcfg}/assimp-vc143-mt.lib",
-        "{COPYFILE} vendor/assimp/bin/x64/assimp-vc143-mt.dll bin/%{cfg.buildcfg}/assimp-vc143-mt.dll"
+        "{COPYDIR} Engine/bin/%{cfg.buildcfg} bin/%{cfg.buildcfg}",
     }
+    objdir "obj/%{cfg.buildcfg}"
+    targetdir "bin/%{cfg.buildcfg}"

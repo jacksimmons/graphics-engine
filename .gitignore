@@ -1,11 +1,6 @@
 .vs/
 *.dir/
-**/bin/*
 **/out/*
-Release/
-Debug/
-x64/
-x32/
 **/*.vcxproj*
 *.pc
 

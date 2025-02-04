@@ -13,8 +13,9 @@
 #include <imgui/backends/imgui_impl_glfw.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include "editor.hpp"
 #include "key_input.hpp"
 #include "shader.hpp"
@@ -249,7 +250,7 @@ void Editor::run()
 		glfwSwapBuffers(m_window);
 
 		frameEnd = std::clock();
-		Tank::Time::setFrameDelta(frameStart, frameEnd);
+		setFrameDelta(frameStart, frameEnd);
 	}
 }
 

@@ -1,0 +1,75 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.40.33811.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/backends/imgui_impl_glfw.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "ccc734501e92df433fab78ede65ac0d24edc653a74f0560fe518fe1b383fd62c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imgui.h"
+          },
+          "hashes": {
+            "sha-256": "7e96b3adf4ffd425093c7fda806cb8791521d0ee208da8e86b49766e5fa2a9db"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/imconfig.h"
+          },
+          "hashes": {
+            "sha-256": "07428116edfc8ac1a32ca64ab0f4c04ce831f4b4f7e4b95531d7306dcc4d2323"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/imgui/backends/imgui_impl_glfw.h"
+          },
+          "hashes": {
+            "sha-256": "6b8557db5627175e1f7ecb59256fb1467d13448638048c9f8f02747dead87ca8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/glfw/glfw3.h"
+          },
+          "hashes": {
+            "sha-256": "5bf391bd940ff6644746857eafa442f150e3fe01a0dc010a444d766fccfce4a1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/application/include/glfw/glfw3native.h"
+          },
+          "hashes": {
+            "sha-256": "dd6b99d312bbaa4d58e33f05634211e6cae2ccf6a7a30d4b070d5c2533ca7542"
+          }
+        }
+      ]
+    }
+  ]
+}

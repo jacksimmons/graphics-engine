@@ -1,0 +1,1117 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C6285",
+          "message": {
+            "text": "(<non-zero constant> || <non-zero constant>) is always a non-zero constant.  Did you intend to use the bitwise-and operator?"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/core.h"
+                },
+                "region": {
+                  "startLine": 402,
+                  "startColumn": 22
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::is_utf8",
+                  "decoratedName": "?is_utf8@detail@v10@fmt@@YA_NXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26800",
+          "message": {
+            "text": "Use of a moved from object: ''user_chars'' (lifetime.1)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                },
+                "region": {
+                  "startLine": 1319,
+                  "startColumn": 9
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "spdlog::pattern_formatter::compile_pattern_",
+                  "decoratedName": "?compile_pattern_@pattern_formatter@spdlog@@AEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1289,
+                            "startColumn": 39
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1290,
+                            "startColumn": 10
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1290,
+                            "startColumn": 24
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1291,
+                            "startColumn": 51
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1291,
+                            "startColumn": 51
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1292,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1293,
+                            "startColumn": 15
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1293,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1293,
+                            "startColumn": 40
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1293,
+                            "startColumn": 40
+                          }
+                        },
+                        "message": {
+                          "text": "Branching based on condition 'result.!='. 'true' branch is taken"
+                        }
+                      },
+                      "kinds": [
+                        "Branch"
+                      ]
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1294,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1294,
+                            "startColumn": 17
+                          }
+                        },
+                        "message": {
+                          "text": "Branching based on condition '(int )(result.*) == 37'. 'true' branch is taken"
+                        }
+                      },
+                      "kinds": [
+                        "Branch"
+                      ]
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1295,
+                            "startColumn": 17
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1295,
+                            "startColumn": 17
+                          }
+                        },
+                        "message": {
+                          "text": "Branching based on condition 'result.._N'. 'true' branch is taken"
+                        }
+                      },
+                      "kinds": [
+                        "Branch"
+                      ]
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1297,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1297,
+                            "startColumn": 48
+                          }
+                        },
+                        "message": {
+                          "text": "Object 'user_chars' is moved."
+                        }
+                      },
+                      "kinds": [
+                        "Custom"
+                      ]
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1297,
+                            "startColumn": 38
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1297,
+                            "startColumn": 48
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1300,
+                            "startColumn": 18
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1300,
+                            "startColumn": 50
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1300,
+                            "startColumn": 50
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1300,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1300,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1302,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1302,
+                            "startColumn": 20
+                          }
+                        },
+                        "message": {
+                          "text": "Branching based on condition 'result.!='. 'false' branch is taken"
+                        }
+                      },
+                      "kinds": [
+                        "Branch"
+                      ]
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1309,
+                            "startColumn": 17
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+                          },
+                          "region": {
+                            "startLine": 1319,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::num_bits<unsigned __int64>' is constexpr, mark variable 'shift' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 2842,
+                  "startColumn": 15,
+                  "endLine": 2842,
+                  "endColumn": 47
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::bigint::multiply",
+                  "decoratedName": "??$multiply@Vuint128_fallback@detail@v10@fmt@@$0A@@bigint@detail@v10@fmt@@AEAAXVuint128_fallback@123@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::exponent_mask<float>' is constexpr, mark variable 'mask' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 3660,
+                  "startColumn": 15,
+                  "endLine": 3660,
+                  "endColumn": 43
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::write",
+                  "decoratedName": "??$write@DVappender@v10@fmt@@M$0A@@detail@v10@fmt@@YA?AVappender@12@V312@M@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::exponent_mask<double>' is constexpr, mark variable 'mask' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 3660,
+                  "startColumn": 15,
+                  "endLine": 3660,
+                  "endColumn": 43
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::write",
+                  "decoratedName": "??$write@DVappender@v10@fmt@@N$0A@@detail@v10@fmt@@YA?AVappender@12@V312@N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::exponent_mask<double>' is constexpr, mark variable 'mask' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 3660,
+                  "startColumn": 15,
+                  "endLine": 3660,
+                  "endColumn": 43
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::write",
+                  "decoratedName": "??$write@DVappender@v10@fmt@@O$0A@@detail@v10@fmt@@YA?AVappender@12@V312@O@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::num_significand_bits<float>' is constexpr, mark variable 'significand_mask' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format-inl.h"
+                },
+                "region": {
+                  "startLine": 1251,
+                  "startColumn": 22
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::dragonbox::to_decimal",
+                  "decoratedName": "??$to_decimal@M@dragonbox@detail@v10@fmt@@YA?AU?$decimal_fp@M@0123@M@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::num_significand_bits<double>' is constexpr, mark variable 'significand_mask' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format-inl.h"
+                },
+                "region": {
+                  "startLine": 1251,
+                  "startColumn": 22
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::dragonbox::to_decimal",
+                  "decoratedName": "??$to_decimal@N@dragonbox@detail@v10@fmt@@YA?AU?$decimal_fp@N@0123@N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::num_significand_bits<double>' is constexpr, mark variable 'significand_mask' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 3326,
+                  "startColumn": 20
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::format_float",
+                  "decoratedName": "??$format_float@N@detail@v10@fmt@@YAHNHUfloat_specs@012@AEAV?$buffer@D@012@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::num_significand_bits<float>' is constexpr, mark variable 'num_float_significand_bits' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 1636,
+                  "startColumn": 16
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::basic_fp<fmt::v10::detail::uint128_fallback>::assign",
+                  "decoratedName": "??$assign@M$0A@@?$basic_fp@Vuint128_fallback@detail@v10@fmt@@@detail@v10@fmt@@QEAA_NM@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::num_significand_bits<double>' is constexpr, mark variable 'num_float_significand_bits' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 1636,
+                  "startColumn": 16
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::basic_fp<fmt::v10::detail::uint128_fallback>::assign",
+                  "decoratedName": "??$assign@N$0A@@?$basic_fp@Vuint128_fallback@detail@v10@fmt@@@detail@v10@fmt@@QEAA_NN@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'fmt::v10::detail::num_significand_bits<double>' is constexpr, mark variable 'num_float_significand_bits' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+                },
+                "region": {
+                  "startLine": 1636,
+                  "startColumn": 16
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "fmt::v10::detail::basic_fp<unsigned __int64>::assign",
+                  "decoratedName": "??$assign@N$0A@@?$basic_fp@_K@detail@v10@fmt@@QEAA_NN@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.40.33811.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/core.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "3cedd45ce51e1af96cd7e882fb57c84bd1d8dddfaf363f78ec8551b50e84f82f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/pattern_formatter-inl.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "6c64a1bc20647e4d350113f4618ac933a01bfcffa36e5fce847def3db6310b99"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "646740ccb41cf931d1aeed50fb761264cde25e8769e2add93991c7bdf17573cc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Git/tank-engine/Engine/include/spdlog/fmt/bundled/format-inl.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "9a74236c325289662b6cefefc05cc08c1755d372fb25d20f85b012687c171f32"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/src/log.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "4e86486c9354085013e1fdebd15141d23bbd555db227398fd07b280b2933c569"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/sinks/stdout_color_sinks.h"
+          },
+          "hashes": {
+            "sha-256": "b004eac3fc96956d1b3534fe0b7f4759edf7f6519a57fcb2ddbe85b91f156811"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/sinks/wincolor_sink.h"
+          },
+          "hashes": {
+            "sha-256": "a71351347a5f82ed0d2d68f37c228cc113b292ac7b7fbdb06acf8740b5e96340"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/common.h"
+          },
+          "hashes": {
+            "sha-256": "932754b433935e50d09f60324d305ddcd1769281723c09ccad1e60e73606dc20"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/null_mutex.h"
+          },
+          "hashes": {
+            "sha-256": "61adb31ad34f9338494225e2ea08e461f91ab016d5ee075fd0aae8dd9c5e079f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/tweakme.h"
+          },
+          "hashes": {
+            "sha-256": "d3671304d763c1aedcb1551af8069669d0fd0394da6492dabe0873aef2c0f0ee"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/fmt/fmt.h"
+          },
+          "hashes": {
+            "sha-256": "937cbf78cbf19d51afe487aebd7eb5b700255dca450ba0cbec82ec6ae02dd802"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/common-inl.h"
+          },
+          "hashes": {
+            "sha-256": "743f66652a6e706a9c3d8005f14baf7a2243027d7c5781feabf990de2870393c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/console_globals.h"
+          },
+          "hashes": {
+            "sha-256": "3cc3ad32dbeb007d6de98a6b33180efa137c3b885be4d410eb597f7c8fe620de"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/sinks/sink.h"
+          },
+          "hashes": {
+            "sha-256": "28ed738ed6946ce36470001b868163c6b7fec085ed93e63fb7d0b35b8ea43e42"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/log_msg.h"
+          },
+          "hashes": {
+            "sha-256": "56204baa698c2357d40f522d9c507cfb86f73a45288aab91b750c31117dfdc98"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/log_msg-inl.h"
+          },
+          "hashes": {
+            "sha-256": "f9bd404760d826c9ea436b43b696b69c5a7609b772c43d88a03dfbc89d01578d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/os.h"
+          },
+          "hashes": {
+            "sha-256": "ef4634851b2b21edfc8ab6a614a1f3ac7f4d386e0251c9b48516d175ca57e14c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/os-inl.h"
+          },
+          "hashes": {
+            "sha-256": "2e16d01af0549b2d668d11c23710464568535dda2f99b84f1ede4e6e70f2ae2d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/windows_include.h"
+          },
+          "hashes": {
+            "sha-256": "2cd552b222955adea8d908f54d028b77f9d5ec228a4a184fea00caedc0c29513"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/formatter.h"
+          },
+          "hashes": {
+            "sha-256": "b5f6397006c597b7ea49d26ac2feed2d642678527c31a09773653b9f1880114d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/sinks/sink-inl.h"
+          },
+          "hashes": {
+            "sha-256": "6db37af7e4d2c42fa49737e2c6fb6636c3cd2e4c69c52a4f1291ac30f8c79856"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/sinks/wincolor_sink-inl.h"
+          },
+          "hashes": {
+            "sha-256": "2e956eb70f04ebb13aa79a5bbdc88a1792316ebcc06a3880e68da6dc63c63873"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/pattern_formatter.h"
+          },
+          "hashes": {
+            "sha-256": "84c8a189aeb3ef988633da816a70609ce88285c713f50c51b6a024ba621196a2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/fmt_helper.h"
+          },
+          "hashes": {
+            "sha-256": "492ab7a618953d5545366045e50bc5780c0fe88074332274c24db6555c9c9f3b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/mdc.h"
+          },
+          "hashes": {
+            "sha-256": "9c71f649edf1b8fc60b8fb910f3cc16b02470c1fdaa871c23c9b338e4df7542a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/synchronous_factory.h"
+          },
+          "hashes": {
+            "sha-256": "a5b345a5cfd5512da7748c0c0f00dac6fe8cfff7f285dfe670733d969c42410f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/registry.h"
+          },
+          "hashes": {
+            "sha-256": "4e0e64320c115ade716b6bdd76ee2f475b540b9954209ea00e1b0e602d0ae009"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/periodic_worker.h"
+          },
+          "hashes": {
+            "sha-256": "b45dd99a965a99c9aaa912f1306a8bad9d7e8dce7c6a75e391f391338e94c46e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/periodic_worker-inl.h"
+          },
+          "hashes": {
+            "sha-256": "912b5b2ec4c22f98fab3df544aa51f96be3528f80fb75ef283fe0ac01c66ba35"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/registry-inl.h"
+          },
+          "hashes": {
+            "sha-256": "babcaa8c875dd4138ee34477c311fe0aa07b949bbea40fcb115f8b152669f0f6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/logger.h"
+          },
+          "hashes": {
+            "sha-256": "aa69a25b18c54d6ae2c703354b53f50b94e1404a4e26ddc013c8e1f9c5fcf788"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/backtracer.h"
+          },
+          "hashes": {
+            "sha-256": "d86cee17920337eae77381c5d08855120822aa57f5d677ab2a0d5a6ff779dd24"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/circular_q.h"
+          },
+          "hashes": {
+            "sha-256": "d36a4e64cfd0d905503b60d4870535f9c7e114eba129a8695a0ebe0501414827"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/log_msg_buffer.h"
+          },
+          "hashes": {
+            "sha-256": "443c1c83a88808788d543bf43e5dc2db408d37af6bb8534ed557e2b78583cf16"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/log_msg_buffer-inl.h"
+          },
+          "hashes": {
+            "sha-256": "f273a47e232e69c003bb5582a46334a5c00f931bb71029216f67c55fa504db4d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/details/backtracer-inl.h"
+          },
+          "hashes": {
+            "sha-256": "da83d208b8e3e9f31e5afa14d1b98011a589247cdaa39bfd2a4e291dc72c1bc4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/logger-inl.h"
+          },
+          "hashes": {
+            "sha-256": "69b4e48855f8320dcf70cff536a29fee50aa0848577f92f4df2ce937eb3f584a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/sinks/stdout_color_sinks-inl.h"
+          },
+          "hashes": {
+            "sha-256": "327145c2afe80b3864608e246bba23aff863ff419d48201e8ac13b9bff850f41"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/src/log.hpp"
+          },
+          "hashes": {
+            "sha-256": "3c6bc5df96f6d8814ab421cae9e935a36434eb97dec7c92e2a2e79116b9fae4a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/spdlog.h"
+          },
+          "hashes": {
+            "sha-256": "00e0bcc8a48a8c823d045152a769de42ffb3c5fecfa460a7285c2f808620e091"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/version.h"
+          },
+          "hashes": {
+            "sha-256": "b8c327eafa2d744f0e6e698623b6ba1644b128b28ccd35e880a7102fe3bbbe20"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/include/spdlog/spdlog-inl.h"
+          },
+          "hashes": {
+            "sha-256": "001e5834fba13c4f3f0214934fb80db9138db33374345082b6fb9f014e44ef67"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/git/tank-engine/engine/src/core.hpp"
+          },
+          "hashes": {
+            "sha-256": "562000c7c7327576cda98d73209ac334eb02fd36ce14d169e23618f96eacfacf"
+          }
+        }
+      ]
+    }
+  ]
+}

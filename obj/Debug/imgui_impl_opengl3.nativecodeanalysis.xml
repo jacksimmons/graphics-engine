@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Git\tank-engine\Application\include\imgui\backends\</FILEPATH>
+      <FILENAME>imgui_impl_opengl3_loader.h</FILENAME>
+      <LINE>801</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
+    <FUNCTION>parse_version</FUNCTION>
+    <DECORATED>parse_version</DECORATED>
+    <FUNCLINE>791</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Git\tank-engine\Application\include\imgui\backends\</FILEPATH>
+      <FILENAME>imgui_impl_opengl3.cpp</FILENAME>
+      <LINE>314</LINE>
+      <COLUMN>14</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
+    <FUNCTION>ImGui_ImplOpenGL3_Init</FUNCTION>
+    <DECORATED>?ImGui_ImplOpenGL3_Init@@YA_NPEBD@Z</DECORATED>
+    <FUNCLINE>281</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Git\tank-engine\Application\include\imgui\backends\</FILEPATH>
+      <FILENAME>imgui_impl_opengl3.cpp</FILENAME>
+      <LINE>774</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
+    <FUNCTION>ImGui_ImplOpenGL3_CreateDeviceObjects</FUNCTION>
+    <DECORATED>?ImGui_ImplOpenGL3_CreateDeviceObjects@@YA_NXZ</DECORATED>
+    <FUNCLINE>755</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
