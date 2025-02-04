@@ -1,6 +1,6 @@
 #include <glm/glm.hpp>
-#include "scene.hpp"
 #include "nodes/model.hpp"
+#include "nodes/scene.hpp"
 
 
 namespace Tank

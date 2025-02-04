@@ -5,14 +5,14 @@
 #include <glm/gtx/euler_angles.hpp>
 #include "transform.hpp"
 #include "camera.hpp"
-#include "scene.hpp"
 #include "colours.hpp"
 #include "file.hpp"
 #include "widget.hpp"
-#include "nodes/ui.hpp"
+#include "nodes/scene.hpp"
 #include "nodes/model.hpp"
 #include "nodes/inspector.hpp"
 #include "nodes/light.hpp"
+#include "nodes/ui/ui.hpp"
 
 
 namespace Tank
@@ -33,6 +33,9 @@ namespace Tank
 			drawNodeSection();
 
 			// Draw Node subclass sections
+			if (Scene *scene = dynamic_cast<Scene *>(m_inspectedNode))
+				drawSceneSection(scene);
+
 			if (Model *model = dynamic_cast<Model *>(m_inspectedNode))
 				drawModelSection(model);
 
@@ -42,6 +45,16 @@ namespace Tank
 			if (Light *light = dynamic_cast<Light *>(m_inspectedNode))
 				drawLightSection(light);
 		}	
+	}
+
+
+	/// <summary>
+	/// Draws a section specifically for the root node.
+	/// </summary>
+	void Inspector::drawSceneSection(Scene *scene) const
+	{
+		ImGui::TextColored(Colour::TITLE, "Active Camera");
+		ImGui::Text(scene->getActiveCamera()->getName().c_str());
 	}
 
 	

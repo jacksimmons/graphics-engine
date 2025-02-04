@@ -17,22 +17,22 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "editor.hpp"
 #include "key_input.hpp"
-#include "scene.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
 #include "framebuffer.hpp"
 #include "transform.hpp"
 #include "script.hpp"
 #include "log.hpp"
+#include "static/time.hpp"
 #include "nodes/node.hpp"
+#include "nodes/scene.hpp"
 #include "nodes/model.hpp"
 #include "nodes/hierarchy.hpp"
-#include "nodes/scene_view.hpp"
 #include "nodes/inspector.hpp"
-#include "nodes/ui/console.hpp"
 #include "nodes/light.hpp"
 #include "nodes/cube_map.hpp"
-#include "static/time.hpp"
+#include "nodes/ui/console.hpp"
+#include "nodes/ui/scene_view.hpp"
 
 
 // Enable debug output
@@ -155,12 +155,6 @@ void Editor::loadScene()
 
 		auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "models/backpack/backpack.obj");
 		scene->addChild(std::move(backpack));
-		//auto cube = std::make_unique<Tank::Cube>("Container", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
-		//scene->addChild(std::move(cube));
-		//auto floor = std::make_unique<Tank::Cube>("Floor", "shader.vert", "shader.frag", "textures/container.png", "textures/specular.png");
-		//floor->getTransform()->setLocalScale({ 100, 0.1, 100 });
-		//floor->getTransform()->setLocalTranslation({ 0, -0.55, 0 });
-		//scene->addChild(std::move(floor));
 
 		// Set the active scene and m_scene
 		Tank::Scene::setActiveScene(scene.get());
@@ -168,25 +162,16 @@ void Editor::loadScene()
 	}
 
 	// Lights
-	glm::vec3 amb{ 0.1f, 0.1f, 0.1f };
-	glm::vec3 diff{ 0.5f, 0.5f, 0.5f };
-	glm::vec3 spec{ 0.1f, 0.1f, 0.1f };
-	glm::vec3 pointLightPositions[]
-	{
-		glm::vec3(0.7f,  3.0f,  2.0f),
-		glm::vec3(2.3f, -3.3f, -4.0f),
-		glm::vec3(-4.0f,  2.0f, -12.0f),
-		glm::vec3(0.0f,  0.0f, -3.0f)
-	};
-
 	Tank::Node *root = Tank::Scene::getActiveScene();
-	for (int i = 0; i < 1; i++)
-	{
-		std::string name = "PtLight";
-		auto light = std::make_unique<Tank::PointLight>(name, amb, diff, spec);
-		light->getTransform()->setLocalTranslation(pointLightPositions[0]);
-		root->addChild(std::move(light));
-	}
+
+	std::string name = "DirLight";
+	auto light = std::make_unique<Tank::DirLight>(name,
+		glm::vec3 { 0.0f, -1.0f, 0.0f },
+		glm::vec3 { 0.02f, 0.02f, 0.02f },
+		glm::vec3 { 0.2f, 0.2f, 0.2f },
+		glm::vec3 { 0.1f, 0.1f, 0.1f }
+	);
+	root->addChild(std::move(light));
 
 	// Initialise input. Must be done after scene.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(

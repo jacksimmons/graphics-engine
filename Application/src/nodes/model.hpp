@@ -7,6 +7,7 @@
 #include "shader.hpp"
 #include "mesh.hpp"
 #include "texture.hpp"
+#include "nodes/node.hpp"
 
 
 struct aiNode; struct aiScene; struct aiMesh;

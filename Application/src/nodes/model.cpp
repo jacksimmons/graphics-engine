@@ -16,8 +16,8 @@
 #include "log.hpp"
 #include "texture.hpp"
 #include "shader.hpp"
-#include "scene.hpp"
 #include "transform.hpp"
+#include "nodes/scene.hpp"
 #include "nodes/model.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/light.hpp"
@@ -50,14 +50,14 @@ namespace Tank
 	void Model::processNode(aiNode *node, const aiScene *scene)
 	{
 		// Process all of node's meshes
-		for (size_t i = 0; i < node->mNumMeshes; i++)
+		for (unsigned i = 0; i < node->mNumMeshes; i++)
 		{
 			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
 			m_meshes.push_back(processMesh(mesh, scene));
 		}
 
 		// Recurse on children's meshes
-		for (size_t i = 0; i < node->mNumChildren; i++)
+		for (unsigned i = 0; i < node->mNumChildren; i++)
 		{
 			processNode(node->mChildren[i], scene);
 		}
@@ -67,11 +67,11 @@ namespace Tank
 	Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
 		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+		std::vector<unsigned> indices;
 		std::vector<Texture> textures;
 
 		// Vertices
-		for (size_t i = 0; i < mesh->mNumVertices; i++)
+		for (unsigned i = 0; i < mesh->mNumVertices; i++)
 		{
 			Vertex vert;
 			vert.position = { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z };
@@ -91,11 +91,11 @@ namespace Tank
 		}
 
 		// Indices
-		for (size_t i = 0; i < mesh->mNumFaces; i++)
+		for (unsigned i = 0; i < mesh->mNumFaces; i++)
 		{
 			aiFace face = mesh->mFaces[i];
 
-			for (size_t j = 0; j < face.mNumIndices; j++)
+			for (unsigned j = 0; j < face.mNumIndices; j++)
 			{
 				indices.push_back(face.mIndices[j]);
 			}
@@ -122,14 +122,14 @@ namespace Tank
 	std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
 	{
 		std::vector<Texture> textures;
-		for (size_t i = 0; i < mat->GetTextureCount(type); i++)
+		for (unsigned i = 0; i < mat->GetTextureCount(type); i++)
 		{
 			aiString str;
 			mat->GetTexture(type, i, &str);
 			bool skipLoading = false;
 
 			// See if texture with same path has already been loaded. If it has, copy existing version.
-			for (size_t j = 0; j < s_texturesLoaded.size(); j++)
+			for (unsigned j = 0; j < s_texturesLoaded.size(); j++)
 			{
 				if (std::strcmp(s_texturesLoaded[j].getFilename().data(), str.C_Str()) == 0)
 				{
@@ -183,7 +183,7 @@ namespace Tank
 		m_shader->setInt("num_dir_lights", DirLight::getCount());
 		m_shader->setInt("num_point_lights", PointLight::getCount());
 
-		for (size_t i = 0; i < m_meshes.size(); i++)
+		for (unsigned i = 0; i < m_meshes.size(); i++)
 		{
 			m_meshes[i].draw(m_shader.get());
 		}

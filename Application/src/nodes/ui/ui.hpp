@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include "imgui.h"
-#include "node.hpp"
+#include "nodes/node.hpp"
 
 
 namespace Tank

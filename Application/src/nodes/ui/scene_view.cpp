@@ -6,13 +6,13 @@
 #include <stdio.h>
 
 #include "log.hpp"
-#include "scene.hpp"
 #include "framebuffer.hpp"
 #include "key_input.hpp"
-#include "static/time.hpp"
-#include "nodes/scene_view.hpp"
-#include "nodes/ui/console.hpp"
 #include "colours.hpp"
+#include "static/time.hpp"
+#include "nodes/scene.hpp"
+#include "nodes/ui/scene_view.hpp"
+#include "nodes/ui/console.hpp"
 
 
 namespace Tank

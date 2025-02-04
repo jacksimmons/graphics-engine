@@ -46,8 +46,11 @@ in vec2 frag_tex_coords;
 
 out vec4 frag_colour;
 
-vec3 calcDirLight(DirLight light, vec3 normal, vec3 dirToView);
+vec3 calcDirLight(DirLight light, vec3 normal);
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos);
+vec3 calcLightAmbient(vec3 Ia);
+vec3 calcLightDiffuse(vec3 Id, vec3 normal, vec3 light_dir);
+vec3 calcLightSpecular(vec3 Is, float Ns, vec3 normal, vec3 light_dir, vec3 camera_dir);
 
 
 void main()
@@ -57,10 +60,10 @@ void main()
     
     vec3 result;
     // Directional lights
-//    for (int i = 0; i < NUM_DIR_LIGHTS; i++)
-//    {
-//        result += calcDirLight(dirLights[i], norm, dirToView);
-//    }
+    for (int i = 0; i < num_dir_lights; i++)
+    {
+        result += calcDirLight(dirLights[i], norm_normal);
+    }
 
     // Point lights
     for (int i = 0; i < num_point_lights; i++)
@@ -72,55 +75,39 @@ void main()
 }
 
 
-vec3 calcDirLight(DirLight light, vec3 normal, vec3 dirToView)
+
+vec3 calcLightAmbient(vec3 Ia)
 {
-//    vec3 dirToLight = normalize(-light.direction);
-//
-//    // Ambient
-//    vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
-//
-//    // Diffuse
-//    float diff = max(dot(normal, dirToLight), 0.0);
-//    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
-//
-//    // Specular
-//    vec3 reflectDir = reflect(-dirToLight, normal);
-//    float spec = pow(max(dot(dirToView, reflectDir), 0.0), material.shininess);
-//    vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
-//
-//    // Combine and return
-//    return (ambient + diffuse + specular);
-
-    return vec3(0.0f);
-}
-
-
-vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
-{
-    vec3 light_dir = normalize((V * vec4(light.pos, 1.0f)).xyz - frag_pos);
-    vec3 camera_dir = -normalize(frag_pos);
-
-    // === Ambient Reflection
     vec3 ambient;
     for (int i = 0; i < MAX_TEXTURES; i++)
     {
-        ambient += light.Ia * vec3(texture(material.diffuse[i], frag_tex_coords * tex_scale.xy));
+        ambient += Ia * vec3(texture(material.diffuse[i], frag_tex_coords * tex_scale.xy));
     }
+    return ambient;
+}
 
-    // === Diffuse Reflection
+
+vec3 calcLightDiffuse(vec3 Id, vec3 normal, vec3 light_dir)
+{
     // A . B = |A||B|cos(theta)
     // |normal| and |light_dir| are 1
     // => diff = cos(theta)
     // If the angle > 90 deg, then dot product becomes negative.
     // max function ensures negative lighting does not occur (which is undefined).
     float angle_normal_light = max(dot(normal, light_dir), 0.0f);
+
     vec3 diffuse;
     for (int i = 0; i < MAX_TEXTURES; i++)
     {
-        diffuse += light.Id * vec3(texture(material.diffuse[i], frag_tex_coords * tex_scale.xy)) * angle_normal_light;
+        diffuse += Id * vec3(texture(material.diffuse[i], frag_tex_coords * tex_scale.xy)) * angle_normal_light;
     }
 
-    // === Specular Reflection
+    return diffuse;
+}
+
+
+vec3 calcLightSpecular(vec3 Is, float Ns, vec3 normal, vec3 light_dir, vec3 camera_dir)
+{
     // Need to negate light_dir, as it points toward the light.
     // The `reflect` function expects a vector pointing out from
     // the light source. It is then reflected over the normal.
@@ -139,17 +126,40 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
         spec = pow(max(dot(normal, halfway_dir), 0.0f), material.Ns);
     }
 
-    
+    // Overwrite specular component if exponent is 0
+    if (material.Ns == 0) {
+        return vec3(0.0f);
+    }
+
     vec3 specular;
     for (int i = 0; i < MAX_TEXTURES; i++)
     {
-        specular += light.Is * vec3(texture(material.specular[i], frag_tex_coords * tex_scale.xy)) * spec;
+        specular += Is * vec3(texture(material.specular[i], frag_tex_coords * tex_scale.xy)) * spec;
     }
+    return specular;
+}
 
-    // Overwrite specular component if exponent is 0
-    if (material.Ns == 0) {
-        specular = vec3(0.0f);
-    }
+
+vec3 calcDirLight(DirLight light, vec3 normal)
+{
+    vec3 light_dir = normalize(mat3(V) * -light.dir);
+    vec3 camera_dir = -normalize(frag_pos);
+
+    vec3 ambient = calcLightAmbient(light.Ia);
+    vec3 diffuse = calcLightDiffuse(light.Id, normal, light_dir);
+    vec3 specular = calcLightSpecular(light.Is, material.Ns, normal, light_dir, camera_dir);
+    return (ambient + diffuse + specular);
+}
+
+
+vec3 calcPointLight(PointLight light, vec3 normal, vec3 frag_pos)
+{
+    vec3 light_dir = normalize((V * vec4(light.pos, 1.0f)).xyz - frag_pos);
+    vec3 camera_dir = -normalize(frag_pos);
+
+    vec3 ambient = calcLightAmbient(light.Ia);
+    vec3 diffuse = calcLightDiffuse(light.Id, normal, light_dir);
+    vec3 specular = calcLightSpecular(light.Is, material.Ns, normal, light_dir, camera_dir);
 
     // Attenuation
     float dist = length(light.pos - frag_pos);

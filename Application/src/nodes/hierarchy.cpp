@@ -3,12 +3,12 @@
 #include <memory>
 #include <imgui.h>
 #include "log.hpp"
-#include "scene.hpp"
 #include "colours.hpp"
 #include "nodes/hierarchy.hpp"
 #include "nodes/inspector.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/light.hpp"
+#include "nodes/scene.hpp"
 
 
 namespace Tank
