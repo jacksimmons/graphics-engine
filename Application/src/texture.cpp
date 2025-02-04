@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "texture.hpp"
+#include "nodes/model.hpp"
 
 
 namespace Tank
@@ -18,5 +19,7 @@ namespace Tank
 	{
 		GLuint id = getTexID();
 		glDeleteTextures(1, &id);
+
+		Model::deleteLoadedTexture(this);
 	}
 }

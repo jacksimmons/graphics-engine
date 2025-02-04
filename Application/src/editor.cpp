@@ -52,8 +52,7 @@ Editor::Editor()
 	m_settings->configFlags = ImGuiConfigFlags_DockingEnable;
 	m_settings->mainWinFlags = ImGuiWindowFlags_NoResize
 		| ImGuiWindowFlags_NoCollapse
-		| ImGuiWindowFlags_NoTitleBar
-		| ImGuiWindowFlags_MenuBar
+		| ImGuiWindowFlags_NoTitleBar // No blue bar
 		| ImGuiWindowFlags_NoBringToFrontOnFocus;
 	m_settings->windowSize = glm::ivec2(800, 600);
 
@@ -217,7 +216,7 @@ void Editor::run()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::SetNextWindowPos(ImVec2(0,0));
+		ImGui::SetNextWindowPos(ImVec2(0, 20));
 		ImGui::SetNextWindowSize(io.DisplaySize);
 		
 		ImGui::Begin("##Main", nullptr, m_settings->mainWinFlags);

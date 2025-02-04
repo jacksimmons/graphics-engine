@@ -37,6 +37,18 @@ namespace Tank
 		virtual void update() override;
 		void processNode(aiNode *node, const aiScene *scene);
 		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
+
 		std::vector<std::shared_ptr<Texture>> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+		static void deleteLoadedTexture(Texture *texture)
+		{
+			int index = -1;
+			for (unsigned int i = 0; i < s_texturesLoaded.size(); i++)
+			{
+				if (s_texturesLoaded[i].get() == texture)
+					index = i;
+			}
+
+			if (index >= 0) s_texturesLoaded.erase(s_texturesLoaded.begin() + index);
+		}
 	};
 }
