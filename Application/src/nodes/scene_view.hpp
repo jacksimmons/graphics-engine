@@ -21,6 +21,12 @@ namespace Tank
 
 		std::unique_ptr<Framebuffer> m_fb;
 		KeyInput *m_keyInput;
+		
+		// Properties for updating FPS counter at a constant frequency,
+		// rather than every frame.
+		float m_fpsDisplayUpdateTimer = 0;
+		std::string m_fpsDisplayLastText = "";
+		const float FPS_DISPLAY_UPDATE_FREQUENCY = 0.5f;
 	public:
 		SceneView(const std::string &name,
 			glm::ivec2 stdViewportSize,

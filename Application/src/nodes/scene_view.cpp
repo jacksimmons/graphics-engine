@@ -54,6 +54,17 @@ namespace Tank
 		ImVec2 fbsize = ImVec2((float)fbW, (float)fbH);
 		ImTextureID imTex = (ImTextureID)(intptr_t)m_fb->getTexColBuf();
 
+		// Update FPS counter at a constant frequency. If not updated,
+		// display previous FPS value.
+		float delta = Time::getFrameDelta();
+		m_fpsDisplayUpdateTimer += delta;
+		if (m_fpsDisplayUpdateTimer > FPS_DISPLAY_UPDATE_FREQUENCY)
+		{
+			m_fpsDisplayLastText = std::format("{} FPS", 1 / delta).c_str();
+			m_fpsDisplayUpdateTimer = 0;
+		}
+		ImGui::Text(m_fpsDisplayLastText.c_str());
+
 		ImGui::Image(imTex, fbsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
 		ImGui::EndChild();
 	}

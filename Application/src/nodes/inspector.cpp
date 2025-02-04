@@ -62,14 +62,12 @@ namespace Tank
 			m_inspectedNode->setVisibility(visible);
 
 		ImGui::TextColored(Colour::TITLE, "Name");
-		{
-			const size_t size = 100;
-			char buf[size] = "\0";
-			if (ImGui::InputTextWithHint("##Inspector_Name", m_inspectedNode->getName().c_str(), buf, size))
+		Widget::textInput("##Inspector_Name", m_inspectedNode->getName(),
+			[this](const std::string &newName)
 			{
-				m_inspectedNode->setName(std::string(buf));
+				m_inspectedNode->setName(newName);
 			}
-		}
+		);
 
 		ImGui::TextColored(Colour::TITLE, "Scripts");
 		size_t scriptCount = m_inspectedNode->getScriptCount();
@@ -148,6 +146,13 @@ namespace Tank
 		std::filesystem::path vertPath = model->m_shader->getVertPath();
 
 		ImGui::TextColored(Colour::TITLE, "Vertex Shader");
+		Widget::textInput("##Inspector_VertexShaderPath", vertPath.string(),
+			[&model, &fragPath](const std::string &newPath)
+			{
+				model->setShader(std::make_unique<Shader>(newPath, fragPath.string()));
+			}
+		);
+
 		std::string vshader;
 		if (File::readAllLines("shaders" / vertPath, &vshader))
 		{
@@ -156,6 +161,13 @@ namespace Tank
 		}
 
 		ImGui::TextColored(Colour::TITLE, "Fragment Shader");
+		Widget::textInput("##Inspector_FragmentShaderPath", fragPath.string(),
+			[&model, &vertPath](const std::string &newPath)
+			{
+				model->setShader(std::make_unique<Shader>(vertPath.string(), newPath));
+			}
+		);
+
 		std::string fshader;
 		if (File::readAllLines("shaders" / fragPath, &fshader))
 		{

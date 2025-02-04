@@ -30,6 +30,8 @@ namespace Tank
 			const std::string &modelPath = "models/bigben.obj"
 		);
 
+		void setShader(std::unique_ptr<Shader> shader) { m_shader = std::move(shader); };
+
 		virtual void draw() override;
 		virtual void update() override;
 		void processNode(aiNode *node, const aiScene *scene);
