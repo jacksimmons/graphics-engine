@@ -43,6 +43,8 @@ namespace Tank
 	{
 		unsigned int diffuseIdx = 0;
 		unsigned int specularIdx = 0;
+
+		shader->use();
 		
 		for (unsigned int i = 0; i < m_textures.size(); i++)
 		{
@@ -56,16 +58,15 @@ namespace Tank
 			else if (name == "specular")
 				number = std::to_string(specularIdx++);
 
-			shader->use();
 			shader->setInt("material." + name + "[" + number + "]", i);
-			shader->unuse();
 
 			glBindTexture(GL_TEXTURE_2D, m_textures[i].getTexID());
 		}
-		glActiveTexture(GL_TEXTURE0);
 
 		// Draw mesh vertices
 		glBindVertexArray(m_vao);
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
+
+		shader->unuse();
 	}
 }

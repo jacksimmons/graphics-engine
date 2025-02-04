@@ -1,5 +1,5 @@
 #version 460 core
-#define MAX_TEXTURES 2
+#define MAX_TEXTURES 16
 struct Material
 {
     sampler2D[MAX_TEXTURES] diffuse;

@@ -28,7 +28,7 @@ namespace Tank
 		m_shader->use();
 
 		int texNum = Texture::getTexCount();
-		auto tex = Texture::cubeMapFromFile("textures/skybox", textureNames, texNum, GL_RGB, "cubeMap");
+		auto tex = Texture::cubeMapFromFile("textures/skybox", textureNames, "cubeMap");
 		if (tex.has_value())
 		{
 			m_texture = std::make_unique<Texture>(tex.value());
@@ -48,13 +48,13 @@ namespace Tank
 	/// </summary>
 	void CubeMap::draw()
 	{
-		// Bind all owned texture objects
 		m_shader->use();
-		int texPos = m_texture->getTexPos();
+		
+		// Bind all owned texture objects
 		int texTarget = m_texture->getTexTarget();
 		int texID = m_texture->getTexID();
-		glActiveTexture(texPos);
-		m_shader->setInt("cubeMap", texPos - GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0);
+		m_shader->setInt("cubeMap", 0);
 		glBindTexture(texTarget, texID);
 
 		Camera *cam = Scene::getActiveScene()->getActiveCamera();
@@ -68,6 +68,8 @@ namespace Tank
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 		glDepthMask(GL_TRUE);
+
+		m_shader->unuse();
 
 		Node::draw();
 	}
