@@ -27,6 +27,24 @@ namespace Tank
 	}
 
 
+	void Light::updateShader(Shader *shader)
+	{
+		std::string str = getLightStruct();
+		if (getEnabled())
+		{
+			shader->setVec3(str + ".Ia", m_ambient);
+			shader->setVec3(str + ".Id", m_diffuse);
+			shader->setVec3(str + ".Is", m_specular);
+		}
+		else
+		{
+			shader->setVec3(str + ".Ia", glm::vec3(0.0f));
+			shader->setVec3(str + ".Id", glm::vec3(0.0f));
+			shader->setVec3(str + ".Is", glm::vec3(0.0f));
+		}
+	}
+
+
 	DirLight::DirLight(const std::string &name, glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
 		: Light(name, amb, diff, spec), m_direction(dir)
 	{
@@ -53,10 +71,9 @@ namespace Tank
 	void DirLight::updateShader(Shader *shader)
 	{
 		std::string str = getLightStruct();
-		shader->setVec3(str + ".Ia", m_ambient);
-		shader->setVec3(str + ".Id", m_diffuse);
-		shader->setVec3(str + ".Is", m_specular);
 		shader->setVec3(str + ".dir", m_direction);
+
+		Light::updateShader(shader);
 	}
 
 
@@ -88,12 +105,11 @@ namespace Tank
 	void PointLight::updateShader(Shader *shader)
 	{
 		std::string str = getLightStruct();
-		shader->setVec3(str + ".Ia", m_ambient);
-		shader->setVec3(str + ".Id", m_diffuse);
-		shader->setVec3(str + ".Is", m_specular);
 		shader->setVec3(str + ".pos", Mat4::getTranslation(getTransform()->getWorldModelMatrix()));
 		shader->setFloat(str + ".constant", 1.0f);
 		shader->setFloat(str + ".linear", 0.0f);
 		shader->setFloat(str + ".quadratic", 0.0f);
+
+		Light::updateShader(shader);
 	}
 }

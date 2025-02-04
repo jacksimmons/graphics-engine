@@ -30,7 +30,7 @@ namespace Tank
 		// Virtual destructor so derived class destructors are always used.
 		virtual ~Light();
 
-		virtual void updateShader(Shader *) = 0;
+		virtual void updateShader(Shader *);
 		std::string getLightStruct() { return m_lightArrayName + "[" + std::to_string(m_index) + "]"; };
 
 		void setAmbient(glm::vec3 ambient) { m_ambient = ambient; }
