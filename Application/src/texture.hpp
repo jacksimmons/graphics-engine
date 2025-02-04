@@ -1,6 +1,7 @@
 #pragma once
 #include <format>
 #include <string>
+#include <memory>
 #include <glad/glad.h>
 #include "stb_image.h"
 #include "log.hpp"
@@ -11,7 +12,7 @@ namespace Tank
 	class Texture
 	{
 	private:
-		static uint32_t s_texCount;
+		static int s_texCount;
 
 		GLuint m_texID; // OpenGL's internal value for this texture
 		GLenum m_texTarget; // GL_TEXTURE_2D or GL_TEXTURE_CUBE_MAP
@@ -32,7 +33,7 @@ namespace Tank
 		static GLuint getTexCount() { return s_texCount; };
 
 
-		static std::optional<Texture> fromFile(const std::string &directory, const std::string &filename, const std::string &texType)
+		static std::optional<std::shared_ptr<Texture>> fromFile(const std::string &directory, const std::string &filename, const std::string &texType)
 		{
 			GLint maxTextureUnits;
 			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
@@ -73,11 +74,11 @@ namespace Tank
 
 			TE_CORE_INFO(std::format("Added GL_TEXTURE_2D texture {} with ID {}.", filename, texID));
 
-			return Texture(texID, GL_TEXTURE_2D, texType, directory, filename);
+			return std::shared_ptr<Texture>(new Texture(texID, GL_TEXTURE_2D, texType, directory, filename));
 		}
 
 
-		static std::optional<Texture> cubeMapFromFile(const std::string &directory, const std::array<std::string, 6> &filenames,
+		static std::optional<std::shared_ptr<Texture>> cubeMapFromFile(const std::string &directory, const std::array<std::string, 6> &filenames,
 			const std::string &texType)
 		{
 			GLint maxTextureUnits;
@@ -122,7 +123,7 @@ namespace Tank
 
 			TE_CORE_INFO(std::format("Added GL_TEXTURE_CUBE_MAP texture (first: {}/{}) with name {}", directory, filenames[0], texID));
 
-			return Texture(texID, GL_TEXTURE_CUBE_MAP, texType, directory, filenames[0]);
+			return std::shared_ptr<Texture>(new Texture(texID, GL_TEXTURE_CUBE_MAP, texType, directory, filenames[0]));
 		}
 	};
 }

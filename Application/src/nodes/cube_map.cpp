@@ -31,7 +31,7 @@ namespace Tank
 		auto tex = Texture::cubeMapFromFile("textures/skybox", textureNames, "cubeMap");
 		if (tex.has_value())
 		{
-			m_texture = std::make_unique<Texture>(tex.value());
+			m_texture = tex.value();
 			m_shader->setInt("cubeMap", texNum);
 			TE_CORE_INFO(std::format("Set {} to {}, first filename {}", "cubeMap", texNum, textureNames[0]));
 		}

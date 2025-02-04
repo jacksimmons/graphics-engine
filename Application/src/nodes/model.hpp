@@ -19,7 +19,7 @@ namespace Tank
 	{
 		friend class Inspector;
 	private:
-		static std::vector<Texture> s_texturesLoaded;
+		static std::vector<std::shared_ptr<Texture>> s_texturesLoaded;
 		std::vector<Mesh> m_meshes;
 		std::string m_directory;
 	protected:
@@ -37,6 +37,6 @@ namespace Tank
 		virtual void update() override;
 		void processNode(aiNode *node, const aiScene *scene);
 		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-		std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+		std::vector<std::shared_ptr<Texture>> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
 	};
 }

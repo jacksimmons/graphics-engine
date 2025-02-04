@@ -8,7 +8,7 @@ namespace Tank
 	Mesh::Mesh(
 		std::vector<Vertex> vertices,
 		std::vector<unsigned int> indices,
-		std::vector<Texture> textures)
+		std::vector<std::shared_ptr<Texture>> textures)
 		: m_vertices(vertices), m_indices(indices), m_textures(textures)
 	{
 		glGenVertexArrays(1, &m_vao);
@@ -50,7 +50,7 @@ namespace Tank
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
 
-			std::string name = m_textures[i].getTexType();
+			std::string name = m_textures[i]->getTexType();
 			std::string number;
 
 			if (name == "diffuse")
@@ -60,7 +60,7 @@ namespace Tank
 
 			shader->setInt("material." + name + "[" + number + "]", i);
 
-			glBindTexture(GL_TEXTURE_2D, m_textures[i].getTexID());
+			glBindTexture(GL_TEXTURE_2D, m_textures[i]->getTexID());
 		}
 
 		// Draw mesh vertices

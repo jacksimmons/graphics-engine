@@ -62,8 +62,6 @@ Editor::Editor()
 
 	// Flip loaded textures on the y-axis.
 	stbi_set_flip_vertically_on_load(GL_TRUE);
-	initSystem();
-	loadScene();
 }
 
 
@@ -137,15 +135,15 @@ void Editor::initImGui()
 void Editor::initSystem()
 {
 	m_system = std::make_unique<Tank::Node>("Editor");
-	{
-		m_system->addChild(std::make_unique<Tank::Hierarchy>("Hierarchy"));
-		m_system->addChild(std::make_unique<Tank::Inspector>("Inspector"));
-	}
+	m_system->addChild(std::make_unique<Tank::Hierarchy>("Hierarchy"));
+	m_system->addChild(std::make_unique<Tank::Inspector>("Inspector"));
 }
 
 
 void Editor::loadScene()
 {
+	initSystem();
+
 	// Create nodes
 	{
 		auto scene = std::make_unique<Tank::Scene>();
@@ -162,16 +160,16 @@ void Editor::loadScene()
 	}
 
 	// Lights
-	Tank::Node *root = Tank::Scene::getActiveScene();
-
-	std::string name = "DirLight";
-	auto light = std::make_unique<Tank::DirLight>(name,
-		glm::vec3 { 0.0f, -1.0f, 0.0f },
-		glm::vec3 { 0.02f, 0.02f, 0.02f },
-		glm::vec3 { 0.2f, 0.2f, 0.2f },
-		glm::vec3 { 0.1f, 0.1f, 0.1f }
-	);
-	root->addChild(std::move(light));
+	{
+		std::string name = "DirLight";
+		auto light = std::make_unique<Tank::DirLight>(name,
+			glm::vec3{ 0.0f, -1.0f, 0.0f },
+			glm::vec3{ 0.02f, 0.02f, 0.02f },
+			glm::vec3{ 0.2f, 0.2f, 0.2f },
+			glm::vec3{ 0.1f, 0.1f, 0.1f }
+		);
+		m_scene->addChild(std::move(light));
+	}
 
 	// Initialise input. Must be done after scene.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(
@@ -223,12 +221,17 @@ void Editor::run()
 		ImGui::SetNextWindowSize(io.DisplaySize);
 		
 		ImGui::Begin("##Main", nullptr, m_settings->mainWinFlags);
-		ImGui::ShowDemoWindow();
 
-		handleKeyInput();
-		// Decay input states (comes after handleKeyInput)
-		m_keyInput->update();
-		m_system->update();
+		// Draw File, Edit, etc...
+		drawMainMenuBar();
+
+		if (m_keyInput)
+		{
+			handleKeyInput();
+			// Decay input states (comes after handleKeyInput)
+			m_keyInput->update();
+		}
+		if (m_system) m_system->update();
 
 		ImGui::End();
 		ImGui::Render();
@@ -257,6 +260,25 @@ void Editor::handleKeyInput()
 		glfwSetWindowShouldClose(m_window, GL_TRUE);
 
 	((Tank::SceneView *)m_system->getChild("SceneView"))->handleKeyInput();
+}
+
+
+void Editor::drawMainMenuBar()
+{
+	bool newProject = false;
+	bool openProject = false;
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::MenuItem("New Project", "", &newProject);
+			ImGui::MenuItem("Open Project", "", &openProject);
+			ImGui::EndMenu();
+		}
+	}
+	ImGui::EndMainMenuBar();
+
+	if (newProject) loadScene();
 }
 
 

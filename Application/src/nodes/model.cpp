@@ -25,7 +25,8 @@
 
 namespace Tank
 {
-	std::vector<Texture> Model::s_texturesLoaded;
+	// This will be the last object alive to own a reference to any Texture object.
+	std::vector<std::shared_ptr<Texture>> Model::s_texturesLoaded;
 
 
 	Model::Model(const std::string &name, const std::string &vsName, const std::string &fsName, const std::string &modelPath)
@@ -68,7 +69,7 @@ namespace Tank
 	{
 		std::vector<Vertex> vertices;
 		std::vector<unsigned> indices;
-		std::vector<Texture> textures;
+		std::vector<std::shared_ptr<Texture>> textures;
 
 		// Vertices
 		for (unsigned i = 0; i < mesh->mNumVertices; i++)
@@ -107,10 +108,10 @@ namespace Tank
 			m_shader->use();
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-			std::vector<Texture> diffuse = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
+			auto diffuse = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
 			textures.insert(textures.end(), diffuse.begin(), diffuse.end());
 
-			std::vector<Texture> specular = loadMaterialTextures(material, aiTextureType_SPECULAR, "specular");
+			auto specular = loadMaterialTextures(material, aiTextureType_SPECULAR, "specular");
 			textures.insert(textures.end(), specular.begin(), specular.end());
 			m_shader->unuse();
 		}
@@ -119,9 +120,9 @@ namespace Tank
 	}
 
 
-	std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
+	std::vector<std::shared_ptr<Texture>> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
 	{
-		std::vector<Texture> textures;
+		std::vector<std::shared_ptr<Texture>> textures;
 		for (unsigned i = 0; i < mat->GetTextureCount(type); i++)
 		{
 			aiString str;
@@ -131,7 +132,7 @@ namespace Tank
 			// See if texture with same path has already been loaded. If it has, copy existing version.
 			for (unsigned j = 0; j < s_texturesLoaded.size(); j++)
 			{
-				if (std::strcmp(s_texturesLoaded[j].getFilename().data(), str.C_Str()) == 0)
+				if (std::strcmp(s_texturesLoaded[j]->getFilename().data(), str.C_Str()) == 0)
 				{
 					textures.push_back(s_texturesLoaded[j]);
 					skipLoading = true;
@@ -145,7 +146,7 @@ namespace Tank
 
 				if (tex.has_value())
 				{
-					Texture val = tex.value();
+					std::shared_ptr<Texture> val = tex.value();
 					textures.push_back(val);
 					s_texturesLoaded.push_back(val);
 				}
