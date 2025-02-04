@@ -138,8 +138,8 @@ void Editor::initSystem()
 {
 	m_system = std::make_unique<Tank::Node>("Editor");
 	{
-		m_system->addChild(std::make_unique<Tank::Inspector>("Inspector"));
 		m_system->addChild(std::make_unique<Tank::Hierarchy>("Hierarchy"));
+		m_system->addChild(std::make_unique<Tank::Inspector>("Inspector"));
 	}
 }
 

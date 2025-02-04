@@ -43,33 +43,45 @@ namespace Tank
 		ImGuiTreeNodeFlags flags = 0;
 		if (childCount == 0)
 			flags |= ImGuiTreeNodeFlags_Leaf;
+		flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
 		// Add node name to the tree, clicking on this node will set `nodeExpanded` to true if not a leaf node.
 		ImVec4 nodeNameCol = Colour::NORMAL;
 		if (!node->getEnabled()) nodeNameCol = Colour::DISABLED;
+		
 		ImGui::PushStyleColor(ImGuiCol_Text, nodeNameCol);
 		bool nodeExpanded = ImGui::TreeNodeEx((node->getName() + "##" + std::to_string(*count)).c_str(), flags);
 		ImGui::PopStyleColor();
 		
+		// When the user is dragging this tree-node.
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("HIERARCHY_NODE", (void*)node, sizeof(Node));
+			ImGui::Text(node->getName().c_str());
+			ImGui::EndDragDropSource();
+		}
+
+		// Set the inspected node if necessary.
+		if (
+			!ImGui::IsItemToggledOpen() &&
+			ImGui::IsItemFocused() &&
+			!ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
+			!ImGui::GetDragDropPayload() &&
+			inspector->getInspectedNode() != node)
+		{
+			inspector->setInspectedNode(node);
+		}
+
 		// Draw the right-click options, if user is right-clicking and hovering. If node gets deleted here, return.
 		if (!drawNodeContextMenu(node, inspector)) goto cleanup;
-		
+
 		// If node was clicked on in the tree, display its children (and further descendants if their parent has previously been expanded).
 		if (nodeExpanded)
 		{
-			// If node was not deleted this frame...
-			if (node)
+			// Nodes can be deleted during iteration, so cannot use for-each or iterator syntax.
+			for (int i = 0; i < node->getChildCount(); i++)
 			{
-				if (ImGui::IsItemFocused() && inspector->getInspectedNode() != node)
-				{
-					inspector->setInspectedNode(node);
-				}
-
-				// Nodes can be deleted during iteration, so cannot use for-each or iterator syntax.
-				for (int i = 0; i < node->getChildCount(); i++)
-				{
-					drawRecursive(node->getChild(i), &(++(*count)));
-				}
+				drawRecursive(node->getChild(i), &(++(*count)));
 			}
 		}
 

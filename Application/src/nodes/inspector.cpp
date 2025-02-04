@@ -13,6 +13,7 @@
 #include "nodes/inspector.hpp"
 #include "nodes/light.hpp"
 #include "nodes/ui/ui.hpp"
+#include "nodes/ui/console.hpp"
 
 
 namespace Tank
@@ -54,7 +55,38 @@ namespace Tank
 	void Inspector::drawSceneSection(Scene *scene) const
 	{
 		ImGui::TextColored(Colour::TITLE, "Active Camera");
-		ImGui::Text(scene->getActiveCamera()->getName().c_str());
+
+		std::string cameraName;
+		ImColor cameraNameCol;
+		Camera *activeCamera = scene->getActiveCamera();
+		if (activeCamera)
+		{
+			cameraName = activeCamera->getName();
+			cameraNameCol = Colour::NORMAL;
+		}
+		else
+		{
+			cameraName = "NULL";
+			cameraNameCol = Colour::DISABLED;
+		}
+		ImGui::TextColored(cameraNameCol, cameraName.c_str());
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("HIERARCHY_NODE"))
+			{
+				if (Camera *camera = dynamic_cast<Camera *>((Node*)(payload->Data)))
+				{
+					scene->setActiveCamera(camera);
+				}
+			}
+			else
+			{
+				((Console*)getParent()->getChild("Console"))->addLine([]() { ImGui::TextColored(Colour::ERR, "Failed to receive payload."); });
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 	}
 
 	
