@@ -1,7 +1,7 @@
 #include <stack>
 #include <iostream>
 #include "log.hpp"
-#include "scene.hpp"
+#include "nodes/scene.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/light.hpp"
 

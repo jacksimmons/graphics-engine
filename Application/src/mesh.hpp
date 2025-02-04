@@ -21,12 +21,12 @@ namespace Tank
 	private:
 		unsigned int m_vao, m_vbo, m_ebo;
 		std::vector<Vertex> m_vertices;
-		std::vector<unsigned int> m_indices;
+		std::vector<unsigned> m_indices;
 		std::vector<Texture> m_textures;
 	public:
 		Mesh(
 			std::vector<Vertex> vertices,
-			std::vector<unsigned int> indices,
+			std::vector<unsigned> indices,
 			std::vector<Texture> textures
 		);
 		void draw(Shader *shader) const;

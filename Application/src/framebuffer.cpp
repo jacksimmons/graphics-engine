@@ -3,7 +3,7 @@
 #include "log.hpp"
 #include "framebuffer.hpp"
 #include "shader.hpp"
-#include "scene.hpp"
+#include "nodes/scene.hpp"
 
 
 namespace Tank

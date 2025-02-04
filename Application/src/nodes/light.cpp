@@ -1,9 +1,9 @@
 #include <string>
 #include "transform.hpp"
 #include "shader.hpp"
-#include "scene.hpp"
 #include "log.hpp"
 #include "nodes/light.hpp"
+#include "nodes/scene.hpp"
 
 
 namespace Tank

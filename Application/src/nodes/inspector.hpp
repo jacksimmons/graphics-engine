@@ -5,7 +5,7 @@
 
 namespace Tank
 {
-	class Model; class Camera; class Light; class DirLight;
+	class Scene; class Model; class Camera; class Light; class DirLight;
 	class Inspector : public Panel
 	{
 		friend class Hierarchy;
@@ -14,6 +14,7 @@ namespace Tank
 
 	private:
 		void drawNodeSection() const;
+		void drawSceneSection(Scene *scene) const;
 		void drawModelSection(Model *model) const;
 		void drawCameraSection(Camera *camera) const;
 		void drawLightSection(Light *light) const;
