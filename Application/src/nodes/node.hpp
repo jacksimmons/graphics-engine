@@ -44,6 +44,7 @@ namespace Tank
 
 		void setName(const std::string &name) noexcept { m_name = name; }
 		constexpr const std::string& getName() const noexcept { return m_name; }
+		const std::string& getPath() const;
 
 		constexpr void setParent(Node *parent) noexcept { m_parent = parent; }
 		constexpr Node *getParent() const noexcept { return m_parent; }
