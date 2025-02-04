@@ -141,7 +141,7 @@ namespace Tank
 
 			if (!skipLoading)
 			{
-				auto tex = Texture::fromFile(m_directory, str.C_Str(), Texture::getTexCount(), typeName);
+				auto tex = Texture::fromFile(m_directory, str.C_Str(), typeName);
 
 				if (tex.has_value())
 				{

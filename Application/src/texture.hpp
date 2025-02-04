@@ -11,22 +11,20 @@ namespace Tank
 	class Texture
 	{
 	private:
-		static GLuint s_texCount;
+		static uint32_t s_texCount;
 
 		GLuint m_texID; // OpenGL's internal value for this texture
-		GLuint m_texPos; // Offset added to GL_TEXTURE0 in glActiveTexture
 		GLenum m_texTarget; // GL_TEXTURE_2D or GL_TEXTURE_CUBE_MAP
 		std::string m_texType; // material.{diffuse | specular}
 		std::string m_directory;
 		std::string m_filename;
 
 		// No reason to expose this constructor. Textures must be built using the factories below
-		Texture(GLuint texID, GLuint texPos, GLenum texTarget, const std::string &uniformName,
+		Texture(GLuint texID, GLenum texTarget, const std::string &uniformName,
 			const std::string &directory, const std::string &filename);
 	public:
 		~Texture();
 		GLuint getTexID() const noexcept { return m_texID; };
-		GLuint getTexPos() const noexcept { return m_texPos; };
 		GLenum getTexTarget() const noexcept { return m_texTarget; }
 		const std::string &getTexType() const { return m_texType; }
 		const std::string &getDir() const { return m_directory; }
@@ -34,7 +32,7 @@ namespace Tank
 		static GLuint getTexCount() { return s_texCount; };
 
 
-		static std::optional<Texture> fromFile(const std::string &directory, const std::string &filename, GLuint texPos, const std::string &texType)
+		static std::optional<Texture> fromFile(const std::string &directory, const std::string &filename, const std::string &texType)
 		{
 			GLint maxTextureUnits;
 			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
@@ -73,14 +71,14 @@ namespace Tank
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			TE_CORE_INFO(std::format("Added regular texture {} at GL_TEXTURE{} with name {}", filename, texPos, texID));
+			TE_CORE_INFO(std::format("Added GL_TEXTURE_2D texture {} with ID {}.", filename, texID));
 
-			return Texture(texID, GL_TEXTURE0 + texPos, GL_TEXTURE_2D, texType, directory, filename);
+			return Texture(texID, GL_TEXTURE_2D, texType, directory, filename);
 		}
 
 
-		static std::optional<Texture> cubeMapFromFile(const std::string &directory, const std::array<std::string, 6> &filenames, GLuint texPos,
-			GLenum mode, const std::string &texType)
+		static std::optional<Texture> cubeMapFromFile(const std::string &directory, const std::array<std::string, 6> &filenames,
+			const std::string &texType)
 		{
 			GLint maxTextureUnits;
 			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
@@ -102,6 +100,13 @@ namespace Tank
 					return {};
 				}
 
+
+				GLenum mode = GL_RGBA;
+				if (numChannels == 1) mode = GL_RED;
+				else if (numChannels == 3) mode = GL_RGB;
+				else if (numChannels == 4) mode = GL_RGBA;
+				glTexImage2D(GL_TEXTURE_2D, 0, mode, w, h, 0, mode, GL_UNSIGNED_BYTE, data);
+
 				glTexImage2D(
 					GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 					0, GL_RGB, w, h, 0, mode, GL_UNSIGNED_BYTE, data
@@ -115,9 +120,9 @@ namespace Tank
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-			TE_CORE_INFO(std::format("Added cubemap texture (first: {}/{}) at GL_TEXTURE{} with name {}", directory, filenames[0], texPos, texID));
+			TE_CORE_INFO(std::format("Added GL_TEXTURE_CUBE_MAP texture (first: {}/{}) with name {}", directory, filenames[0], texID));
 
-			return Texture(texID, GL_TEXTURE0 + texPos, GL_TEXTURE_CUBE_MAP, texType, directory, filenames[0]);
+			return Texture(texID, GL_TEXTURE_CUBE_MAP, texType, directory, filenames[0]);
 		}
 	};
 }
