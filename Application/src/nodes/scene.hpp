@@ -22,13 +22,9 @@ namespace Tank
 		static Scene *getActiveScene() { return s_activeScene; }
 
 		/// <summary>
-		/// Set the active scene, if one has not been set already.
+		/// Set the active scene.
 		/// </summary>
-		static void setActiveScene(Scene *scene)
-		{
-			if (s_activeScene == nullptr && scene != nullptr)
-				s_activeScene = scene;
-		}
+		static void setActiveScene(Scene *scene) { s_activeScene = scene; }
 
 		// Instance
 	private:

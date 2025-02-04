@@ -14,7 +14,7 @@ namespace Tank
 		GLuint m_vao;
 		GLuint m_vbo;
 		std::unique_ptr<Shader> m_shader;
-		std::unique_ptr<Texture> m_texture;
+		std::shared_ptr<Texture> m_texture;
 	public:
 		CubeMap(const std::string &name, const std::string &vsName, const std::string &fsName, const std::array<std::string, 6> &textureNames);
 

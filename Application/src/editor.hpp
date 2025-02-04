@@ -50,5 +50,7 @@ public:
 	void run() override;
 	void handleKeyInput();
 
+	void drawMainMenuBar();
+
 	WindowSettings *getWindowSettings() const noexcept { return m_settings.get(); }
 };

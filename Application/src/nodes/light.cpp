@@ -16,7 +16,6 @@ namespace Tank
 		m_ambient(amb), m_diffuse(diff), m_specular(spec), m_index(0)
 	{
 		m_scene = Scene::getActiveScene();
-		//addChild(std::move(std::make_unique<Plane>("Gizmo", "textures/light_source.png", "textures/light_source.png")));
 	}
 
 

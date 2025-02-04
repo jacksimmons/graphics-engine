@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 #include <glm/glm.hpp>
 #include <shader.hpp>
 
@@ -22,12 +23,12 @@ namespace Tank
 		unsigned int m_vao, m_vbo, m_ebo;
 		std::vector<Vertex> m_vertices;
 		std::vector<unsigned> m_indices;
-		std::vector<Texture> m_textures;
+		std::vector<std::shared_ptr<Texture>> m_textures;
 	public:
 		Mesh(
 			std::vector<Vertex> vertices,
 			std::vector<unsigned> indices,
-			std::vector<Texture> textures
+			std::vector<std::shared_ptr<Texture>> textures
 		);
 		void draw(Shader *shader) const;
 	};

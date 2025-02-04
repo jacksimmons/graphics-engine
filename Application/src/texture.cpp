@@ -1,9 +1,10 @@
+#include <algorithm>
 #include "texture.hpp"
 
 
 namespace Tank
 {
-	uint32_t Texture::s_texCount = 0;
+	int Texture::s_texCount = 0;
 
 
 	Texture::Texture(GLuint texID, GLenum texTarget, const std::string &texType, const std::string &directory, const std::string &filename) :
@@ -15,7 +16,7 @@ namespace Tank
 
 	Texture::~Texture()
 	{
-		// !Need to free up GL_TEXTURE0 + texPos
-		// !But this creates a gap that will never be filled by the current system.
+		GLuint id = getTexID();
+		glDeleteTextures(1, &id);
 	}
 }
