@@ -1,13 +1,13 @@
 # Preview
-![image](https://github.com/user-attachments/assets/f4dd5926-2f28-4ce0-931a-19453fdd9489)
+![image](https://github.com/user-attachments/assets/abf166eb-b493-4e20-9b9b-3dea4e6647ad)
 
 # Requirements
-CMake
-One of the following platforms:
-    Microsoft Visual Studio 2005-2022
-    GNU Make, including Cygwin and MinGW
-    Xcode
-    Codelite
+CMake  
+One of the following platforms:  
+    Microsoft Visual Studio 2005-2022  
+    GNU Make, including Cygwin and MinGW  
+    Xcode  
+    Codelite  
 
 # Use
 Run Premake using vendor/premake/premake5 (platform).
