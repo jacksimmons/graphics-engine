@@ -1,7 +1,9 @@
 .vs/
 *.dir/
-**/bin/*
-**/out/*
+bin/*
+out/*
+Engine/bin/*
+Engine/out/*
 Release/
 Debug/
 x64/
