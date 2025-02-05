@@ -1,0 +1,31 @@
+{
+    "children": [
+        {
+            "children": [],
+            "enabled": true,
+            "name": "Camera",
+            "visible": true
+        },
+        {
+            "children": [],
+            "enabled": true,
+            "name": "Skybox",
+            "visible": true
+        },
+        {
+            "children": [],
+            "enabled": true,
+            "name": "Backpack",
+            "visible": true
+        },
+        {
+            "children": [],
+            "enabled": true,
+            "name": "DirLight",
+            "visible": true
+        }
+    ],
+    "enabled": true,
+    "name": "Scene",
+    "visible": true
+}

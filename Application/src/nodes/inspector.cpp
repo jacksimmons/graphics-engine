@@ -214,7 +214,7 @@ namespace Tank
 		);
 
 		std::string vshader;
-		if (File::readAllLines("shaders" / vertPath, &vshader))
+		if (File::readLines("shaders" / vertPath, vshader))
 		{
 			// https://github.com/ocornut/imgui/issues/2429
 			ImGui::TextUnformatted(vshader.c_str());
@@ -229,7 +229,7 @@ namespace Tank
 		);
 
 		std::string fshader;
-		if (File::readAllLines("shaders" / fragPath, &fshader))
+		if (File::readLines("shaders" / fragPath, fshader))
 		{
 			// https://github.com/ocornut/imgui/issues/2429
 			ImGui::TextUnformatted(fshader.c_str());

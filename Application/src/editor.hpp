@@ -45,8 +45,10 @@ public:
 	~Editor();
 	void initGL();
 	void initImGui();
-	void initSystem();
-	void loadScene();
+	void preSceneSetup();
+	void loadScene(std::unique_ptr<Tank::Scene> scene);
+	void loadDemoScene();
+	void postSceneSetup();
 	void run() override;
 	void handleKeyInput();
 

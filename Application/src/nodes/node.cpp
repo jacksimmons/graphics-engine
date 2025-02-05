@@ -12,7 +12,7 @@
 
 namespace Tank
 {
-	Node::Node(const std::string &name = "Node")
+	Node::Node(const std::string &name = "Node") : ISerialisable()
 	{
 		m_name = name;
 		m_transform = std::make_unique<Transform>(this);
@@ -137,5 +137,23 @@ namespace Tank
 		{
 			child->update();
 		}
+	}
+
+
+	json Node::serialise()
+	{
+		json serialised;
+		serialised["name"] = m_name;
+		serialised["enabled"] = m_enabled;
+		serialised["visible"] = m_visible;
+
+		std::vector<json> children;
+		for (auto &child : *this)
+		{
+			children.push_back(child->serialise());
+		}
+
+		serialised["children"] = children;
+		return serialised;
 	}
 }
