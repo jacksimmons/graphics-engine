@@ -20,7 +20,7 @@ namespace Tank
 	}
 
 
-	const std::string& Node::getPath() const
+	std::string Node::getPath() const
 	{
 		if (m_parent)
 		{
