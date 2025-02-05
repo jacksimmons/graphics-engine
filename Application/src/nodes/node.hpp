@@ -3,15 +3,26 @@
 #include <memory>
 #include <string>
 #include <glm/mat4x4.hpp>
+#include <nlohmann/json.hpp>
 
 #include "transform.hpp"
 #include "script.hpp"
+
+using json = nlohmann::json;
 
 
 namespace Tank
 {
 	class IScript;
-	class Node
+
+	class ISerialisable
+	{
+	public:
+		// Serialise from an object to json.
+		virtual json serialise() = 0;
+	};
+
+	class Node : public ISerialisable
 	{
 	private:
 		std::string m_name;
@@ -35,6 +46,8 @@ namespace Tank
 	public:
 		Node(const std::string &name);
 		virtual ~Node() = default;
+
+		virtual json serialise() override;
 
 		constexpr void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		constexpr bool getEnabled() const noexcept { return m_enabled; }

@@ -9,6 +9,7 @@ namespace Tank
 {
 	namespace File
 	{
-		bool readAllLines(std::filesystem::path fp, std::string *outStr);
+		bool readLines(std::filesystem::path fp, std::string &outStr);
+		bool writeLines(const std::filesystem::path &fp, const std::string &inStr);
 	}
 }

@@ -23,6 +23,7 @@
 #include "transform.hpp"
 #include "script.hpp"
 #include "log.hpp"
+#include "serialisation.hpp"
 #include "static/time.hpp"
 #include "nodes/node.hpp"
 #include "nodes/scene.hpp"
@@ -131,7 +132,7 @@ void Editor::initImGui()
 }
 
 
-void Editor::initSystem()
+void Editor::preSceneSetup()
 {
 	m_system = std::make_unique<Tank::Node>("Editor");
 	m_system->addChild(std::make_unique<Tank::Hierarchy>("Hierarchy"));
@@ -139,10 +140,15 @@ void Editor::initSystem()
 }
 
 
-void Editor::loadScene()
+void Editor::loadScene(std::unique_ptr<Tank::Scene> scene)
 {
-	initSystem();
+	m_scene = std::move(scene);
+	m_scene->setActiveScene(m_scene.get());
+}
 
+
+void Editor::loadDemoScene()
+{
 	// Create nodes
 	{
 		auto scene = std::make_unique<Tank::Scene>();
@@ -153,9 +159,7 @@ void Editor::loadScene()
 		auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "models/backpack/backpack.obj");
 		scene->addChild(std::move(backpack));
 
-		// Set the active scene and m_scene
-		Tank::Scene::setActiveScene(scene.get());
-		m_scene = std::move(scene);
+		loadScene(std::move(scene));
 	}
 
 	// Lights
@@ -169,8 +173,12 @@ void Editor::loadScene()
 		);
 		m_scene->addChild(std::move(light));
 	}
+}
 
-	// Initialise input. Must be done after scene.
+
+void Editor::postSceneSetup()
+{
+	// Initialise input. Must be done after scene load, and before scene view load.
 	m_keyInput = std::make_unique<Tank::KeyInput>(std::vector<int>(
 	{
 		GLFW_KEY_ESCAPE,
@@ -266,18 +274,35 @@ void Editor::drawMainMenuBar()
 {
 	bool newProject = false;
 	bool openProject = false;
+	bool saveProject = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
 		{
 			ImGui::MenuItem("New Project", "", &newProject);
 			ImGui::MenuItem("Open Project", "", &openProject);
+			ImGui::MenuItem("Save Project", "", &saveProject);
 			ImGui::EndMenu();
 		}
 	}
 	ImGui::EndMainMenuBar();
 
-	if (newProject) loadScene();
+	if (newProject)
+	{
+		preSceneSetup();
+		loadDemoScene();
+		postSceneSetup();
+	}
+	if (openProject)
+	{
+		preSceneSetup();
+		loadScene(std::unique_ptr<Tank::Scene>(Tank::Serialisation::loadScene("test.scene")));
+		postSceneSetup();
+	}
+	if (saveProject && m_scene)
+	{
+		Tank::Serialisation::saveScene(m_scene.get(), "test.scene");
+	}
 }
 
 

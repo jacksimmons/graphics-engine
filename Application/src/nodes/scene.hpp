@@ -2,8 +2,11 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <nlohmann/json.hpp>
 #include "nodes/node.hpp"
 #include "nodes/camera.hpp"
+
+using json = nlohmann::json;
 
 
 namespace Tank
