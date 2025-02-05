@@ -12,7 +12,7 @@ namespace Tank
 	class Texture
 	{
 	private:
-		static int s_texCount;
+		static unsigned int s_texCount;
 
 		GLuint m_texID; // OpenGL's internal value for this texture
 		GLenum m_texTarget; // GL_TEXTURE_2D or GL_TEXTURE_CUBE_MAP

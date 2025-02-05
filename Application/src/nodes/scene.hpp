@@ -3,6 +3,7 @@
 #include <memory>
 #include <functional>
 #include "nodes/node.hpp"
+#include "nodes/camera.hpp"
 
 
 namespace Tank
@@ -37,7 +38,9 @@ namespace Tank
 		// the active camera.
 		Scene(const std::string &name = "Scene");
 		
+		// Get the active camera for this scene.
 		Camera *getActiveCamera() const noexcept { return m_activeCamera; }
+		// Set the active camera for this scene.
 		void setActiveCamera(Camera *camera) noexcept { m_activeCamera = camera; }
 		
 		void addLight(Light *);

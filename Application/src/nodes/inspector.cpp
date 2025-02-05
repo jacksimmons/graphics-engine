@@ -182,7 +182,7 @@ namespace Tank
 					{
 						if (Camera *cam = dynamic_cast<Camera *>(node))
 						{
-							if (ImGui::Button((cam->getName() + "##INSPECTOR_SCENE_SET_CAM_LIST_BTN").c_str()))
+							if (ImGui::Button((cam->getPath() + "##INSPECTOR_SCENE_SET_CAM_LIST_BTN").c_str()))
 							{
 								scene->setActiveCamera(cam);
 								m_setPropertyValuePanelActive = false;

@@ -5,7 +5,7 @@
 
 namespace Tank
 {
-	int Texture::s_texCount = 0;
+	unsigned int Texture::s_texCount = 0;
 
 
 	Texture::Texture(GLuint texID, GLenum texTarget, const std::string &texType, const std::string &directory, const std::string &filename) :

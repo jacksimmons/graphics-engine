@@ -58,8 +58,6 @@ namespace Tank
 		glBindTexture(texTarget, texID);
 
 		Camera *cam = Scene::getActiveScene()->getActiveCamera();
-
-		// Remove translation section of the transformation
 		m_shader->setMat4("view", glm::mat4(glm::mat3(cam->getView())));
 		m_shader->setMat4("proj", cam->getProj());
 
