@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <optional>
 #include <nlohmann/json.hpp>
+#include <glm/glm.hpp>
 #include "nodes/scene.hpp"
 
 using json = nlohmann::json;

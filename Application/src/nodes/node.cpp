@@ -19,6 +19,7 @@ namespace Tank
 		serialised["type"] = node->m_type;
 		serialised["enabled"] = node->m_enabled;
 		serialised["visible"] = node->m_visible;
+		serialised["transform"] = Transform::serialise(node->m_transform.get());
 		return serialised;
 	}
 
@@ -31,6 +32,8 @@ namespace Tank
 		target->setName(serialised["name"]);
 		target->setEnabled(serialised["enabled"]);
 		target->setVisibility(serialised["visible"]);
+		auto trans = Transform::deserialise(serialised["transform"], target);
+		target->m_transform = std::move(trans);
 	}
 
 
