@@ -50,7 +50,7 @@ namespace Tank
 
 		if (type == "Node") serialised = Node::serialise((Node*)deserialised);
 		else if (type == "Camera") serialised = Camera::serialise((Camera*)deserialised);
-		else if (type == "Skybox") serialised = Skybox::serialise((Node*)deserialised);
+		else if (type == "CubeMap") serialised = CubeMap::serialise((CubeMap*)deserialised);
 		else if (type == "DirLight") serialised = DirLight::serialise((DirLight*)deserialised);
 		else if (type == "PointLight") serialised = PointLight::serialise((Light*)deserialised);
 		else if (type == "Model") serialised = Model::serialise((Model*)deserialised);
@@ -76,7 +76,7 @@ namespace Tank
 		// +Node
 		if (type == "Node") Node::deserialise(serialised, &node);
 		else if (type == "Camera") Camera::deserialise(serialised, (Camera**)&node);
-		else if (type == "Skybox") Skybox::deserialise(serialised, &node);
+		else if (type == "CubeMap") CubeMap::deserialise(serialised, (CubeMap**)&node);
 		else if (type == "DirLight") DirLight::deserialise(serialised, (DirLight**)&node);
 		else if (type == "PointLight") PointLight::deserialise(serialised, (Light**)&node);
 		else if (type == "Model") Model::deserialise(serialised, (Model**)&node);

@@ -12,9 +12,33 @@
 
 namespace Tank
 {
+	json CubeMap::serialise(CubeMap *cubeMap)
+	{
+		json serialised = Node::serialise(cubeMap);
+
+		serialised["vsPath"] = cubeMap->m_shader->getVertPath();
+		serialised["fsPath"] = cubeMap->m_shader->getFragPath();
+		serialised["texturePaths"] = cubeMap->m_texturePaths;
+
+		return serialised;
+	}
+
+
+	void CubeMap::deserialise(const json &serialised, CubeMap **targetPtr)
+	{
+		if (!(*targetPtr)) *targetPtr = new CubeMap(serialised["name"], serialised["vsPath"], serialised["fsPath"], serialised["texturePaths"]);
+
+		Node *target = *targetPtr;
+		Node::deserialise(serialised, &target);
+	}
+
+
 	CubeMap::CubeMap(const std::string &name, const std::string &vsName, const std::string &fsName, const std::array<std::string, 6> &textureNames)
 		: Node(name)
 	{
+		m_type = "CubeMap";
+		m_texturePaths = textureNames;
+
 		glGenVertexArrays(1, &m_vao);
 		glGenBuffers(1, &m_vbo);
 		glBindVertexArray(m_vao);
@@ -70,13 +94,5 @@ namespace Tank
 		m_shader->unuse();
 
 		Node::draw();
-	}
-
-
-	Skybox::Skybox(const std::string &name)
-		// ! Bottom and top are switched
-		: CubeMap(name, "skybox.vert", "skybox.frag", { "right.jpg", "left.jpg", "bottom.jpg", "top.jpg", "front.jpg", "back.jpg" })
-	{
-		m_type = "Skybox";
 	}
 }

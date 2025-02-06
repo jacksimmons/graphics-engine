@@ -9,6 +9,7 @@
 #include "nodes/camera.hpp"
 #include "nodes/light.hpp"
 #include "nodes/scene.hpp"
+#include "nodes/cube_map.hpp"
 
 
 namespace Tank
@@ -120,6 +121,7 @@ namespace Tank
 				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(node, "PointLight");
 				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(node, "DirLight");
 				if (ImGui::MenuItem("Camera")) buildNode<Camera>(node, "Camera");
+				if (ImGui::MenuItem("CubeMap (Skybox)")) buildNode<CubeMap>(node, "CubeMap");
 
 				ImGui::EndMenu();
 			}
