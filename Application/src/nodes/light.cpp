@@ -141,7 +141,7 @@ namespace Tank
 	void PointLight::updateShader(Shader *shader)
 	{
 		std::string str = getLightStruct();
-		shader->setVec3(str + ".pos", Mat4::getTranslation(getTransform()->getWorldModelMatrix()));
+		shader->setVec3(str + ".pos", mat4::getTranslation(getTransform()->getWorldModelMatrix()));
 		shader->setFloat(str + ".constant", 1.0f);
 		shader->setFloat(str + ".linear", 0.0f);
 		shader->setFloat(str + ".quadratic", 0.0f);

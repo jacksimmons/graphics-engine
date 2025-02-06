@@ -91,8 +91,8 @@ namespace Tank
 			if (cam != nullptr)
 			{
 				glm::mat4 worldMatrix = transform->getWorldModelMatrix();
-				cam->setPosition(Mat4::getTranslation(worldMatrix));
-				cam->setRotation(Mat4::getRotation(worldMatrix));
+				cam->setPosition(mat4::getTranslation(worldMatrix));
+				cam->setRotation(mat4::getRotation(worldMatrix));
 			}
 		}
 
