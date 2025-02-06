@@ -12,8 +12,31 @@
 
 namespace Tank
 {
-	Node::Node(const std::string &name = "Node") : ISerialisable()
+	json Node::serialise(Node *node)
 	{
+		json serialised;
+		serialised["name"] = node->m_name;
+		serialised["type"] = node->m_type;
+		serialised["enabled"] = node->m_enabled;
+		serialised["visible"] = node->m_visible;
+		return serialised;
+	}
+
+
+	void Node::deserialise(const json &serialised, Node **targetPtr)
+	{
+		if (!(*targetPtr)) *targetPtr = new Node();
+
+		Node *target = *targetPtr;
+		target->setName(serialised["name"]);
+		target->setEnabled(serialised["enabled"]);
+		target->setVisibility(serialised["visible"]);
+	}
+
+
+	Node::Node(const std::string &name)
+	{
+		m_type = "Node";
 		m_name = name;
 		m_transform = std::make_unique<Transform>(this);
 		m_parent = nullptr;
@@ -71,10 +94,21 @@ namespace Tank
 		{
 			return m_children[index].get();
 		}
-		
+
 		// Out of children list range.
 		return nullptr;
 	}
+
+
+	int Node::getSiblingIndex() const
+	{
+		for (int i = 0; i < m_parent->getChildCount(); i++)
+		{
+			if (getSibling(i) == this)
+				return i;
+		}
+	}
+
 
 	void Node::forEachDescendant(std::function<void(Node *)> forEach, std::function<bool()> terminate)
 	{
@@ -98,6 +132,50 @@ namespace Tank
 			}
 		}
 	}
+
+
+	Node *Node::childFromTree(std::vector<int> treeTraversal)
+	{
+		Node *currentNode = this;
+		while (!treeTraversal.empty())
+		{
+			int childIndex = treeTraversal[0];
+			treeTraversal.erase(treeTraversal.begin());
+			
+			if (currentNode)
+			{
+				currentNode = currentNode->getChild(childIndex);
+			}
+			else
+			{
+				TE_CORE_ERROR("childFromTree: Tree traversal was not valid - attempted nullptr.getChild");
+				return nullptr;
+			}
+		}
+
+		return currentNode;
+	}
+
+
+	std::vector<int> Node::treeFromChild(Node *child)
+	{
+		Node *currentChild = child;
+		std::vector<int> treeTraversal;
+		do
+		{
+			treeTraversal.emplace(treeTraversal.begin() + currentChild->getSiblingIndex());
+			currentChild = currentChild->m_parent;
+
+			if (!currentChild)
+			{
+				TE_CORE_ERROR("treeFromChild: Tree traversal was not valid - this was not a parent of child.");
+				return std::vector<int>();
+			}
+		} while (currentChild != this);
+
+		return treeTraversal;
+	}
+
 
 	void Node::addScript(std::unique_ptr<IScript> script)
 	{
@@ -137,23 +215,5 @@ namespace Tank
 		{
 			child->update();
 		}
-	}
-
-
-	json Node::serialise()
-	{
-		json serialised;
-		serialised["name"] = m_name;
-		serialised["enabled"] = m_enabled;
-		serialised["visible"] = m_visible;
-
-		std::vector<json> children;
-		for (auto &child : *this)
-		{
-			children.push_back(child->serialise());
-		}
-
-		serialised["children"] = children;
-		return serialised;
 	}
 }

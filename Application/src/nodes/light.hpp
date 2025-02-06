@@ -9,7 +9,10 @@ namespace Tank
 	class Scene;
 	class Light : public Node
 	{
-	private:
+	public:
+		static json serialise(Light *light);
+		static void deserialise(const json &serialised, Light **targetPtr);
+
 	protected:
 		// The scene this light applies to shaders within. Responsibility lies in the Light class
 		// to call m_scene->updateShaders() after changes to the light occur.
@@ -21,7 +24,7 @@ namespace Tank
 		// Name of the array in GLSL containing all light structs.
 		std::string m_lightArrayName;
 		Light(
-			const std::string &name,
+			const std::string &name = "Light",
 			glm::vec3 amb = { 1,1,1 },
 			glm::vec3 diff = { 1,1,1 },
 			glm::vec3 spec = { 1,1,1 }
@@ -46,11 +49,14 @@ namespace Tank
 
 	class DirLight : public Light
 	{
+	public:
+		static json serialise(DirLight *light);
+		static void deserialise(const json &serialised, DirLight **targetPtr);
+
 	private:
 		glm::vec3 m_direction;
-		static int s_count;
 	public:
-		DirLight(const std::string &name,
+		DirLight(const std::string &name = "DirLight",
 			glm::vec3 dir = { 0,0,1 },
 			glm::vec3 amb = { 1,1,1 },
 			glm::vec3 diff = { 1,1,1 },
@@ -61,24 +67,18 @@ namespace Tank
 
 		void setDirection(glm::vec3 direction) { m_direction = direction; }
 		glm::vec3 getDirection() const { return m_direction; }
-
-		static int getCount() { return s_count; }
 	};
 
 
 	class PointLight : public Light
 	{
-	private:
-		static int s_count;
 	public:
-		PointLight(const std::string &name,
+		PointLight(const std::string &name = "PointLight",
 			glm::vec3 amb = { 1,1,1 },
 			glm::vec3 diff = { 1,1,1 },
 			glm::vec3 spec = { 1,1,1 });
 		~PointLight();
 
 		void updateShader(Shader *) override;
-
-		static int getCount() { return s_count; }
 	};
 }

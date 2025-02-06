@@ -77,5 +77,6 @@ namespace Tank
 		// ! Bottom and top are switched
 		: CubeMap(name, "skybox.vert", "skybox.frag", { "right.jpg", "left.jpg", "bottom.jpg", "top.jpg", "front.jpg", "back.jpg" })
 	{
+		m_type = "Skybox";
 	}
 }

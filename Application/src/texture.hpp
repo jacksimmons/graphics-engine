@@ -2,6 +2,7 @@
 #include <format>
 #include <string>
 #include <memory>
+#include <vector>
 #include <glad/glad.h>
 #include "stb_image.h"
 #include "log.hpp"
@@ -12,8 +13,7 @@ namespace Tank
 	class Texture
 	{
 	private:
-		static unsigned int s_texCount;
-
+		static unsigned s_numTextures;
 		GLuint m_texID; // OpenGL's internal value for this texture
 		GLenum m_texTarget; // GL_TEXTURE_2D or GL_TEXTURE_CUBE_MAP
 		std::string m_texType; // material.{diffuse | specular}
@@ -24,20 +24,21 @@ namespace Tank
 		Texture(GLuint texID, GLenum texTarget, const std::string &uniformName,
 			const std::string &directory, const std::string &filename);
 	public:
+		static unsigned getTexCount() { return s_numTextures; };
+
 		~Texture();
 		GLuint getTexID() const noexcept { return m_texID; };
 		GLenum getTexTarget() const noexcept { return m_texTarget; }
 		const std::string &getTexType() const { return m_texType; }
 		const std::string &getDir() const { return m_directory; }
 		const std::string &getFilename() const { return m_filename; }
-		static GLuint getTexCount() { return s_texCount; };
 
 
 		static std::optional<std::shared_ptr<Texture>> fromFile(const std::string &directory, const std::string &filename, const std::string &texType)
 		{
 			GLint maxTextureUnits;
 			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-			if (s_texCount >= (GLuint)maxTextureUnits) return {};
+			if (s_numTextures >= (GLuint)maxTextureUnits) return {};
 
 			int w, h, numChannels;
 			unsigned char *data = stbi_load((directory + "/" + filename).c_str(), &w, &h, &numChannels, 0); // +stbi1
@@ -83,7 +84,7 @@ namespace Tank
 		{
 			GLint maxTextureUnits;
 			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-			if (s_texCount >= (GLuint)maxTextureUnits) return {};
+			if (s_numTextures >= (GLuint)maxTextureUnits) return {};
 
 			GLuint texID;
 			glGenTextures(1, &texID);

@@ -11,7 +11,6 @@ namespace Tank
 		friend class Hierarchy;
 	private:
 		Node *m_inspectedNode;
-		bool m_setPropertyValuePanelActive = false;
 
 	private:
 		void drawNodeSection();

@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <stack>
 #include <glm/mat4x4.hpp>
 #include <nlohmann/json.hpp>
 
@@ -15,15 +16,12 @@ namespace Tank
 {
 	class IScript;
 
-	class ISerialisable
+	class Node
 	{
 	public:
-		// Serialise from an object to json.
-		virtual json serialise() = 0;
-	};
+		static json serialise(Node *node);
+		static void deserialise(const json &serialised, Node **targetPtr);
 
-	class Node : public ISerialisable
-	{
 	private:
 		std::string m_name;
 		/// <summary>
@@ -35,6 +33,7 @@ namespace Tank
 		/// </summary>
 		bool m_visible = true;
 	protected:
+		std::string m_type;
 		Node *m_parent;
 		std::unique_ptr<Transform> m_transform;
 		std::vector<std::unique_ptr<Node>> m_children;
@@ -44,10 +43,10 @@ namespace Tank
 	protected:
 		virtual void draw();
 	public:
-		Node(const std::string &name);
+		Node(const std::string &name = "Node");
 		virtual ~Node() = default;
 
-		virtual json serialise() override;
+		constexpr const std::string& getType() const noexcept { return m_type; }
 
 		constexpr void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		constexpr bool getEnabled() const noexcept { return m_enabled; }
@@ -84,8 +83,24 @@ namespace Tank
 		Node *getSibling(std::string name) const { return getParent()->getChild(name); }
 		// Get sibling by index.
 		Node *getSibling(int index) const { return getParent()->getChild(index); }
+		// Get parent's child index for this node.
+		int getSiblingIndex() const;
 
 		void forEachDescendant(std::function<void(Node *)> forEach, std::function<bool()> terminate = nullptr);
+
+		/// <summary>
+		/// Starting at this node, traverse through descendant tree by the instruction of a tree-traversal
+		/// array.
+		/// 
+		/// Element at index n denotes which sibling to continue down, at a depth of n in the descendant tree,
+		/// where a depth of 0 is the depth of getChild.
+		/// { 1, 0 } = getChild(1)->getChild(0);
+		/// </summary>
+		Node *childFromTree(std::vector<int> treeTraversal);
+		/// <summary>
+		/// Builds a descendant tree traversal up to `this`, from a child of `this`.
+		/// </summary>
+		std::vector<int> treeFromChild(Node *child);
 
 		size_t getScriptCount() const noexcept { return m_scripts.size(); }
 		void addScript(std::unique_ptr<IScript> script);

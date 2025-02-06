@@ -16,7 +16,11 @@ namespace Tank
 		std::unique_ptr<Shader> m_shader;
 		std::shared_ptr<Texture> m_texture;
 	public:
-		CubeMap(const std::string &name, const std::string &vsName, const std::string &fsName, const std::array<std::string, 6> &textureNames);
+		CubeMap(const std::string &name,
+			const std::string &vsName,
+			const std::string &fsName,
+			const std::array<std::string, 6> &textureNames
+		);
 
 		virtual void draw() override;
 
@@ -71,6 +75,6 @@ namespace Tank
 	class Skybox : public CubeMap
 	{
 	public:
-		Skybox(const std::string &name);
+		Skybox(const std::string &name = "Skybox");
 	};
 }

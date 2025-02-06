@@ -170,29 +170,27 @@ namespace Tank
 
 		// Display a button to change the active camera.
 		// Clicking on it loads a list of all Camera nodes descending from this scene.
-		if (ImGui::SmallButton("Set##INSPECTOR_SCENE_SET_CAM") || m_setPropertyValuePanelActive)
+		if (ImGui::SmallButton("Set##INSPECTOR_SCENE_SET_CAM"))
 		{
-			m_setPropertyValuePanelActive = true;
-
 			ImGui::OpenPopup("##INSPECTOR_SCENE_SET_CAM_LIST");
-			if (ImGui::BeginPopup("##INSPECTOR_SCENE_SET_CAM_LIST"))
-			{
-				scene->forEachDescendant(
-					[&scene, this](Node *node)
+		}
+
+		if (ImGui::BeginPopup("##INSPECTOR_SCENE_SET_CAM_LIST"))
+		{
+			scene->forEachDescendant(
+				[&scene, this](Node *node)
+				{
+					if (Camera *cam = dynamic_cast<Camera *>(node))
 					{
-						if (Camera *cam = dynamic_cast<Camera *>(node))
+						if (ImGui::Button((cam->getPath() + "##INSPECTOR_SCENE_SET_CAM_LIST_BTN").c_str()))
 						{
-							if (ImGui::Button((cam->getPath() + "##INSPECTOR_SCENE_SET_CAM_LIST_BTN").c_str()))
-							{
-								scene->setActiveCamera(cam);
-								m_setPropertyValuePanelActive = false;
-							}
+							scene->setActiveCamera(cam);
 						}
 					}
-				);
+				}
+			);
 
-				ImGui::EndPopup();
-			}
+			ImGui::EndPopup();
 		}
 	}
 
