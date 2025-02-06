@@ -25,13 +25,32 @@
 
 namespace Tank
 {
+	json Model::serialise(Model *model)
+	{
+		json serialised = Node::serialise(model);
+		serialised["vsPath"] = model->m_shader->getVertPath().string();
+		serialised["fsPath"] = model->m_shader->getFragPath().string();
+		serialised["modelPath"] = model->m_modelDirectory + "/" + model->m_modelFile;
+		return serialised;
+	}
+
+
+	void Model::deserialise(const json &serialised, Model **targetPtr)
+	{
+		if (!(*targetPtr)) *targetPtr = new Model(serialised["name"], serialised["vsPath"], serialised["fsPath"], serialised["modelPath"]);
+		Node *target = *targetPtr;
+		Node::deserialise(serialised, &target);
+	}
+
+
 	// This will be the last object alive to own a reference to any Texture object.
-	std::vector<std::shared_ptr<Texture>> Model::s_texturesLoaded;
+	std::vector<std::shared_ptr<Texture>> Model::s_loadedTextures;
 
 
 	Model::Model(const std::string &name, const std::string &vsName, const std::string &fsName, const std::string &modelPath)
 		: Node(name)
 	{
+		m_type = "Model";
 		m_shader = std::make_unique<Shader>(vsName, fsName);
 
 		Assimp::Importer importer;
@@ -43,7 +62,9 @@ namespace Tank
 			return;
 		}
 
-		m_directory = modelPath.substr(0, modelPath.find_last_of('/'));
+		auto lastSlash = modelPath.find_last_of('/');
+		m_modelDirectory = modelPath.substr(0, lastSlash);
+		m_modelFile = modelPath.substr(lastSlash + 1, modelPath.length() - lastSlash + 1);
 		processNode(scene->mRootNode, scene);
 	}
 
@@ -130,11 +151,11 @@ namespace Tank
 			bool skipLoading = false;
 
 			// See if texture with same path has already been loaded. If it has, copy existing version.
-			for (unsigned j = 0; j < s_texturesLoaded.size(); j++)
+			for (unsigned j = 0; j < s_loadedTextures.size(); j++)
 			{
-				if (std::strcmp(s_texturesLoaded[j]->getFilename().data(), str.C_Str()) == 0)
+				if (std::strcmp(s_loadedTextures[j]->getFilename().data(), str.C_Str()) == 0)
 				{
-					textures.push_back(s_texturesLoaded[j]);
+					textures.push_back(s_loadedTextures[j]);
 					skipLoading = true;
 					break;
 				}
@@ -142,17 +163,17 @@ namespace Tank
 
 			if (!skipLoading)
 			{
-				auto tex = Texture::fromFile(m_directory, str.C_Str(), typeName);
+				auto tex = Texture::fromFile(m_modelDirectory, str.C_Str(), typeName);
 
 				if (tex.has_value())
 				{
 					std::shared_ptr<Texture> val = tex.value();
 					textures.push_back(val);
-					s_texturesLoaded.push_back(val);
+					s_loadedTextures.push_back(val);
 				}
 				else
 				{
-					TE_CORE_ERROR(std::format("Unable to load texture {}/{}", m_directory, str.C_Str()));
+					TE_CORE_ERROR(std::format("Unable to load texture {}/{}", m_modelDirectory, str.C_Str()));
 				}
 			}
 		}
@@ -177,12 +198,14 @@ namespace Tank
 		m_shader->setMat4("V", V);
 		m_shader->setMat4("VM_it", glm::inverseTranspose(VM));
 
-		for (Light *light : Scene::getActiveScene()->getActiveLights())
+		auto scene = Scene::getActiveScene();
+		auto activeLights = scene->getLights();
+		for (Light *light : activeLights)
 		{
 			light->updateShader(m_shader.get());
 		}
-		m_shader->setInt("num_dir_lights", DirLight::getCount());
-		m_shader->setInt("num_point_lights", PointLight::getCount());
+		m_shader->setInt("num_dir_lights", scene->getNumDirLights());
+		m_shader->setInt("num_point_lights", scene->getNumPointLights());
 
 		for (unsigned i = 0; i < m_meshes.size(); i++)
 		{

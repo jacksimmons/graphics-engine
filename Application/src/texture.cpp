@@ -5,13 +5,13 @@
 
 namespace Tank
 {
-	unsigned int Texture::s_texCount = 0;
+	unsigned Texture::s_numTextures = 0;
 
 
 	Texture::Texture(GLuint texID, GLenum texTarget, const std::string &texType, const std::string &directory, const std::string &filename) :
 		m_texID(texID), m_texTarget(texTarget), m_texType(texType), m_directory(directory), m_filename(filename)
 	{
-		s_texCount++;
+		s_numTextures++;
 	}
 
 
@@ -21,5 +21,7 @@ namespace Tank
 		glDeleteTextures(1, &id);
 
 		Model::deleteLoadedTexture(this);
+
+		s_numTextures--;
 	}
 }

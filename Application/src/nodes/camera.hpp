@@ -11,6 +11,11 @@ namespace Tank
 {
 	class Camera : public Node
 	{
+		// Serialisation
+	public:
+		static json serialise(Camera *cam);
+		static void deserialise(const json &serialised, Camera **targetPtr);
+
 	private:
 		// Projection matrix
 		glm::mat4 m_P;
@@ -29,10 +34,11 @@ namespace Tank
 		float m_panSpeed;
 		float m_rotSpeed;
 	public:
-		Camera(const std::string &name,
+		Camera(const std::string &name = "Camera",
 			glm::vec3 eye = { 0, 0, 3 },
 			glm::vec3 centre = { 0, 0, 0 },
-			glm::vec3 up = { 0, 1, 0 });
+			glm::vec3 up = { 0, 1, 0 }
+		);
 
 		glm::mat4 getView() const noexcept { return m_V; }
 		glm::mat4 getProj() const noexcept { return m_P; }

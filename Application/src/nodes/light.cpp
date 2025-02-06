@@ -8,8 +8,50 @@
 
 namespace Tank
 {
-	int DirLight::s_count = 0;
-	int PointLight::s_count = 0;
+	json Light::serialise(Light *light)
+	{
+		json serialised = Node::serialise(light);
+
+		serialised["ambient.x"] = light->getAmbient().x;
+		serialised["ambient.y"] = light->getAmbient().y;
+		serialised["ambient.z"] = light->getAmbient().z;
+
+		serialised["diffuse.x"] = light->getDiffuse().x;
+		serialised["diffuse.y"] = light->getDiffuse().y;
+		serialised["diffuse.z"] = light->getDiffuse().z;
+
+		serialised["specular.x"] = light->getSpecular().x;
+		serialised["specular.y"] = light->getSpecular().y;
+		serialised["specular.z"] = light->getSpecular().z;
+
+		return serialised;
+	}
+
+
+	void Light::deserialise(const json &serialised, Light **targetPtr)
+	{
+		if (!(*targetPtr)) *targetPtr = new Light();
+
+		Light *light = *targetPtr;
+		light->setAmbient({
+			std::stof(serialised["ambient.x"].dump()),
+			std::stof(serialised["ambient.y"].dump()),
+			std::stof(serialised["ambient.z"].dump()),
+		});
+		light->setDiffuse({
+			std::stof(serialised["diffuse.x"].dump()),
+			std::stof(serialised["diffuse.y"].dump()),
+			std::stof(serialised["diffuse.z"].dump()),
+		});
+		light->setSpecular({
+			std::stof(serialised["specular.x"].dump()),
+			std::stof(serialised["specular.y"].dump()),
+			std::stof(serialised["specular.z"].dump()),
+		});
+
+		Node *target = *targetPtr;
+		Node::deserialise(serialised, &target);
+	}
 
 
 	Light::Light(const std::string &name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec) : Node(name),
@@ -21,7 +63,7 @@ namespace Tank
 
 	Light::~Light()
 	{
-		TE_CORE_INFO("Destructor called");
+		// Scene may destroy this light first, e.g. with Open Scene
 		m_scene->removeLight(this);
 	}
 
@@ -44,26 +86,51 @@ namespace Tank
 	}
 
 
+	json DirLight::serialise(DirLight *light)
+	{
+		json serialised = Light::serialise(light);
+		serialised["dir.x"] = light->getDirection().x;
+		serialised["dir.y"] = light->getDirection().y;
+		serialised["dir.z"] = light->getDirection().z;
+		return serialised;
+	}
+
+
+	void DirLight::deserialise(const json &serialised, DirLight **targetPtr)
+	{
+		if (!(*targetPtr)) *targetPtr = new DirLight();
+
+		DirLight *dirLight = *targetPtr;
+		dirLight->setDirection({
+			std::stof(serialised["dir.x"].dump()),
+			std::stof(serialised["dir.y"].dump()),
+			std::stof(serialised["dir.z"].dump()),
+		});
+
+		Light *target = *targetPtr;
+		Light::deserialise(serialised, &target);
+	}
+
+
 	DirLight::DirLight(const std::string &name, glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
 		: Light(name, amb, diff, spec), m_direction(dir)
 	{
-		m_index = DirLight::s_count;
+		m_type = "DirLight";
 		m_lightArrayName = "dirLights";
 
-		if (DirLight::s_count >= 64)
+		if (m_scene->getNumDirLights() >= 64)
 		{
 			TE_CORE_WARN("Reached limit of DirLight lights; this light will not apply to shaders.");
 			return;
 		}
 
-		DirLight::s_count++;
-		m_scene->addLight(this);
+		m_index = m_scene->addLight(this);
 	}
 
 
 	DirLight::~DirLight()
 	{
-		DirLight::s_count--;
+		TE_CORE_INFO("Dir destructor called.");
 	}
 
 
@@ -79,25 +146,22 @@ namespace Tank
 	PointLight::PointLight(const std::string &name, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
 		: Light(name, amb, diff, spec)
 	{
-		m_index = PointLight::s_count;
+		m_type = "PointLight";
 		m_lightArrayName = "pointLights";
 
-		if (PointLight::s_count >= 64)
+		if (m_scene->getNumPointLights() >= 64)
 		{
 			TE_CORE_WARN("Reached limit of PointLight lights; this light will not apply to shaders.");
 			return;
 		}
 
-		PointLight::s_count++;
-		m_scene->addLight(this);
+		m_index = m_scene->addLight(this);
 	}
 
 
 	PointLight::~PointLight()
 	{
 		TE_CORE_INFO("Pt Destructor called");
-
-		PointLight::s_count--;
 	}
 
 

@@ -17,18 +17,25 @@ namespace Tank
 	class Texture;
 	class Model : public Node
 	{
-		friend class Inspector;
+	public:
+		static json serialise(Model *model);
+		static void deserialise(const json &serialised, Model **targetPtr);
+
 	private:
-		static std::vector<std::shared_ptr<Texture>> s_texturesLoaded;
+		friend class Inspector;
+		static std::vector<std::shared_ptr<Texture>> s_loadedTextures;
 		std::vector<Mesh> m_meshes;
-		std::string m_directory;
+		std::string m_modelDirectory;
+		std::string m_modelFile;
 	protected:
 		std::unique_ptr<Shader> m_shader;
 	public:
+		static const std::vector<std::shared_ptr<Texture>> &getLoadedTextures() { return s_loadedTextures; }
+
 		Model(const std::string &name,
 			const std::string &vsName,
 			const std::string &fsName,
-			const std::string &modelPath = "models/bigben.obj"
+			const std::string &modelPath
 		);
 
 		void setShader(std::unique_ptr<Shader> shader) { m_shader = std::move(shader); };
@@ -42,13 +49,13 @@ namespace Tank
 		static void deleteLoadedTexture(Texture *texture)
 		{
 			int index = -1;
-			for (unsigned int i = 0; i < s_texturesLoaded.size(); i++)
+			for (unsigned int i = 0; i < s_loadedTextures.size(); i++)
 			{
-				if (s_texturesLoaded[i].get() == texture)
+				if (s_loadedTextures[i].get() == texture)
 					index = i;
 			}
 
-			if (index >= 0) s_texturesLoaded.erase(s_texturesLoaded.begin() + index);
+			if (index >= 0) s_loadedTextures.erase(s_loadedTextures.begin() + index);
 		}
 	};
 }

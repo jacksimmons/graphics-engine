@@ -1,31 +1,55 @@
 {
+    "activeCam": [
+        0
+    ],
     "children": [
         {
             "children": [],
             "enabled": true,
             "name": "Camera",
+            "type": "Camera",
             "visible": true
         },
         {
             "children": [],
             "enabled": true,
             "name": "Skybox",
+            "type": "Node",
             "visible": true
         },
         {
             "children": [],
             "enabled": true,
+            "fsPath": "shader.frag",
+            "modelPath": "models/backpack/backpack.obj",
             "name": "Backpack",
-            "visible": true
+            "type": "Model",
+            "visible": true,
+            "vsPath": "shader.vert"
         },
         {
+            "ambient.x": 0.019999999552965164,
+            "ambient.y": 0.019999999552965164,
+            "ambient.z": 0.019999999552965164,
             "children": [],
+            "diffuse.x": 0.20000000298023224,
+            "diffuse.y": 0.20000000298023224,
+            "diffuse.z": 0.20000000298023224,
+            "dir.x": 0.0,
+            "dir.y": -1.0,
+            "dir.z": 0.0,
             "enabled": true,
             "name": "DirLight",
+            "specular.x": 0.10000000149011612,
+            "specular.y": 0.10000000149011612,
+            "specular.z": 0.10000000149011612,
+            "type": "DirLight",
             "visible": true
         }
     ],
     "enabled": true,
+    "isActiveScene": true,
     "name": "Scene",
+    "type": "Scene",
     "visible": true
 }

@@ -18,9 +18,13 @@ namespace Tank
 
 	class Scene : public Node
 	{
-		friend class Hierarchy;
+	public:
+		static json serialise(Scene *scene);
+		static void deserialise(const json &serialised, Scene **targetPtr);
+
 		// Static
 	private:
+		friend class Hierarchy;
 		static Scene *s_activeScene;
 	public:
 		static Scene *getActiveScene() { return s_activeScene; }
@@ -33,7 +37,9 @@ namespace Tank
 		// Instance
 	private:
 		Camera *m_activeCamera;
-		std::vector<Light *> m_activeLights;
+		std::vector<Light *> m_lights;
+		unsigned m_numDirLights = 0;
+		unsigned m_numPointLights = 0;
 
 		void onNodeDeleted(Node *deleted) noexcept;
 	public:
@@ -46,9 +52,14 @@ namespace Tank
 		// Set the active camera for this scene.
 		void setActiveCamera(Camera *camera) noexcept { m_activeCamera = camera; }
 		
-		void addLight(Light *);
+		// Adds a light to the scene. Returns the light's index.
+		unsigned addLight(Light *);
+		// Removes a light to the scene.
 		void removeLight(Light *);
-		std::vector<Light *> getActiveLights() const { return m_activeLights; }
+
+		std::vector<Light *> getLights() const { return m_lights; }
+		unsigned getNumDirLights() const { return m_numDirLights; }
+		unsigned getNumPointLights() const { return m_numPointLights; }
 		
 		virtual void update() override;
 	};

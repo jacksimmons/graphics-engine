@@ -8,11 +8,33 @@
 
 namespace Tank
 {
+	json Scene::serialise(Scene *scene)
+	{
+		json serialised = Node::serialise(scene);
+		serialised["activeCam"] = scene->treeFromChild(scene->getActiveCamera());
+		serialised["isActiveScene"] = Scene::getActiveScene() == scene;
+		return serialised;
+	}
+
+
+	void Scene::deserialise(const json &serialised, Scene **targetPtr)
+	{
+		if (!(*targetPtr)) *targetPtr = new Scene();
+
+		Scene *scene = *targetPtr;
+		if (serialised["isActiveScene"]) Scene::setActiveScene(scene);
+
+		Node *target = *targetPtr;
+		Node::deserialise(serialised, &target);
+	}
+
+
 	Scene *Scene::s_activeScene = nullptr;
 
 
 	Scene::Scene(const std::string &name) : Node(name)
 	{
+		m_type = "Scene";
 		m_activeCamera = nullptr;
 	}
 
@@ -27,23 +49,27 @@ namespace Tank
 	}
 
 
-	void Scene::addLight(Light *light)
+	unsigned Scene::addLight(Light *light)
 	{
-		if (std::find(m_activeLights.begin(), m_activeLights.end(), light) != m_activeLights.end())
+		if (std::find(m_lights.begin(), m_lights.end(), light) != m_lights.end())
 		{
 			TE_CORE_WARN("Light has already been added to this scene.");
 		}
+
+		if (dynamic_cast<DirLight*>(light)) m_numDirLights++;
+		if (dynamic_cast<PointLight*>(light)) m_numPointLights++;
 		
-		m_activeLights.push_back(light);
+		m_lights.push_back(light);
+		return m_lights.size() - 1;
 	}
 
 
 	void Scene::removeLight(Light *light)
 	{
-		auto it = std::find(m_activeLights.begin(), m_activeLights.end(), light);
-		if (it != m_activeLights.end())
+		auto it = std::find(m_lights.begin(), m_lights.end(), light);
+		if (it != m_lights.end())
 		{
-			m_activeLights.erase(it);
+			m_lights.erase(it);
 		}
 		else
 		{
