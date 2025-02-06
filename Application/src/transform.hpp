@@ -1,7 +1,10 @@
 #pragma once
+#include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <nlohmann/json.hpp>
 #include "transformation.hpp"
+using json = nlohmann::json;
 
 
 namespace Tank
@@ -9,6 +12,11 @@ namespace Tank
 	class Node;
 	class Transform
 	{
+		friend class Node;
+	public:
+		static json serialise(Transform *deserialised);
+		static std::unique_ptr<Transform> deserialise(const json &serialised, Node *owner);
+
 	private:
 		// Entire transformation
 		glm::mat4 m_modelMatrix;

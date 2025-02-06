@@ -7,6 +7,24 @@
             "children": [],
             "enabled": true,
             "name": "Camera",
+            "transform": {
+                "rotation": {
+                    "w": 0.0,
+                    "x": 0.0,
+                    "y": 1.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "translation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            },
             "type": "Camera",
             "visible": true
         },
@@ -14,6 +32,24 @@
             "children": [],
             "enabled": true,
             "name": "Skybox",
+            "transform": {
+                "rotation": {
+                    "w": 0.0,
+                    "x": 0.0,
+                    "y": 1.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "translation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            },
             "type": "Node",
             "visible": true
         },
@@ -23,26 +59,70 @@
             "fsPath": "shader.frag",
             "modelPath": "models/backpack/backpack.obj",
             "name": "Backpack",
+            "transform": {
+                "rotation": {
+                    "w": 0.36627253890037537,
+                    "x": 2.765281514882645e-08,
+                    "y": -0.9305076003074646,
+                    "z": 7.025136739002846e-08
+                },
+                "scale": {
+                    "x": 0.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "translation": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                }
+            },
             "type": "Model",
             "visible": true,
             "vsPath": "shader.vert"
         },
         {
-            "ambient.x": 0.019999999552965164,
-            "ambient.y": 0.019999999552965164,
-            "ambient.z": 0.019999999552965164,
+            "ambient": {
+                "x": 0.019999999552965164,
+                "y": 0.019999999552965164,
+                "z": 0.019999999552965164
+            },
             "children": [],
-            "diffuse.x": 0.20000000298023224,
-            "diffuse.y": 0.20000000298023224,
-            "diffuse.z": 0.20000000298023224,
-            "dir.x": 0.0,
-            "dir.y": -1.0,
-            "dir.z": 0.0,
+            "diffuse": {
+                "x": 0.20000000298023224,
+                "y": 0.20000000298023224,
+                "z": 0.20000000298023224
+            },
+            "direction": {
+                "x": 0.0,
+                "y": -1.0,
+                "z": 0.0
+            },
             "enabled": true,
             "name": "DirLight",
-            "specular.x": 0.10000000149011612,
-            "specular.y": 0.10000000149011612,
-            "specular.z": 0.10000000149011612,
+            "specular": {
+                "x": 0.10000000149011612,
+                "y": 0.10000000149011612,
+                "z": 0.10000000149011612
+            },
+            "transform": {
+                "rotation": {
+                    "w": 0.0,
+                    "x": 0.0,
+                    "y": 1.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "translation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            },
             "type": "DirLight",
             "visible": true
         }
@@ -50,6 +130,24 @@
     "enabled": true,
     "isActiveScene": true,
     "name": "Scene",
+    "transform": {
+        "rotation": {
+            "w": 0.0,
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0
+        },
+        "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "translation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
     "type": "Scene",
     "visible": true
 }

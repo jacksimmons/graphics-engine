@@ -1,9 +1,32 @@
 #include "transform.hpp"
 #include "nodes/node.hpp"
+#include "static/glm_serialise.hpp"
 
 
 namespace Tank
 {
+	json Transform::serialise(Transform *deserialised)
+	{
+		json serialised = {
+			{ "rotation", quat::serialise(deserialised->m_rotation) },
+			{ "scale", vec3::serialise(deserialised->m_scale) },
+			{ "translation", vec3::serialise(deserialised->m_translation) },
+		};
+
+		return serialised;
+	}
+
+
+	std::unique_ptr<Transform> Transform::deserialise(const json &serialised, Node *owner)
+	{
+		auto transform = std::make_unique<Transform>(owner);
+		transform->setLocalRotation(quat::deserialise(serialised["rotation"]));
+		transform->setLocalScale(vec3::deserialise(serialised["scale"]));
+		transform->setLocalTranslation(vec3::deserialise(serialised["translation"]));
+		return std::move(transform);
+	}
+
+
 	Transform::Transform(Node *owner)
 	{
 		m_modelMatrix = glm::identity<glm::mat4>();

@@ -4,6 +4,7 @@
 #include "log.hpp"
 #include "nodes/light.hpp"
 #include "nodes/scene.hpp"
+#include "static/glm_serialise.hpp"
 
 
 namespace Tank
@@ -11,19 +12,9 @@ namespace Tank
 	json Light::serialise(Light *light)
 	{
 		json serialised = Node::serialise(light);
-
-		serialised["ambient.x"] = light->getAmbient().x;
-		serialised["ambient.y"] = light->getAmbient().y;
-		serialised["ambient.z"] = light->getAmbient().z;
-
-		serialised["diffuse.x"] = light->getDiffuse().x;
-		serialised["diffuse.y"] = light->getDiffuse().y;
-		serialised["diffuse.z"] = light->getDiffuse().z;
-
-		serialised["specular.x"] = light->getSpecular().x;
-		serialised["specular.y"] = light->getSpecular().y;
-		serialised["specular.z"] = light->getSpecular().z;
-
+		serialised["ambient"] = vec3::serialise(light->getAmbient());
+		serialised["diffuse"] = vec3::serialise(light->getDiffuse());
+		serialised["specular"] = vec3::serialise(light->getSpecular());
 		return serialised;
 	}
 
@@ -33,21 +24,9 @@ namespace Tank
 		if (!(*targetPtr)) *targetPtr = new Light();
 
 		Light *light = *targetPtr;
-		light->setAmbient({
-			std::stof(serialised["ambient.x"].dump()),
-			std::stof(serialised["ambient.y"].dump()),
-			std::stof(serialised["ambient.z"].dump()),
-		});
-		light->setDiffuse({
-			std::stof(serialised["diffuse.x"].dump()),
-			std::stof(serialised["diffuse.y"].dump()),
-			std::stof(serialised["diffuse.z"].dump()),
-		});
-		light->setSpecular({
-			std::stof(serialised["specular.x"].dump()),
-			std::stof(serialised["specular.y"].dump()),
-			std::stof(serialised["specular.z"].dump()),
-		});
+		light->setAmbient(vec3::deserialise(serialised["ambient"]));
+		light->setDiffuse(vec3::deserialise(serialised["diffuse"]));
+		light->setSpecular(vec3::deserialise(serialised["specular"]));
 
 		Node *target = *targetPtr;
 		Node::deserialise(serialised, &target);
@@ -89,9 +68,7 @@ namespace Tank
 	json DirLight::serialise(DirLight *light)
 	{
 		json serialised = Light::serialise(light);
-		serialised["dir.x"] = light->getDirection().x;
-		serialised["dir.y"] = light->getDirection().y;
-		serialised["dir.z"] = light->getDirection().z;
+		serialised["direction"] = vec3::serialise(light->getDirection());
 		return serialised;
 	}
 
@@ -101,11 +78,7 @@ namespace Tank
 		if (!(*targetPtr)) *targetPtr = new DirLight();
 
 		DirLight *dirLight = *targetPtr;
-		dirLight->setDirection({
-			std::stof(serialised["dir.x"].dump()),
-			std::stof(serialised["dir.y"].dump()),
-			std::stof(serialised["dir.z"].dump()),
-		});
+		dirLight->setDirection(vec3::deserialise(serialised["direction"]));
 
 		Light *target = *targetPtr;
 		Light::deserialise(serialised, &target);
