@@ -1,7 +1,7 @@
 #include <glm/gtc/matrix_transform.hpp>
-
-#include "nodes/camera.hpp"
 #include "transformation.hpp"
+#include "static/glm_serialise.hpp"
+#include "nodes/camera.hpp"
 
 
 namespace Tank
@@ -9,6 +9,19 @@ namespace Tank
 	json Camera::serialise(Camera *cam)
 	{
 		json serialised = Node::serialise(cam);
+
+		serialised["projection"] = mat4::serialise(cam->m_P);
+		serialised["view"] = mat4::serialise(cam->m_V);
+		serialised["rotation"] = mat4::serialise(cam->m_R);
+		serialised["translation"] = mat4::serialise(cam->m_T);
+
+		serialised["eye"] = vec3::serialise(cam->m_eye);
+		serialised["centre"] = vec3::serialise(cam->m_centre);
+		serialised["up"] = vec3::serialise(cam->m_up);
+
+		serialised["panSpd"] = cam->m_panSpeed;
+		serialised["rotSpd"] = cam->m_rotSpeed;
+
 		return serialised;
 	}
 
@@ -16,6 +29,20 @@ namespace Tank
 	void Camera::deserialise(const json &serialised, Camera **targetPtr)
 	{
 		if (!(*targetPtr)) *targetPtr = new Camera();
+
+		Camera *camera = *targetPtr;
+		camera->m_P = mat4::deserialise(serialised["projection"]);
+		camera->m_V = mat4::deserialise(serialised["view"]);
+		camera->m_R = mat4::deserialise(serialised["rotation"]);
+		camera->m_T = mat4::deserialise(serialised["translation"]);
+
+		camera->m_eye = vec3::deserialise(serialised["eye"]);
+		camera->m_centre = vec3::deserialise(serialised["centre"]);
+		camera->m_up = vec3::deserialise(serialised["up"]);
+
+		camera->m_panSpeed = serialised["panSpd"];
+		camera->m_rotSpeed = serialised["rotSpd"];
+
 		Node *target = *targetPtr;
 		Node::deserialise(serialised, &target);
 	}
@@ -67,7 +94,7 @@ namespace Tank
 
 	glm::vec3 Camera::getTransformedCentre() const
 	{
-		return glm::vec3(m_T * Mat4::rotateAboutPoint(m_centre, -m_eye, m_R) * glm::vec4(m_centre, 1));
+		return glm::vec3(m_T * mat4::rotateAboutPoint(m_centre, -m_eye, m_R) * glm::vec4(m_centre, 1));
 	}
 
 	glm::vec3 Camera::getTransformedEye() const
