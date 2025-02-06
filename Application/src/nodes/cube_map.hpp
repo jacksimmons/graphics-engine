@@ -10,16 +10,22 @@ namespace Tank
 	class Node; class Texture;
 	class CubeMap : public Node
 	{
-	private:
+		// Serialisation
+	public:
+		static json serialise(CubeMap *skybox);
+		static void deserialise(const json &serialised, CubeMap **targetPtr);
+
+	protected:
 		GLuint m_vao;
 		GLuint m_vbo;
 		std::unique_ptr<Shader> m_shader;
 		std::shared_ptr<Texture> m_texture;
+		std::array<std::string, 6> m_texturePaths;
 	public:
-		CubeMap(const std::string &name,
-			const std::string &vsName,
-			const std::string &fsName,
-			const std::array<std::string, 6> &textureNames
+		CubeMap(const std::string &name = "CubeMap (Skybox)",
+			const std::string &vsName = "skybox.vert",
+			const std::string &fsName = "skybox.frag",
+			const std::array<std::string, 6> &textureNames = { "right.jpg", "left.jpg", "bottom.jpg", "top.jpg", "front.jpg", "back.jpg" }
 		);
 
 		virtual void draw() override;
@@ -69,12 +75,5 @@ namespace Tank
 			-1.0f, -1.0f,  1.0f,
 			 1.0f, -1.0f,  1.0f
 		};
-	};
-
-
-	class Skybox : public CubeMap
-	{
-	public:
-		Skybox(const std::string &name = "Skybox");
 	};
 }

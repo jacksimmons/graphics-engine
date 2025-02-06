@@ -152,8 +152,8 @@ void Editor::loadDemoScene()
 	// Create nodes
 	{
 		auto scene = std::make_unique<Tank::Scene>();
-		scene->addChild(std::make_unique<Tank::Camera>("Camera"));
-		scene->addChild(std::make_unique<Tank::Skybox>("Skybox"));
+		scene->addChild(std::make_unique<Tank::Camera>());
+		scene->addChild(std::make_unique<Tank::CubeMap>());
 		scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
 		auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "models/backpack/backpack.obj");
