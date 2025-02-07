@@ -4,22 +4,23 @@
 #include <imgui.h>
 #include "log.hpp"
 #include "colours.hpp"
-#include "nodes/hierarchy.hpp"
-#include "nodes/inspector.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/light.hpp"
 #include "nodes/scene.hpp"
 #include "nodes/cube_map.hpp"
+#include "nodes/ui/console.hpp"
+#include "nodes/ui/hierarchy.hpp"
+#include "nodes/ui/inspector.hpp"
 
 
-namespace Tank
+namespace Tank::Editor
 {
-	Hierarchy::Hierarchy(const std::string &name) : Panel(name)
+	_Hierarchy::_Hierarchy(const std::string &name) : _Panel(name)
 	{
 	}
 
 
-	void Hierarchy::drawPanel()
+	void _Hierarchy::drawPanel()
 	{
 		Node *root = Tank::Scene::getActiveScene();
 
@@ -32,12 +33,12 @@ namespace Tank
 	/// Generates buttons for all children of the current node, at a given
 	/// indentation depth (based on the generation depth).
 	/// </summary>
-	void Hierarchy::drawTreeNode(Node *node, int *count) const
+	void _Hierarchy::drawTreeNode(Node *node, int *count) const
 	{
 		// Base case.
 		if (!node) return;
 
-		Inspector *inspector = (Inspector*)getSibling("Inspector");
+		_Inspector *inspector = (_Inspector*)getSibling("Inspector");
 		size_t childCount = node->getChildCount();
 
 		// Determine if leaf node.
@@ -62,7 +63,7 @@ namespace Tank
 			!ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
 			inspector->getInspectedNode() != node)
 		{
-			inspector->setInspectedNode(node);
+			inspector->m_inspectedNode = node;
 		}
 
 		// Draw the right-click options, if user is right-clicking and hovering. If node gets deleted here, return.
@@ -87,7 +88,7 @@ namespace Tank
 	}
 
 
-	bool Hierarchy::drawNodeContextMenu(Node *node, Inspector *inspector) const
+	bool _Hierarchy::drawNodeContextMenu(Node *node, _Inspector *inspector) const
 	{
 		bool nodeSurvives = true;
 
@@ -100,7 +101,7 @@ namespace Tank
 			// If Delete is rendered and pressed, this whole statement is true.
 			if (parent && ImGui::MenuItem("Delete Node"))
 			{
-				auto scene = Scene::getActiveScene();
+				auto scene = Tank::Scene::getActiveScene();
 				scene->onNodeDeleted(node);
 
 				// Handle graceful degradation before node removal.
@@ -109,7 +110,13 @@ namespace Tank
 				// Detach child from its parent.
 				if (!node->getParent()->removeChild(node))
 				{
-					TE_CORE_ERROR("Failed to remove child node from parent.");
+					std::string line = "Hierarchy: Failed to remove child node from parent.";
+					dynamic_cast<_Console*>(getSibling("Console"))->addLine(
+						[this, line]()
+						{
+							ImGui::TextColored(Colour::ERR, line.c_str());
+						}
+					);
 				}
 
 				nodeSurvives = false;
@@ -134,7 +141,7 @@ namespace Tank
 
 
 	template <class T>
-	Node *Hierarchy::buildNode(Node *parent, const std::string &name) const
+	Node *_Hierarchy::buildNode(Node *parent, const std::string &name) const
 	{
 		std::unique_ptr<Node> child = std::unique_ptr<Node>(new T(name));
 		Node *ref = child.get();

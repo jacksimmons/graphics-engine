@@ -5,14 +5,23 @@
 
 namespace Tank
 {
-	class Scene; class Model; class Camera; class Light; class DirLight;
-	class Inspector : public Panel
+	class Scene; class Model; class Camera; class Light; class DirLight; class PointLight;
+}
+
+namespace Tank::Editor
+{
+	class _Inspector : public _Panel
 	{
-		friend class Hierarchy;
+		friend class EditorApp;
+
+		// The Hierarchy can modify the inspected node, e.g. when a user clicks
+		// on one of the nodes.
+		friend class _Hierarchy;
 	private:
 		Node *m_inspectedNode;
 
 	private:
+		_Inspector(const std::string &name);
 		void drawNodeSection();
 		void drawSceneSection(Scene *scene);
 		void drawModelSection(Model *model);
@@ -23,9 +32,6 @@ namespace Tank
 	protected:
 		virtual void drawPanel() override;
 	public:
-		Inspector(const std::string &name);
-
-		void setInspectedNode(Node *node) noexcept { m_inspectedNode = node; }
 		Node *getInspectedNode() const noexcept { return m_inspectedNode; }
 	};
 }

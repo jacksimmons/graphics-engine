@@ -17,7 +17,9 @@ workspace "TankEnginePremake"
 project "Engine"
     kind "SharedLib"
     language "C++"
-    includedirs { "%{prj.name}/include" }
+    includedirs { "%{prj.name}/include",
+        "%{prj.name}/src"
+    }
     objdir "%{prj.name}/obj/%{cfg.buildcfg}"
     targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
     files { "%{prj.name}/src/**.hpp", "%{prj.name}/src/**.cpp" } 
