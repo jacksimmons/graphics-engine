@@ -32,7 +32,8 @@ namespace Tank::Editor
 		_SceneView(const std::string &name,
 			glm::ivec2 stdViewportSize,
 			glm::ivec2 fbViewportSize,
-			KeyInput *keyInput);
+			KeyInput *keyInput
+		);
 	public:
 		void rescale(int w, int h) const;
 		void update() override;

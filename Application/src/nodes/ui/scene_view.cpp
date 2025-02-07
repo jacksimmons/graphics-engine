@@ -86,7 +86,11 @@ namespace Tank::Editor
 
 	void _SceneView::rescale(int w, int h) const
 	{
-		m_fb->rescale(w, h);
+		// Re-render the framebuffer at new scale when the user has finished scaling.
+		if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		{
+			m_fb->rescale(w, h);
+		}
 	}
 
 	
