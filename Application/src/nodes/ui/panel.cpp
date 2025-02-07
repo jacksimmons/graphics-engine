@@ -2,17 +2,16 @@
 #include "panel.hpp"
 
 
-namespace Tank
+namespace Tank::Editor
 {
-	Panel::Panel(const std::string &name, const ImGuiWindowFlags &flags, bool autoScroll) : UI(name), m_autoScroll(autoScroll)
+	_Panel::_Panel(const std::string &name, const ImGuiWindowFlags &flags, bool autoScroll) : UI(name), m_autoScroll(autoScroll)
 	{
-		m_flags = flags & ImGuiWindowFlags_NoCollapse;
+		m_flags = flags | ImGuiWindowFlags_NoCollapse;
 	}
 
 
-	void Panel::drawUI()
+	void _Panel::drawUI()
 	{
-
 		bool open;
 		ImGui::Begin(getName().c_str(), &open, m_flags);
 

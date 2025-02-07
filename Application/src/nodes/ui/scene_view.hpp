@@ -4,13 +4,14 @@
 #include "nodes/ui/panel.hpp"
 
 
-namespace Tank
+namespace Tank::Editor
 {
-	class Framebuffer;
-	class Camera;
-	class KeyInput;
-	class SceneView : public Panel
+	class Tank::Framebuffer;
+	class Tank::Camera;
+	class Tank::KeyInput;
+	class _SceneView : public _Panel
 	{
+		friend class EditorApp;
 	private:
 		/// <summary>
 		/// The viewport size when rendering normally.
@@ -27,11 +28,12 @@ namespace Tank
 		float m_fpsDisplayUpdateTimer = 0;
 		std::string m_fpsDisplayLastText = "";
 		const float FPS_DISPLAY_UPDATE_FREQUENCY = 0.5f;
-	public:
-		SceneView(const std::string &name,
+
+		_SceneView(const std::string &name,
 			glm::ivec2 stdViewportSize,
 			glm::ivec2 fbViewportSize,
 			KeyInput *keyInput);
+	public:
 		void rescale(int w, int h) const;
 		void update() override;
 		virtual void drawUI() override;

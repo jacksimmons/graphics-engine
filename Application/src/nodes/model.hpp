@@ -15,14 +15,19 @@ struct aiMaterial; enum aiTextureType;
 namespace Tank
 {
 	class Texture;
+
+	namespace Editor { class _Inspector; }
+
 	class Model : public Node
 	{
+		// Allow Inspector to read shaders.
+		friend class Editor::_Inspector;
+
 	public:
 		static json serialise(Model *model);
 		static void deserialise(const json &serialised, Model **targetPtr);
 
 	private:
-		friend class Inspector;
 		static std::vector<std::shared_ptr<Texture>> s_loadedTextures;
 		std::vector<Mesh> m_meshes;
 		std::string m_modelDirectory;

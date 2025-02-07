@@ -4,47 +4,46 @@
 #include <imgui.h>
 #include <glm/gtx/euler_angles.hpp>
 #include "transform.hpp"
-#include "camera.hpp"
 #include "colours.hpp"
 #include "file.hpp"
 #include "widget.hpp"
 #include "nodes/scene.hpp"
 #include "nodes/model.hpp"
-#include "nodes/inspector.hpp"
 #include "nodes/light.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/ui/ui.hpp"
 #include "nodes/ui/console.hpp"
+#include "nodes/ui/inspector.hpp"
 
 
-namespace Tank
+namespace Tank::Editor
 {
-	Inspector::Inspector(const std::string &name) : Panel(name)
+	_Inspector::_Inspector(const std::string &name) : _Panel(name)
 	{
 		m_inspectedNode = nullptr;
 	}
 
 
-	void Inspector::drawPanel()
+	void _Inspector::drawPanel()
 	{
 		if (m_inspectedNode)
 		{
-			ImGui::TextColored(Colour::TITLE, "Type");
+			ImGui::TextColored(Tank::Colour::TITLE, "Type");
 			ImGui::Text(typeid(*m_inspectedNode).name());
 
 			drawNodeSection();
 
 			// Draw Node subclass sections
-			if (Scene *scene = dynamic_cast<Scene *>(m_inspectedNode))
+			if (Tank::Scene *scene = dynamic_cast<Tank::Scene *>(m_inspectedNode))
 				drawSceneSection(scene);
 
-			if (Model *model = dynamic_cast<Model *>(m_inspectedNode))
+			if (Tank::Model *model = dynamic_cast<Tank::Model *>(m_inspectedNode))
 				drawModelSection(model);
 
-			if (Camera *camera = dynamic_cast<Camera *>(m_inspectedNode))
+			if (Tank::Camera *camera = dynamic_cast<Tank::Camera *>(m_inspectedNode))
 				drawCameraSection(camera);
 
-			if (Light *light = dynamic_cast<Light *>(m_inspectedNode))
+			if (Tank::Light *light = dynamic_cast<Tank::Light *>(m_inspectedNode))
 				drawLightSection(light);
 		}	
 	}
@@ -53,9 +52,9 @@ namespace Tank
 	/// <summary>
 	/// Draws inspector section that is present for all Nodes.
 	/// </summary>
-	void Inspector::drawNodeSection()
+	void _Inspector::drawNodeSection()
 	{
-		Transform *transform = m_inspectedNode->getTransform();
+		Tank::Transform *transform = m_inspectedNode->getTransform();
 		const glm::mat4 &modelMatrix = transform->getWorldModelMatrix();
 
 		bool enabled = m_inspectedNode->getEnabled();
@@ -66,15 +65,15 @@ namespace Tank
 		if (ImGui::Checkbox("Visible", &visible))
 			m_inspectedNode->setVisibility(visible);
 
-		ImGui::TextColored(Colour::TITLE, "Name");
-		Widget::textInput("##Inspector_Name", m_inspectedNode->getName(),
+		ImGui::TextColored(Tank::Colour::TITLE, "Name");
+		Tank::Widget::textInput("##Inspector_Name", m_inspectedNode->getName(),
 			[this](const std::string &newName)
 			{
 				m_inspectedNode->setName(newName);
 			}
 		);
 
-		ImGui::TextColored(Colour::TITLE, "Scripts");
+		ImGui::TextColored(Tank::Colour::TITLE, "Scripts");
 		size_t scriptCount = m_inspectedNode->getScriptCount();
 		for (int i = 0; i < scriptCount; i++)
 		{
@@ -91,12 +90,12 @@ namespace Tank
 			if (cam != nullptr)
 			{
 				glm::mat4 worldMatrix = transform->getWorldModelMatrix();
-				cam->setPosition(mat4::getTranslation(worldMatrix));
-				cam->setRotation(mat4::getRotation(worldMatrix));
+				cam->setPosition(Tank::mat4::getTranslation(worldMatrix));
+				cam->setRotation(Tank::mat4::getRotation(worldMatrix));
 			}
 		}
 
-		ImGui::TextColored(Colour::TITLE, "Model Matrix");
+		ImGui::TextColored(Tank::Colour::TITLE, "Model Matrix");
 		// glm::mat4 indexing is column-major, but ImGui is row-major.
 		// Transposing the model means an ImGui row corresponds to a model matrix row.
 		glm::mat4 displayMatrix = glm::transpose(modelMatrix);
@@ -145,7 +144,7 @@ namespace Tank
 	/// <summary>
 	/// Draws a section specifically for the root node.
 	/// </summary>
-	void Inspector::drawSceneSection(Scene *scene)
+	void _Inspector::drawSceneSection(Scene *scene)
 	{
 		ImGui::TextColored(Colour::TITLE, "Active Camera");
 
@@ -198,7 +197,7 @@ namespace Tank
 	/// <summary>
 	/// Draws inspector section that is present for all Models.
 	/// </summary>
-	void Inspector::drawModelSection(Model *model)
+	void _Inspector::drawModelSection(Model *model)
 	{
 		std::filesystem::path fragPath = model->m_shader->getFragPath();
 		std::filesystem::path vertPath = model->m_shader->getVertPath();
@@ -238,7 +237,7 @@ namespace Tank
 	/// <summary>
 	/// Draws inspector section that is present for all Cameras.
 	/// </summary>
-	void Inspector::drawCameraSection(Camera *camera)
+	void _Inspector::drawCameraSection(Camera *camera)
 	{
 		ImGui::TextColored(Colour::TITLE, "Camera Eye");
 		glm::vec3 eye = camera->getTransformedEye();
@@ -268,7 +267,7 @@ namespace Tank
 	}
 
 
-	void Inspector::drawLightSection(Light *light)
+	void _Inspector::drawLightSection(Light *light)
 	{
 		ImGui::TextColored(Colour::TITLE, "Light Struct");
 		std::string lightStruct = light->getLightStruct();
@@ -315,7 +314,7 @@ namespace Tank
 	}
 
 
-	void Inspector::drawDirLightSection(DirLight *dir)
+	void _Inspector::drawDirLightSection(DirLight *dir)
 	{
 		ImGui::TextColored(Colour::TITLE, "Light Direction");
 		Widget::vec3Input(
@@ -333,7 +332,7 @@ namespace Tank
 	/// Recurse over all descendants of node, and if any match to the inspected
 	/// node, set the inspected node to nullptr (to reflect the deletion).
 	/// </summary>
-	void Inspector::onNodeDeleted(Node *node)
+	void _Inspector::onNodeDeleted(Node *node)
 	{
 		node->forEachDescendant(
 			[this](Node *node)

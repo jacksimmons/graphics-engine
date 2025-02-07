@@ -15,9 +15,10 @@
 #include "nodes/ui/console.hpp"
 
 
-namespace Tank
+namespace Tank::Editor
 {
-	SceneView::SceneView(const std::string &name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput) : Panel(name)
+	_SceneView::_SceneView(const std::string &name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput)
+		: _Panel(name)
 	{
 		m_sceneW = sceneViewportSize.x, m_sceneH = sceneViewportSize.y;
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
@@ -27,17 +28,17 @@ namespace Tank
 	}
 
 
-	void SceneView::drawUI()
+	void _SceneView::drawUI()
 	{
 		int fbW = m_fb->getW(), fbH = m_fb->getH();
 
 		// Just sets default panel-window size.
 		ImGui::SetNextWindowSize(ImVec2(fbW + 10.0f, fbH + 10.0f), ImGuiCond_FirstUseEver);
-		Panel::drawUI();
+		_Panel::drawUI();
 	}
 
 
-	void SceneView::drawPanel()
+	void _SceneView::drawPanel()
 	{
 		int fbW = m_fb->getW(), fbH = m_fb->getH();
 
@@ -70,7 +71,7 @@ namespace Tank
 	}
 
 
-	void SceneView::update()
+	void _SceneView::update()
 	{
 		int fbW = m_fb->getW(), fbH = m_fb->getH();
 
@@ -83,17 +84,17 @@ namespace Tank
 	}
 
 
-	void SceneView::rescale(int w, int h) const
+	void _SceneView::rescale(int w, int h) const
 	{
 		m_fb->rescale(w, h);
 	}
 
 	
-	void SceneView::handleKeyInput()
+	void _SceneView::handleKeyInput()
 	{
 		if (!m_isFocussed) return;
 
-		auto cam = Tank::Scene::getActiveScene()->getActiveCamera();
+		auto cam = Scene::getActiveScene()->getActiveCamera();
 		if (cam == nullptr) return;
 		float panSpd = cam->getPanSpeed();
 		float rotSpd = cam->getRotSpeed();
@@ -142,7 +143,7 @@ namespace Tank
 	}
 
 
-	void SceneView::cyclePolygonMode()
+	void _SceneView::cyclePolygonMode()
 	{
 		switch (m_polygonMode)
 		{
@@ -161,10 +162,10 @@ namespace Tank
 		std::string line = std::format("Set GL polygon mode to {}",
 			m_polygonMode == GL_FILL ? "FILL" : (m_polygonMode == GL_POINT ? "POINT" : "LINE"));
 
-		dynamic_cast<Console*>(getSibling("Console"))->addLine(
+		dynamic_cast<_Console*>(getSibling("Console"))->addLine(
 			[this, line]()
 			{
-				ImGui::TextColored(Colour::ERR, line.c_str());
+				ImGui::TextColored(Tank::Colour::ERR, line.c_str());
 			}
 		);
 	}

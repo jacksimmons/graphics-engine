@@ -5,11 +5,11 @@
 
 namespace Tank
 {
-	void Widget::textInput(const char *label, const std::string &current, std::function<void(const std::string&)> onModified)
+	void Widget::textInput(const char *label, const std::string &hint, std::function<void(const std::string&)> onModified)
 	{
 		const size_t size = 100;
 		char buf[size] = "\0";
-		if (ImGui::InputTextWithHint(label, current.c_str(), buf, size))
+		if (ImGui::InputTextWithHint(label, hint.c_str(), buf, size))
 		{
 			onModified(std::string(buf));
 		}

@@ -15,6 +15,10 @@ namespace Tank
 		virtual void update() = 0;
 	};
 
+
+	/// <summary>
+	/// A script which can be attached to a subclass of type T.
+	/// </summary>
 	template <class T>
 	class Script : public IScript
 	{

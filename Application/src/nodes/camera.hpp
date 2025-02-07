@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include "nodes/node.hpp"
-#include "nodes/hierarchy.hpp"
 #include "transformation.hpp"
 
 

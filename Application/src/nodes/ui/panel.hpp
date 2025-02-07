@@ -1,18 +1,21 @@
 #pragma once
 #include "nodes/ui/ui.hpp"
 
-
-namespace Tank
+namespace Tank::Editor
 {
-	class UI;
-	class Panel : public UI
+	class _Panel : public UI
 	{
+		// Classes permitted access to constructor
+		friend class _SceneView;
+		friend class _Hierarchy;
+		friend class _Inspector;
+		friend class _Console;
 	private:
 		ImGuiWindowFlags m_flags;
 		bool m_autoScroll;
+		_Panel(const std::string &name, const ImGuiWindowFlags &flags = ImGuiWindowFlags_None, bool autoScroll = false);
 	public:
-		Panel(const std::string &name, const ImGuiWindowFlags &flags = ImGuiWindowFlags_None, bool autoScroll = false);
-		virtual ~Panel() = default;
+		virtual ~_Panel() = default;
 
 		virtual void drawUI() override;
 		virtual void drawPanel() = 0;

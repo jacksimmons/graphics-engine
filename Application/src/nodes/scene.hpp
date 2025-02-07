@@ -16,15 +16,18 @@ namespace Tank
 	class Light;
 	class Shader;
 
+	namespace Editor { class _Hierarchy; }
+
 	class Scene : public Node
 	{
+		// The Hierarchy may modify elements of the scene (lights, nodes).
+		friend class Editor::_Hierarchy;
 	public:
 		static json serialise(Scene *scene);
 		static void deserialise(const json &serialised, Scene **targetPtr);
 
 		// Static
 	private:
-		friend class Hierarchy;
 		static Scene *s_activeScene;
 	public:
 		static Scene *getActiveScene() { return s_activeScene; }
