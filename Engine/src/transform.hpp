@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <nlohmann/json.hpp>
+#include <core.hpp>
 #include "transformation.hpp"
 using json = nlohmann::json;
 
@@ -10,7 +11,7 @@ using json = nlohmann::json;
 namespace Tank
 {
 	class Node;
-	class Transform
+	class TANK_API Transform
 	{
 		friend class Node;
 	public:

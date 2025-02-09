@@ -17,13 +17,16 @@ workspace "TankEnginePremake"
 project "Engine"
     kind "SharedLib"
     language "C++"
-    includedirs { "%{prj.name}/include",
+    includedirs {
+        "include",
+        "include/glm",
+        "%{prj.name}/include",
         "%{prj.name}/src"
     }
     objdir "%{prj.name}/obj/%{cfg.buildcfg}"
     targetdir "%{prj.name}/bin/%{cfg.buildcfg}"
     files { "%{prj.name}/src/**.hpp", "%{prj.name}/src/**.cpp" } 
-    defines { "BUILD_DLL" }
+    defines { "BUILD_DLL", "GLM_ENABLE_EXPERIMENTAL", "FMT_UNICODE=0" }
 
 project "Application"
     kind "ConsoleApp"
@@ -35,10 +38,10 @@ project "Application"
     links { "Engine", "opengl32", "glfw3", "glfw3dll", "assimp-vc143-mt" }
     defines { "GLM_ENABLE_EXPERIMENTAL", "FMT_UNICODE=0" }
     includedirs { "include",
+        "include/glm",
         "Engine/src",
         "%{prj.name}/src",
         "%{prj.name}/include",
-        "%{prj.name}/include/glm",
         "%{prj.name}/include/imgui",
         "%{prj.name}/include/imgui/backends",
         "vendor/assimp/include"

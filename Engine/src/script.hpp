@@ -1,10 +1,11 @@
 #pragma once
+#include "core.hpp"
 
 
 namespace Tank
 {
 	class Node;
-	class IScript
+	class TANK_API IScript
 	{
 	public:
 		IScript() {};
@@ -20,7 +21,7 @@ namespace Tank
 	/// A script which can be attached to a subclass of type T.
 	/// </summary>
 	template <class T>
-	class Script : public IScript
+	class TANK_API Script : public IScript
 	{
 	protected:
 		T *m_node;

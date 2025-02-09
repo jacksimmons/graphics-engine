@@ -2,9 +2,8 @@
 #include "transform.hpp"
 #include "shader.hpp"
 #include "log.hpp"
-#include "nodes/light.hpp"
-#include "nodes/scene.hpp"
 #include "static/glm_serialise.hpp"
+#include "nodes/light.hpp"
 
 
 namespace Tank

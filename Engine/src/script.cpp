@@ -1,7 +1,5 @@
-#include <type_traits>
 #include "script.hpp"
 #include "log.hpp"
-#include "static/time.hpp"
 #include "nodes/node.hpp"
 
 

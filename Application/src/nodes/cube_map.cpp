@@ -7,7 +7,6 @@
 #include "camera.hpp"
 #include "log.hpp"
 #include "texture.hpp"
-#include "node.hpp"
 
 
 namespace Tank

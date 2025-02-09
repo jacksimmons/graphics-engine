@@ -135,7 +135,7 @@ namespace Tank::Editor
 			glm::eulerAngles(transform->getLocalRotation()),
 			[&transform](glm::vec3 newRotation)
 			{
-				transform->setLocalRotation(Quat::fromAngleAxis(newRotation));
+				transform->setLocalRotation(quat::fromAngleAxis(newRotation));
 			}
 		);
 	}
