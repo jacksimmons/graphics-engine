@@ -8,7 +8,7 @@
 
 namespace Tank
 {
-	class Camera : public Node
+	class TANK_API Camera : public Node
 	{
 		// Serialisation
 	public:

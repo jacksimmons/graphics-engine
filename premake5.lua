@@ -17,6 +17,7 @@ workspace "TankEnginePremake"
 project "Engine"
     kind "SharedLib"
     language "C++"
+    cppdialect "C++17"
     includedirs {
         "include",
         "include/glm",
