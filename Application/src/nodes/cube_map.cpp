@@ -4,9 +4,9 @@
 #include <glad/glad.h>
 #include "cube_map.hpp"
 #include "scene.hpp"
-#include "camera.hpp"
-#include "log.hpp"
 #include "texture.hpp"
+#include "log.hpp"
+#include "nodes/camera.hpp"
 
 
 namespace Tank
