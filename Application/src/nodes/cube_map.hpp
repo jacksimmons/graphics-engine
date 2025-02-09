@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include <glad/glad.h>
+#include <nodes/node.hpp>
 #include "shader.hpp"
-#include "node.hpp"
 
 
 namespace Tank

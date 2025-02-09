@@ -5,6 +5,7 @@
 #include <stack>
 #include <glm/mat4x4.hpp>
 #include <nlohmann/json.hpp>
+#include <core.hpp>
 
 #include "transform.hpp"
 #include "script.hpp"
@@ -15,8 +16,9 @@ using json = nlohmann::json;
 namespace Tank
 {
 	class IScript;
+	class Transform;
 
-	class Node
+	class TANK_API Node
 	{
 	public:
 		static json serialise(Node *node);

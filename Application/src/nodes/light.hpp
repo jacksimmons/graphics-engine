@@ -1,4 +1,5 @@
 #include <glm/glm.hpp>
+#include "nodes/node.hpp"
 #include "nodes/model.hpp"
 #include "nodes/scene.hpp"
 

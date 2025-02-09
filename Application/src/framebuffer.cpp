@@ -71,6 +71,7 @@ namespace Tank
 		Tank::Scene::getActiveScene()->update();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 		// Disable depth testing so quad renders over everything.
 		glDisable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT);

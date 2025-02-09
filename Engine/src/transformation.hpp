@@ -50,7 +50,7 @@ namespace Tank
 		}
 	}
 
-	namespace Quat
+	namespace quat
 	{
 		inline glm::quat fromAngleAxis(glm::vec3 angles, glm::vec3 xAxis = { 1,0,0 },
 			glm::vec3 yAxis = { 0,1,0 }, glm::vec3 zAxis = { 0,0,1 })

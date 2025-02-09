@@ -1,13 +1,11 @@
 #include <iostream>
 #include <stack>
 #include <algorithm>
-#include <GLFW/glfw3.h>
 
 #include "node.hpp"
 #include "log.hpp"
 #include "transform.hpp"
 #include "script.hpp"
-#include "static/time.hpp"
 
 
 namespace Tank

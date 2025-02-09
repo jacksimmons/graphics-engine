@@ -1,3 +1,4 @@
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "transformation.hpp"
 #include "static/glm_serialise.hpp"
@@ -87,7 +88,7 @@ namespace Tank
 		glm::vec3 zAxis = glm::normalize(m_R * glm::vec4(m_centre - m_eye, 1.0f));
 		glm::vec3 xAxis = glm::cross(yAxis, zAxis);
 
-		glm::quat rot = Quat::fromAngleAxis(glm::vec3(vec.y, vec.x, vec.z), xAxis, yAxis, zAxis);
+		glm::quat rot = quat::fromAngleAxis(glm::vec3(vec.y, vec.x, vec.z), xAxis, yAxis, zAxis);
 
 		m_R = glm::mat4_cast(rot) * m_R;
 	}
