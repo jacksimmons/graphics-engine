@@ -16,15 +16,10 @@ A C++ graphics rendering application using OpenGL and the GUI framework "dear Im
 - [x] Skybox (cube-map texture rendered behind everything else)  
 - [x] Assimp model loading    
 
-# Requirements
-A platform supporting Premake: 
-- Microsoft Visual Studio 2005-2022  
-- GNU Make, including Cygwin and MinGW  
-- Xcode  
-- Codelite
-
 # Use
-Run Premake using vendor/premake/premake5 (platform).
+This repository uses submodules, so please use --recurse-submodules when git-cloning.  
+Then build project files with cmake (cmake .) in the root directory.  
+cmake 3.12 or newer is required.  
 
 # Modules Used
 [Dear ImGui](https://github.com/ocornut/imgui)  
