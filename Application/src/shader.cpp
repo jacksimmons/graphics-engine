@@ -14,16 +14,16 @@ namespace Tank
 		std::string vertShader;
 		std::string fragShader;
 
-		if (!File::readLines(std::filesystem::current_path() / "shaders" / vsPath, vertShader))
+		if (!File::readLines(std::filesystem::path(ROOT_DIRECTORY) / "shaders" / vsPath, vertShader))
 		{
 			TE_CORE_ERROR("Failed to read vertex shader.");
-			std::cout << std::filesystem::current_path() / "shaders" / vsPath << std::endl;
+			std::cout << std::filesystem::path(ROOT_DIRECTORY) / "shaders" / vsPath << std::endl;
 		}
 
-		if (!File::readLines(std::filesystem::current_path() / "shaders" / fsPath, fragShader))
+		if (!File::readLines(std::filesystem::path(ROOT_DIRECTORY) / "shaders" / fsPath, fragShader))
 		{
 			TE_CORE_ERROR("Failed to read fragment shader.");
-			std::cout << std::filesystem::current_path() / "shaders" / fsPath << std::endl;
+			std::cout << std::filesystem::path(ROOT_DIRECTORY) / "shaders" / fsPath << std::endl;
 		}
 
 		unsigned int vshader;
