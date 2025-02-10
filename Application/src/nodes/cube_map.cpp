@@ -51,7 +51,7 @@ namespace Tank
 		m_shader->use();
 
 		int texNum = Texture::getTexCount();
-		auto tex = Texture::cubeMapFromFile("textures/skybox", textureNames, "cubeMap");
+		auto tex = Texture::cubeMapFromFile(std::string(ROOT_DIRECTORY) + "/textures/skybox", textureNames, "cubeMap");
 		if (tex.has_value())
 		{
 			m_texture = tex.value();
