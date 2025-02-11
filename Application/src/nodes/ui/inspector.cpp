@@ -1,6 +1,7 @@
 #include <memory>
 #include <string>
 #include <filesystem>
+#include <optional>
 #include <imgui.h>
 #include <glm/gtx/euler_angles.hpp>
 #include "transform.hpp"
@@ -206,7 +207,11 @@ namespace Tank::Editor
 		Widget::textInput("##Inspector_VertexShaderPath", vertPath.string(),
 			[&model, &fragPath](const std::string &newPath)
 			{
-				model->setShader(std::make_unique<Shader>(newPath, fragPath.string()));
+				auto maybeShader = Shader::createShader(newPath, fragPath.string());
+				if (maybeShader.has_value())
+				{
+					model->setShader(std::move(maybeShader.value()));
+				}
 			}
 		);
 
@@ -221,7 +226,11 @@ namespace Tank::Editor
 		Widget::textInput("##Inspector_FragmentShaderPath", fragPath.string(),
 			[&model, &vertPath](const std::string &newPath)
 			{
-				model->setShader(std::make_unique<Shader>(vertPath.string(), newPath));
+				auto maybeShader = Shader::createShader(vertPath.string(), newPath);
+				if (maybeShader.has_value())
+				{
+					model->setShader(std::move(maybeShader.value()));
+				}
 			}
 		);
 

@@ -47,7 +47,9 @@ namespace Tank
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-		m_shader = std::make_unique<Shader>(vsName, fsName);
+		auto maybeShader = Shader::createShader(vsName, fsName);
+		if (maybeShader.has_value())
+			m_shader = std::move(maybeShader.value());
 		m_shader->use();
 
 		int texNum = Texture::getTexCount();
