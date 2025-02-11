@@ -51,7 +51,9 @@ namespace Tank
 		: Node(name)
 	{
 		m_type = "Model";
-		m_shader = std::make_unique<Shader>(vsName, fsName);
+		auto maybeShader = Shader::createShader(vsName, fsName);
+		if (maybeShader.has_value())
+			m_shader = std::move(maybeShader.value());
 
 		Assimp::Importer importer;
 		const aiScene *scene = importer.ReadFile(std::string(ROOT_DIRECTORY) + "/" + modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);

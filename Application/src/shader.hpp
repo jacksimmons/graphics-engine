@@ -1,10 +1,15 @@
 #pragma once
 #include <string>
 #include <filesystem>
+#include <iostream>
+#include <optional>
+#include <memory>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include "log.hpp"
+#include "file.hpp"
 
 
 namespace Tank
@@ -38,9 +43,76 @@ namespace Tank
 		// Filepath of shader files
 		std::filesystem::path m_vsPath;
 		std::filesystem::path m_fsPath;
+
+		Shader(std::filesystem::path vsPath, std::filesystem::path fsPath, unsigned int progId) : m_vsPath(vsPath), m_fsPath(fsPath), m_id(progId) {}
 	public:
-		Shader(std::filesystem::path vsPath, std::filesystem::path fsPath);
 		~Shader();
+
+		static std::optional<std::unique_ptr<Shader>> createShader(std::filesystem::path vsPath, std::filesystem::path fsPath)
+		{
+			std::string vsString;
+			if (!File::readLines(std::filesystem::path(ROOT_DIRECTORY) / "shaders" / vsPath, vsString))
+			{
+				std::string errMsg = "Failed to read vertex shader: " + std::string(ROOT_DIRECTORY) +
+					std::string("/shaders/") + vsPath.string();
+				TE_CORE_ERROR(errMsg);
+				return {};
+			}
+
+			std::string fsString;
+			if (!File::readLines(std::filesystem::path(ROOT_DIRECTORY) / "shaders" / fsPath, fsString))
+			{
+				std::string errMsg = "Failed to read fragment shader: " + std::string(ROOT_DIRECTORY) +
+					std::string("/shaders/") + fsPath.string();
+				TE_CORE_ERROR(errMsg);
+				return {};
+			}
+
+			unsigned int vshader;
+			vshader = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(vshader, 1, StringHelper(vsString), nullptr);
+			glCompileShader(vshader);
+
+			int success;
+			char infoLog[512];
+			glGetShaderiv(vshader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				TE_CORE_ERROR("Failed to compile vertex shader.");
+				glGetShaderInfoLog(vshader, 512, nullptr, infoLog);
+				TE_CORE_ERROR(std::string("Shader info log: ") + infoLog);
+
+				glDeleteShader(vshader);
+				return {};
+			}
+
+			unsigned int fshader;
+			fshader = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(fshader, 1, StringHelper(fsString), nullptr);
+			glCompileShader(fshader);
+
+			glGetShaderiv(fshader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				TE_CORE_ERROR("Failed to compile fragment shader.");
+				glGetShaderInfoLog(fshader, 512, nullptr, infoLog);
+				TE_CORE_ERROR(std::string("Shader info log: ") + infoLog);
+
+				glDeleteShader(fshader);
+				return {};
+			}
+
+			Shader *shader = new Shader(vsPath, fsPath, glCreateProgram());
+			glAttachShader(shader->m_id, vshader);
+			glAttachShader(shader->m_id, fshader);
+			glLinkProgram(shader->m_id);
+
+			// Cleanup
+			glDeleteShader(vshader);
+			glDeleteShader(fshader);
+
+			return std::unique_ptr<Shader>(shader);
+		}
 
 		void use() const { glUseProgram(m_id); }
 		void unuse() const { glUseProgram(0); }
