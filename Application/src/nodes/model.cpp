@@ -51,12 +51,17 @@ namespace Tank
 		: Node(name)
 	{
 		m_type = "Model";
+		std::string fullModelPath = (std::string(ROOT_DIRECTORY) + "/Models/" + modelPath);
+		size_t indexOfLastSlash = fullModelPath.find_last_of("/");
+		m_modelDirectory = fullModelPath.substr(0, indexOfLastSlash);
+		m_modelFile = fullModelPath.substr(indexOfLastSlash + 1, (fullModelPath.length() - indexOfLastSlash) + 1);
+
 		auto maybeShader = Shader::createShader(vsName, fsName);
 		if (maybeShader.has_value())
 			m_shader = std::move(maybeShader.value());
 
 		Assimp::Importer importer;
-		const aiScene *scene = importer.ReadFile(std::string(ROOT_DIRECTORY) + "/" + modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+		const aiScene *scene = importer.ReadFile(fullModelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -64,9 +69,7 @@ namespace Tank
 			return;
 		}
 
-		auto lastSlash = modelPath.find_last_of('/');
-		m_modelDirectory = modelPath.substr(0, lastSlash);
-		m_modelFile = modelPath.substr(lastSlash + 1, modelPath.length() - lastSlash + 1);
+		TE_CORE_INFO(m_modelFile);
 		processNode(scene->mRootNode, scene);
 	}
 

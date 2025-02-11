@@ -10,6 +10,7 @@ namespace Tank
 {
 	namespace File
 	{
+		TANK_API bool exists(std::filesystem::path fp);
 		TANK_API bool readLines(std::filesystem::path fp, std::string &outStr);
 		TANK_API bool writeLines(const std::filesystem::path &fp, const std::string &inStr);
 	}

@@ -14,7 +14,37 @@
 
 namespace Tank
 {
-	std::optional<std::unique_ptr<Script>> Script::createScript(Node *node, std::string filename)
+	std::optional<std::unique_ptr<Script>> Script::createNewScript(Node *node, std::string filename)
+	{
+		std::string scriptsDir = std::string(ROOT_DIRECTORY) + "/scripts";
+		std::string scriptPath = scriptsDir + "/" + filename;
+
+		// Check if the filename provided exists
+		if (File::exists(scriptPath))
+		{
+			TE_CORE_INFO(std::string("Script file already exists: ") + scriptPath);
+		}
+		
+		// Copy the template
+		std::string newScriptLines;
+		if (!File::readLines(scriptsDir + "/template.lua", newScriptLines))
+		{
+			TE_CORE_ERROR("Failed to read template script.");
+			return {};
+		}
+		
+		// Write the copied template into new file
+		if (!File::writeLines(scriptPath, newScriptLines))
+		{
+			TE_CORE_ERROR("Failed to create new script.");
+			return {};
+		}
+
+		return std::unique_ptr<Script>(new Script(node, filename, newScriptLines));
+	}
+
+
+	std::optional<std::unique_ptr<Script>> Script::createExistingScript(Node *node, std::string filename)
 	{
 		// Load script (.lua) file
 		std::string scriptLines;
@@ -49,7 +79,7 @@ namespace Tank
 			sol::error err = result;
 			TE_CORE_ERROR(std::string("Script file failed to run:\n") + err.what());
 		}
-		
+
 		// Setup script functions
 		Transform *transform = m_node->getTransform();
 		{
@@ -61,6 +91,15 @@ namespace Tank
 			);
 			lua["translation"] = table;
 		}
+		{
+			auto rot = glm::eulerAngles(transform->getLocalRotation());
+			auto table = lua.create_table_with(
+				"x", rot.x,
+				"y", rot.y,
+				"z", rot.z
+			);
+			lua["rotation"] = table;
+		}
 
 		// Call update function on lua script, if present
 		std::optional<sol::protected_function> update = lua["update"];
@@ -68,5 +107,6 @@ namespace Tank
 			update.value()();
 
 		transform->setLocalTranslation({ lua["translation"]["x"], lua["translation"]["y"], lua["translation"]["z"] });
+		transform->setLocalRotation(quat::fromAngleAxis({ lua["rotation"]["x"], lua["rotation"]["y"], lua["rotation"]["z"] }));
 	}
 }
