@@ -9,7 +9,7 @@ namespace Tank::Editor
 	class Tank::Framebuffer;
 	class Tank::Camera;
 	class Tank::KeyInput;
-	class _SceneView : public _Panel
+	class _SceneView final : public _Panel
 	{
 		friend class EditorApp;
 	private:

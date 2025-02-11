@@ -7,7 +7,7 @@
 
 namespace Tank::Editor
 {
-	class _Console : public _Panel
+	class _Console final : public _Panel
 	{
 		friend class EditorApp;
 	private:

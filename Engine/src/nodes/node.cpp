@@ -5,7 +5,7 @@
 #include "node.hpp"
 #include "log.hpp"
 #include "transform.hpp"
-#include "script.hpp"
+#include "scripting/script.hpp"
 
 
 namespace Tank
@@ -178,12 +178,12 @@ namespace Tank
 	}
 
 
-	void Node::addScript(std::unique_ptr<IScript> script)
+	void Node::addScript(std::unique_ptr<Script> script)
 	{
 		m_scripts.push_back(std::move(script));
 	}
 
-	bool Node::removeScript(IScript *script)
+	bool Node::removeScript(Script *script)
 	{
 		for (int i = 0; i < m_scripts.size(); i++)
 		{

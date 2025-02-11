@@ -8,14 +8,14 @@
 #include <core.hpp>
 
 #include "transform.hpp"
-#include "script.hpp"
+#include "scripting/script.hpp"
 
 using json = nlohmann::json;
 
 
 namespace Tank
 {
-	class IScript;
+	class Script;
 	class Transform;
 
 	class TANK_API Node
@@ -39,7 +39,7 @@ namespace Tank
 		Node *m_parent;
 		std::unique_ptr<Transform> m_transform;
 		std::vector<std::unique_ptr<Node>> m_children;
-		std::vector<std::unique_ptr<IScript>> m_scripts;
+		std::vector<std::unique_ptr<Script>> m_scripts;
 
 		// Member Functions
 	protected:
@@ -105,9 +105,9 @@ namespace Tank
 		std::vector<int> treeFromChild(Node *child);
 
 		size_t getScriptCount() const noexcept { return m_scripts.size(); }
-		void addScript(std::unique_ptr<IScript> script);
-		bool removeScript(IScript *script);
-		IScript *getScript(int index) const { return m_scripts[index].get(); }
+		void addScript(std::unique_ptr<Script> script);
+		bool removeScript(Script *script);
+		Script *getScript(int index) const { return m_scripts[index].get(); }
 
 		virtual void update();
 	};

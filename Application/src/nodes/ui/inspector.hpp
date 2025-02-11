@@ -10,7 +10,7 @@ namespace Tank
 
 namespace Tank::Editor
 {
-	class _Inspector : public _Panel
+	class _Inspector final : public _Panel
 	{
 		friend class EditorApp;
 
