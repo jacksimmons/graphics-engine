@@ -25,5 +25,6 @@ namespace Tank::Editor
 		virtual void drawPanel() override;
 
 		void addLine(std::function<void()> line);
+		void addColouredTextLine(ImVec4 colour, std::string text);
 	};
 }

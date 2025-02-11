@@ -17,6 +17,10 @@ namespace Tank
 	};
 
 
+	/// <summary>
+	/// Class for handling keyboard inputs. Must be provided with all monitored keys in its
+	/// constructor.
+	/// </summary>
 	class KeyInput
 	{
 	private:

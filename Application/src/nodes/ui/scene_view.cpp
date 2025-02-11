@@ -24,7 +24,21 @@ namespace Tank::Editor
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
 		m_keyInput = keyInput;
 		m_isFocussed = false;
+
+		// Explicitly setup gl with default modes
 		m_polygonMode = GL_FILL;
+		glPolygonMode(GL_FRONT_AND_BACK, m_polygonMode);
+
+		m_cullFaceMode = GL_BACK;
+		glEnable(GL_CULL_FACE);
+		glCullFace(m_cullFaceMode);
+		
+		m_frontFaceMode = GL_CCW;
+		glFrontFace(m_frontFaceMode);
+
+		m_depthFuncComparisonMode = GL_LESS;
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(m_depthFuncComparisonMode);
 	}
 
 
@@ -105,6 +119,12 @@ namespace Tank::Editor
 
 		if (m_keyInput->getKeyState(GLFW_KEY_F1) == KeyState::Pressed)
 			cyclePolygonMode();
+		if (m_keyInput->getKeyState(GLFW_KEY_F2) == KeyState::Pressed)
+			cycleCullFaceMode();
+		if (m_keyInput->getKeyState(GLFW_KEY_F3) == KeyState::Pressed)
+			cycleFrontFaceMode();
+		if (m_keyInput->getKeyState(GLFW_KEY_F4) == KeyState::Pressed)
+			cycleDepthFuncComparisonMode();
 
 		float frameDelta = Time::getFrameDelta();
 
@@ -166,11 +186,84 @@ namespace Tank::Editor
 		std::string line = std::format("Set GL polygon mode to {}",
 			m_polygonMode == GL_FILL ? "FILL" : (m_polygonMode == GL_POINT ? "POINT" : "LINE"));
 
-		dynamic_cast<_Console*>(getSibling("Console"))->addLine(
-			[this, line]()
-			{
-				ImGui::TextColored(Tank::Colour::ERR, line.c_str());
-			}
+		dynamic_cast<_Console*>(getSibling("Console"))->addColouredTextLine(Tank::Colour::INFO, line);
+	}
+
+
+	void _SceneView::cycleCullFaceMode()
+	{
+		switch (m_cullFaceMode)
+		{
+		case GL_BACK:
+			m_cullFaceMode = GL_FRONT;
+			break;
+		case GL_FRONT:
+			m_cullFaceMode = GL_FRONT_AND_BACK;
+			break;
+		case GL_FRONT_AND_BACK:
+			m_cullFaceMode = GL_BACK;
+			break;
+		}
+
+		glCullFace(m_cullFaceMode);
+
+		std::string line = std::format("Set GL cull face mode to {}",
+			m_cullFaceMode == GL_BACK ? "BACK" : (m_cullFaceMode == GL_FRONT ? "FRONT" : "FRONT_AND_BACK"));
+
+		dynamic_cast<_Console*>(getSibling("Console"))->addColouredTextLine(Tank::Colour::INFO, line);
+	}
+
+
+	void _SceneView::cycleFrontFaceMode()
+	{
+		switch (m_frontFaceMode)
+		{
+		case GL_CCW:
+			m_frontFaceMode = GL_CW;
+			break;
+		case GL_CW:
+			m_frontFaceMode = GL_CCW;
+			break;
+		}
+
+		glFrontFace(m_frontFaceMode);
+
+		std::string line = std::format("Set GL front face mode (winding order) to {}",
+			m_frontFaceMode == GL_CCW ? "CCW" : "CW");
+
+		dynamic_cast<_Console*>(getSibling("Console"))->addColouredTextLine(Tank::Colour::INFO, line);
+	}
+
+
+	void _SceneView::cycleDepthFuncComparisonMode()
+	{
+		std::string newMode = "(Null)";
+		switch (m_depthFuncComparisonMode)
+		{
+		// Loop on ALWAYS back to NEVER
+		case GL_ALWAYS:
+			m_depthFuncComparisonMode = GL_NEVER;
+			newMode = "NEVER";
+			break;
+		default:
+			m_depthFuncComparisonMode++;
+			newMode =
+				m_depthFuncComparisonMode == GL_LESS ? "LESS (<)"
+				: m_depthFuncComparisonMode == GL_EQUAL ? "EQUAL (==)"
+				: m_depthFuncComparisonMode == GL_LEQUAL ? "LEQUAL (<=)"
+				: m_depthFuncComparisonMode == GL_GREATER ? "GREATER (>)"
+				: m_depthFuncComparisonMode == GL_NOTEQUAL ? "NOTEQUAL (!=)"
+				: m_depthFuncComparisonMode == GL_GEQUAL ? "GEQUAL (>=)"
+				: m_depthFuncComparisonMode == GL_ALWAYS ? "ALWAYS"
+				: "(Invalid)";
+			break;
+		}
+
+		glDepthFunc(m_depthFuncComparisonMode);
+
+		dynamic_cast<_Console*>(getSibling("Console"))->addColouredTextLine(
+			Tank::Colour::INFO,
+			"Set GL depth func comparison to " + newMode
 		);
 	}
 }

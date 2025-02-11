@@ -19,6 +19,9 @@ namespace Tank::Editor
 		int m_sceneW, m_sceneH;
 		bool m_isFocussed;
 		GLenum m_polygonMode;
+		GLenum m_cullFaceMode;
+		GLenum m_frontFaceMode;
+		GLenum m_depthFuncComparisonMode;
 
 		std::unique_ptr<Framebuffer> m_fb;
 		KeyInput *m_keyInput;
@@ -43,5 +46,8 @@ namespace Tank::Editor
 		constexpr int getSceneH() const noexcept { return m_sceneH; }
 		void handleKeyInput();
 		void cyclePolygonMode();
+		void cycleCullFaceMode();
+		void cycleFrontFaceMode();
+		void cycleDepthFuncComparisonMode();
 	};
 }
