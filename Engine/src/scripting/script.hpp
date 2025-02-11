@@ -25,10 +25,16 @@ namespace Tank
 	public:
 		~Script() = default;
 
-		static std::optional<std::unique_ptr<Script>> createScript(Node *node, std::string filename);
+		static std::optional<std::unique_ptr<Script>> createNewScript(Node *node, std::string filename);
+		static std::optional<std::unique_ptr<Script>> createExistingScript(Node *node, std::string filename);
 
 		void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		bool getEnabled() const noexcept { return m_enabled; }
+
+		const std::string &getFilename() { return m_filename; }
+
+		void start();
 		void update();
+		void finish();
 	};
 }

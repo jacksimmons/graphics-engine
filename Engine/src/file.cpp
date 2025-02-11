@@ -5,6 +5,12 @@ namespace Tank
 {
 	namespace File
 	{
+		bool exists(std::filesystem::path fp)
+		{
+			return std::filesystem::exists(fp);
+		}
+
+
 		bool readLines(std::filesystem::path fp, std::string &outStr)
 		{
 			if (!std::filesystem::exists(fp))

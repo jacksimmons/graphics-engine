@@ -8,6 +8,8 @@
 #include "colours.hpp"
 #include "file.hpp"
 #include "widget.hpp"
+#include "scripting/script.hpp"
+#include "nodes/node.hpp"
 #include "nodes/scene.hpp"
 #include "nodes/model.hpp"
 #include "nodes/light.hpp"
@@ -78,11 +80,51 @@ namespace Tank::Editor
 		size_t scriptCount = m_inspectedNode->getScriptCount();
 		for (int i = 0; i < scriptCount; i++)
 		{
-			ImGui::Text(typeid(m_inspectedNode->getScript(i)).name());
+			ImGui::Text(m_inspectedNode->getScript(i)->getFilename().c_str());
 		}
 		if (scriptCount == 0)
 		{
 			ImGui::Text("None");
+		}
+
+		// Display a button to change the active camera.
+		// Clicking on it loads a list of all Camera nodes descending from this scene.
+		if (ImGui::Button("Add Script##INSPECTOR_NODE_ADD_SCRIPT"))
+		{
+			ImGui::OpenPopup("##INSPECTOR_NODE_ADD_SCRIPT_LIST");
+		}
+		if (ImGui::BeginPopup("##INSPECTOR_NODE_ADD_SCRIPT_LIST"))
+		{
+			std::string scriptName = "script";
+			if (ImGui::Button("New Script"))
+			{
+				ImGui::OpenPopup("##INSPECTOR_NODE_NEW_SCRIPT");
+			}
+
+			// Popup for a New Script's name
+			if (ImGui::BeginPopup("##INSPECTOR_NODE_NEW_SCRIPT"))
+			{
+				// Update name for the New Script with a reference.
+				Widget::textInput("##INSPECTOR_NODE_NEW_SCRIPT_INPUT", "Script Name", [&scriptName](const std::string &name)
+				{
+					scriptName = name;
+				});
+
+				// When the user presses Enter, the New Script will be made and the popup closed.
+				if (ImGui::IsItemDeactivatedAfterEdit())
+				{
+					auto script = Script::createNewScript(m_inspectedNode, scriptName + ".lua");
+					if (script.has_value()) m_inspectedNode->addScript(std::move(script.value()));
+					ImGui::CloseCurrentPopup();
+				}
+
+				// Show the user that .lua will be appended always.
+				ImGui::SameLine();
+				ImGui::Text(".lua");
+
+				ImGui::EndPopup();
+			}
+			ImGui::EndPopup();
 		}
 
 		if (ImGui::Button("<Snap To>"))

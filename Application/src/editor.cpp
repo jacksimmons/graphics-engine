@@ -158,14 +158,8 @@ namespace Tank::Editor
 			scene->addChild(std::make_unique<Tank::CubeMap>());
 			scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
-			auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "models/backpack/backpack.obj");
-			Node *backpackRaw = backpack.get();
+			auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "backpack/backpack.obj");
 			scene->addChild(std::move(backpack));
-
-			auto script = Script::createScript(backpackRaw, "test.lua");
-			if (script.has_value())
-				backpackRaw->addScript(std::move(script.value()));
-
 			loadScene(std::move(scene));
 		}
 

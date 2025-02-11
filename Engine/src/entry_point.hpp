@@ -10,6 +10,7 @@ int main(int argc, char **argv)
 	// Memory scope encapsulation
 	// *For memory debugging.
 	{
+		// Initialise logger
 		Tank::Log::init();
 		TE_CORE_INFO("Initialised Log.");
 
