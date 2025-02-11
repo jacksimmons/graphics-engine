@@ -9,22 +9,22 @@ namespace Tank
 {
 	namespace vec3
 	{
-		json TANK_API serialise(const glm::vec3 &vec3);
-		glm::vec3 TANK_API deserialise(const json &json);
+		TANK_API json serialise(const glm::vec3 &vec3);
+		TANK_API glm::vec3 deserialise(const json &json);
 	}
 	namespace vec4
 	{
-		json TANK_API serialise(const glm::vec4 &vec4);
-		glm::vec4 TANK_API deserialise(const json &json);
+		TANK_API json serialise(const glm::vec4 &vec4);
+		TANK_API glm::vec4 deserialise(const json &json);
 	}
 	namespace mat4
 	{
-		json TANK_API serialise(const glm::mat4 &mat4);
-		glm::mat4 TANK_API deserialise(const json &json);
+		TANK_API json serialise(const glm::mat4 &mat4);
+		TANK_API glm::mat4 deserialise(const json &json);
 	}
 	namespace quat
 	{
-		json TANK_API serialise(const glm::quat &quat);
-		glm::quat TANK_API deserialise(const json &json);
+		TANK_API json serialise(const glm::quat &quat);
+		TANK_API glm::quat deserialise(const json &json);
 	}
 }

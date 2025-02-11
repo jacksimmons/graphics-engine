@@ -21,9 +21,8 @@
 #include "texture.hpp"
 #include "framebuffer.hpp"
 #include "transform.hpp"
-#include "script.hpp"
 #include "log.hpp"
-#include "serialisation.hpp"
+#include "scene_serialisation.hpp"
 #include "static/time.hpp"
 #include "nodes/node.hpp"
 #include "nodes/scene.hpp"
@@ -34,6 +33,7 @@
 #include "nodes/ui/scene_view.hpp"
 #include "nodes/ui/hierarchy.hpp"
 #include "nodes/ui/inspector.hpp"
+#include "scripting/script.hpp"
 
 
 // Enable debug output
@@ -159,7 +159,12 @@ namespace Tank::Editor
 			scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
 			auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "models/backpack/backpack.obj");
+			Node *backpackRaw = backpack.get();
 			scene->addChild(std::move(backpack));
+
+			auto script = Script::createScript(backpackRaw, "test.lua");
+			if (script.has_value())
+				backpackRaw->addScript(std::move(script.value()));
 
 			loadScene(std::move(scene));
 		}
