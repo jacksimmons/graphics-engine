@@ -2,6 +2,7 @@
 #include <imgui.h>
 #include "console.hpp"
 #include "widget.hpp"
+#include <colours.hpp>
 
 
 namespace Tank::Editor
@@ -13,12 +14,15 @@ namespace Tank::Editor
 			.callback =
 			[this]() { 
 				addLine([]() {
-					ImGui::Text(
-						"[help]\n"
+					ImGui::TextColored(
+						Colour::INFO,
 						"--- Global Keybinds ---\n"
 						"ESC - Quit\n"
 						"--- SceneView Keybinds ---\n"
-						"F1 - Toggle glPolygonMode\n"
+						"F1 - Cycle glPolygonMode [=FILL], LINE, POINT\n"
+						"F2 - Cycle glCullFace [=BACK], FRONT, FRONT_AND_BACK\n"
+						"F3 - Cycle glFrontFace (winding order) [=CCW], CW\n"
+						"F4 - Cycle glDepthFunc comparison [=LESS], NEVER, ALWAYS, LEQUAL, EQUAL, GREATER, GEQUAL, NOTEQUAL\n"
 						"(x)AD (y)WS (z)QE - Camera pan, axis in brackets\n"
 						"(x)JL (y)IK (z)UO - Camera rotation, axis in brackets\n"
 					);
@@ -60,5 +64,16 @@ namespace Tank::Editor
 
 		// Maximum length of 100
 		if (m_lines.size() >= 100) m_lines.erase(m_lines.begin());
+	}
+
+
+	void _Console::addColouredTextLine(ImVec4 colour, std::string text)
+	{
+		addLine(
+			[colour, text]()
+			{
+				ImGui::TextColored(colour, text.c_str());
+			}
+		);
 	}
 }

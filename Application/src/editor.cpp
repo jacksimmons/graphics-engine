@@ -185,6 +185,9 @@ namespace Tank::Editor
 			{
 				GLFW_KEY_ESCAPE,
 				GLFW_KEY_F1,
+				GLFW_KEY_F2,
+				GLFW_KEY_F3,
+				GLFW_KEY_F4,
 
 				GLFW_KEY_W,
 				GLFW_KEY_A,
