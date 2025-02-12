@@ -80,6 +80,14 @@ namespace Tank::Editor
 		}
 		ImGui::Text(m_fpsDisplayLastText.c_str());
 
+		// Play mode button
+		//ImGui::SameLine();
+		//if (ImGui::Button("Play"))
+		//{
+		//	getParent()->setEnabled(false);
+		//	Scene::getActiveScene()->start();
+		//}
+
 		ImGui::Image(imTex, fbsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
 		ImGui::EndChild();
 	}

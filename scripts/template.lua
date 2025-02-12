@@ -1,3 +1,6 @@
+-- Properties this script can access and modify
+-- transform
+
 -- Start is called when assigned node is instantiated 
 -- function start()
 -- end
