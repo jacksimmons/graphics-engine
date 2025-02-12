@@ -14,9 +14,11 @@
 
 namespace Tank
 {
-	Script::Script(Node *node, std::string filename, std::string scriptLines)
-		: m_node(node), m_filename(filename), m_scriptLines(scriptLines)
+	Script::Script(Node *node, std::string filename)
+		: m_node(node), m_filename(filename)
 	{
+		sol::state *state = new sol::state();
+		m_luaState = std::unique_ptr<sol::state>(state);
 	}
 
 
@@ -25,7 +27,7 @@ namespace Tank
 	}
 
 
-	std::optional<std::unique_ptr<Script>> Script::createNewScript(Node *node, std::string filename)
+	std::optional<std::unique_ptr<Script>> Script::createNewScript(Node *node, const std::string &filename)
 	{
 		std::string scriptsDir = std::string(ROOT_DIRECTORY) + "/scripts";
 		std::string scriptPath = scriptsDir + "/" + filename;
@@ -54,37 +56,42 @@ namespace Tank
 			}
 		}
 		
-		return std::unique_ptr<Script>(new Script(node, filename, newScriptLines));
+		return std::unique_ptr<Script>(new Script(node, filename));
 	}
 
 
-	std::optional<std::unique_ptr<Script>> Script::createExistingScript(Node *node, std::string filename)
+	std::optional<std::unique_ptr<Script>> Script::createExistingScript(Node *node, const std::string &filename)
 	{
 		// Load script (.lua) file
-		std::string scriptLines;
-		std::filesystem::path scriptPath = std::filesystem::path(ROOT_DIRECTORY) / "Scripts" / filename;
-		if (!File::readLines(scriptPath, scriptLines))
+		if (!File::exists(filename))
 		{
-			TE_CORE_ERROR(std::string("Script did not exist: ") + scriptPath.string());
+			TE_CORE_ERROR(std::string("Failed to create from existing script file: ") + filename + " did not exist.");
 			return {};
 		}
 
-		Script *script = new Script(node, filename, scriptLines);
+		Script *script = new Script(node, filename);
 		return std::unique_ptr<Script>(script);
 	}
 
 
-	void Script::start()
+	void Script::startup()
 	{
-		// Setup lua script
-		sol::state lua;
-		lua.open_libraries(sol::lib::base, sol::lib::package);
-		auto result = lua.safe_script(m_scriptLines, sol::script_pass_on_error);
+		// Read script file
+		std::string scriptLines;
+		std::filesystem::path scriptPath = std::filesystem::path(ROOT_DIRECTORY) / "Scripts" / m_filename;
+		if (!File::readLines(scriptPath, scriptLines))
+		{
+			TE_CORE_ERROR(std::string("Script no longer exists: ") + scriptPath.string());
+			return;
+		}
 
+		// Setup lua script
+		m_luaState->open_libraries(sol::lib::base, sol::lib::package);
+		auto result = m_luaState->safe_script(scriptLines, sol::script_pass_on_error);
 		if (!result.valid())
 		{
 			sol::error err = result;
-			TE_CORE_ERROR(std::string("Script file failed to run:\n") + err.what());
+			TE_CORE_ERROR(std::string("Script ") + m_filename + " runtime error: " + err.what());
 		}
 
 		// Setup script functions
@@ -93,37 +100,41 @@ namespace Tank
 		const auto &rot = glm::eulerAngles(transform->getLocalRotation());
 		const auto &scale = transform->getLocalScale();
 
-		lua["transform"] = lua.create_table_with(
-			"translation", lua.create_table_with("x", trans.x, "y", trans.y, "z", trans.z),
-			"rotation", lua.create_table_with("x", rot.x, "y", rot.y, "z", rot.z),
-			"translation", lua.create_table_with("x", scale.x, "y", scale.y, "z", scale.z)
+		(*m_luaState)["transform"] = m_luaState->create_table_with(
+			"translation", m_luaState->create_table_with("x", trans.x, "y", trans.y, "z", trans.z),
+			"rotation", m_luaState->create_table_with("x", rot.x, "y", rot.y, "z", rot.z),
+			"scale", m_luaState->create_table_with("x", scale.x, "y", scale.y, "z", scale.z)
 		);
 
-		// Call start function on lua script, if present
-		std::optional<sol::protected_function> start = lua["start"];
+		// Call startup function on lua script, if present
+		std::optional<sol::protected_function> start = (*m_luaState)["Startup"];
 		if (start.has_value())
 			start.value()();
 	}
 
 
+	void Script::shutdown()
+	{
+		// Call shutdown function on lua script, if present
+		std::optional<sol::protected_function> shutdown = (*m_luaState)["Shutdown"];
+		if (shutdown.has_value())
+			shutdown.value()();
+	}
+
+
 	void Script::update()
 	{
-		// ! Remove this !
-		std::filesystem::path scriptPath = std::filesystem::path(ROOT_DIRECTORY) / "Scripts" / m_filename;
-		if (!File::readLines(scriptPath, m_scriptLines))
-		{
-			TE_CORE_ERROR(std::string("Script did not exist: ") + scriptPath.string());
-		}
-
-		sol::state lua;
+		if (!m_enabled) return;
 
 		// Call update function on lua script, if present
-		std::optional<sol::protected_function> update = lua["update"];
+		std::optional<sol::protected_function> update = (*m_luaState)["Update"];
 		if (update.has_value())
 			update.value()();
 
 		Transform *transform = m_node->getTransform();
-		transform->setLocalTranslation({ lua["translation"]["x"], lua["translation"]["y"], lua["translation"]["z"] });
-		transform->setLocalRotation(quat::fromAngleAxis({ lua["rotation"]["x"], lua["rotation"]["y"], lua["rotation"]["z"] }));
+		auto luaTransform = (*m_luaState)["transform"];
+		transform->setLocalTranslation({ luaTransform["translation"]["x"], luaTransform["translation"]["y"], luaTransform["translation"]["z"] });
+		transform->setLocalRotation(quat::fromAngleAxis({ luaTransform["rotation"]["x"], luaTransform["rotation"]["y"], luaTransform["rotation"]["z"] }));
+		transform->setLocalScale({ luaTransform["scale"]["x"], luaTransform["scale"]["y"], luaTransform["scale"]["z"] });
 	}
 }

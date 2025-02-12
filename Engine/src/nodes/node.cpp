@@ -180,6 +180,7 @@ namespace Tank
 
 	void Node::addScript(std::unique_ptr<Script> script)
 	{
+		script->setEnabled(false);
 		m_scripts.push_back(std::move(script));
 	}
 
@@ -201,6 +202,45 @@ namespace Tank
 	void Node::draw()
 	{
 	}
+
+
+	void Node::startup()
+	{
+		if (!m_enabled) return;
+		if (m_started) return;
+		m_started = true;
+
+		for (auto const &script : m_scripts)
+		{
+			script->setEnabled(true);
+			script->startup();
+		}
+
+		for (auto const &child : m_children)
+		{
+			child->startup();
+		}
+	}
+
+
+	void Node::shutdown()
+	{
+		if (!m_enabled) return;
+		if (!m_started) return;
+		m_started = false;
+
+		for (auto const &script : m_scripts)
+		{
+			script->setEnabled(false);
+			script->shutdown();
+		}
+
+		for (auto const &child : m_children)
+		{
+			child->shutdown();
+		}
+	}
+
 
 	void Node::update()
 	{
