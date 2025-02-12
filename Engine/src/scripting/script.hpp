@@ -5,6 +5,10 @@
 #include "core.hpp"
 
 
+namespace sol
+{
+	class state;
+}
 namespace Tank
 {
 	class Node;
@@ -21,9 +25,9 @@ namespace Tank
 		Node *m_node;
 		std::string m_filename;
 		std::string m_scriptLines;
-		Script(Node *node, std::string filename, std::string scriptLines) : m_node(node), m_filename(filename), m_scriptLines(scriptLines) {}
+		Script(Node *node, std::string filename, std::string scriptLines);
 	public:
-		~Script() = default;
+		~Script();
 
 		static std::optional<std::unique_ptr<Script>> createNewScript(Node *node, std::string filename);
 		static std::optional<std::unique_ptr<Script>> createExistingScript(Node *node, std::string filename);
@@ -35,6 +39,5 @@ namespace Tank
 
 		void start();
 		void update();
-		void finish();
 	};
 }
