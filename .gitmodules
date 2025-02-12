@@ -1,12 +1,6 @@
 [submodule "Application/include/imgui"]
 	path = Application/include/imgui
 	url = https://github.com/ocornut/imgui
-[submodule "FileExplorer"]
-	path = FileExplorer
-	url = https://www.github.com/jacksimmons/file-explorer
-[submodule "Application/include/glm"]
-	path = Application/include/glm
+[submodule "include/glm"]
+	path = include/glm
 	url = https://github.com/g-truc/glm
-[submodule "Application/include/assimp"]
-	path = Application/include/assimp
-	url = https://github.com/assimp/assimp

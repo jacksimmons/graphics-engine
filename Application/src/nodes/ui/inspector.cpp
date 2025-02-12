@@ -95,6 +95,40 @@ namespace Tank::Editor
 		}
 		if (ImGui::BeginPopup("##INSPECTOR_NODE_ADD_SCRIPT_LIST"))
 		{
+			// List all non-added, non-system script files
+			for (auto &file : std::filesystem::recursive_directory_iterator(std::filesystem::path(ROOT_DIRECTORY) / "scripts"))
+			{
+				const auto &filepath = file.path();
+				size_t lastSlashIndex = filepath.string().find_last_of('\\');
+				std::string filename = filepath.string().substr(lastSlashIndex + 1, filepath.string().size() - lastSlashIndex + 1);
+
+				bool fileAllowed = true;
+
+				// Don't allow any internal scripts to be used (part of directory scripts/tank)
+				if (filepath.string().find((std::filesystem::path(ROOT_DIRECTORY) / "scripts" / "tank").string()) != std::string::npos)
+					fileAllowed = false;
+
+				// Don't allow the template to be used as a script
+				if (filename == "template.lua") fileAllowed = false;
+
+				// Don't allow attached scripts to be used
+				for (size_t i = 0; i < m_inspectedNode->getScriptCount(); i++)
+				{
+					if (m_inspectedNode->getScript(i)->getFilename() == filepath.string())
+					{
+						fileAllowed = false;
+						break;
+					}
+				}
+
+				if (fileAllowed && ImGui::Button(filename.c_str()))
+				{
+					auto script = Script::createExistingScript(m_inspectedNode, filepath.string());
+					if (script.has_value()) m_inspectedNode->addScript(std::move(script.value()));
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 			std::string scriptName = "script";
 			if (ImGui::Button("New Script"))
 			{

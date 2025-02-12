@@ -1,14 +1,14 @@
 -- Properties this script can access and modify
 -- transform
 
--- Start is called when assigned node is instantiated 
--- function start()
+-- Startup is called when assigned node is instantiated 
+-- function Startup()
 -- end
 
 -- Update is called once per frame
-function update()
+function Update()
 end
 
--- Finish is called when assigned node is destroyed
--- function finish()
+-- Shutdown is called when assigned node is destroyed
+-- function Shutdown()
 -- end

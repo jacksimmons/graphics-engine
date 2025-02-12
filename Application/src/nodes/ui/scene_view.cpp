@@ -24,6 +24,7 @@ namespace Tank::Editor
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
 		m_keyInput = keyInput;
 		m_isFocussed = false;
+		m_isInPlayMode = false;
 
 		// Explicitly setup gl with default modes
 		m_polygonMode = GL_FILL;
@@ -69,6 +70,34 @@ namespace Tank::Editor
 		ImVec2 fbsize = ImVec2((float)fbW, (float)fbH);
 		ImTextureID imTex = (ImTextureID)(intptr_t)m_fb->getTexColBuf();
 
+		// Play mode button (once clicked, hide the button and replace it with Stop)
+		if (m_isInPlayMode || ImGui::Button("Play"))
+		{
+			m_isInPlayMode = true;
+
+			// Hide all UI other than this SceneView.
+			for (auto &node : *getParent())
+			{
+				if (node.get() == this) continue;
+				node->setEnabled(false);
+			}
+			// Start all scripting.
+			Scene::getActiveScene()->startup();
+
+			if (ImGui::Button("Stop"))
+			{
+				m_isInPlayMode = false;
+				Scene::getActiveScene()->shutdown();
+
+				// Show all UI other than this SceneView.
+				for (auto &node : *getParent())
+				{
+					if (node.get() == this) continue;
+					node->setEnabled(true);
+				}
+			}
+		}
+
 		// Update FPS counter at a constant frequency. If not updated,
 		// display previous FPS value.
 		float delta = Time::getFrameDelta();
@@ -78,15 +107,8 @@ namespace Tank::Editor
 			m_fpsDisplayLastText = std::format("{} FPS", 1 / delta).c_str();
 			m_fpsDisplayUpdateTimer = 0;
 		}
+		ImGui::SameLine();
 		ImGui::Text(m_fpsDisplayLastText.c_str());
-
-		// Play mode button
-		//ImGui::SameLine();
-		//if (ImGui::Button("Play"))
-		//{
-		//	getParent()->setEnabled(false);
-		//	Scene::getActiveScene()->start();
-		//}
 
 		ImGui::Image(imTex, fbsize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
 		ImGui::EndChild();

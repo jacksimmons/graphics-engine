@@ -15,9 +15,6 @@ using json = nlohmann::json;
 
 namespace Tank
 {
-	class Script;
-	class Transform;
-
 	class TANK_API Node
 	{
 	public:
@@ -34,6 +31,8 @@ namespace Tank
 		/// If false, Node::draw isn't invoked for this Node only.
 		/// </summary>
 		bool m_visible = true;
+
+		bool m_started = false;
 	protected:
 		std::string m_type;
 		Node *m_parent;
@@ -107,8 +106,10 @@ namespace Tank
 		size_t getScriptCount() const noexcept { return m_scripts.size(); }
 		void addScript(std::unique_ptr<Script> script);
 		bool removeScript(Script *script);
-		Script *getScript(int index) const { return m_scripts[index].get(); }
+		Script *getScript(size_t index) const { return m_scripts[index].get(); }
 
+		void startup();
+		void shutdown();
 		virtual void update();
 	};
 }

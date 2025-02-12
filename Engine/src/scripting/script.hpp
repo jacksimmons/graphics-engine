@@ -2,7 +2,7 @@
 #include <optional>
 #include <memory>
 #include <string>
-#include "core.hpp"
+#include <core.hpp>
 
 
 namespace sol
@@ -24,20 +24,21 @@ namespace Tank
 		bool m_enabled = true;
 		Node *m_node;
 		std::string m_filename;
-		std::string m_scriptLines;
-		Script(Node *node, std::string filename, std::string scriptLines);
+		std::unique_ptr<sol::state> m_luaState;
+		Script(Node *node, std::string filename);
 	public:
 		~Script();
 
-		static std::optional<std::unique_ptr<Script>> createNewScript(Node *node, std::string filename);
-		static std::optional<std::unique_ptr<Script>> createExistingScript(Node *node, std::string filename);
+		static std::optional<std::unique_ptr<Script>> createNewScript(Node *node, const std::string &filename);
+		static std::optional<std::unique_ptr<Script>> createExistingScript(Node *node, const std::string &filename);
 
 		void setEnabled(bool enabled) noexcept { m_enabled = enabled; }
 		bool getEnabled() const noexcept { return m_enabled; }
 
 		const std::string &getFilename() { return m_filename; }
 
-		void start();
+		void startup();
+		void shutdown();
 		void update();
 	};
 }

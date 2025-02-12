@@ -18,6 +18,7 @@ namespace Tank::Editor
 		/// </summary>
 		int m_sceneW, m_sceneH;
 		bool m_isFocussed;
+		bool m_isInPlayMode;
 		GLenum m_polygonMode;
 		GLenum m_cullFaceMode;
 		GLenum m_frontFaceMode;
