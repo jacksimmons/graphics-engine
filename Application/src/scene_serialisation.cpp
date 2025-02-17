@@ -28,7 +28,14 @@ namespace Tank
 			}
 
 			json serialised = json::parse(sceneFile);
-			return dynamic_cast<Scene*>(deserialise(serialised));
+			
+			if (Scene *scene = dynamic_cast<Scene*>(deserialise(serialised)))
+			{
+				return scene;
+			}
+
+			TE_CORE_ERROR("File selected was not a valid scene.");
+			return nullptr;
 		}
 
 
