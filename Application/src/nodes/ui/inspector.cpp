@@ -109,10 +109,11 @@ namespace Tank::Editor
 				if (filepath.string().find((std::filesystem::path(ROOT_DIRECTORY) / "scripts" / "tank").string()) != std::string::npos)
 					fileAllowed = false;
 
-				// Don't allow the template to be used as a script
+				// Don't allow the template to be used
 				if (filename == "template.lua") fileAllowed = false;
-
-				// Don't allow attached scripts to be used
+				// Don't allow non-script files to be used
+				if (filename.find(".lua") == std::string::npos) fileAllowed = false;
+				// Don't allow already attached scripts to be used
 				for (size_t i = 0; i < m_inspectedNode->getScriptCount(); i++)
 				{
 					if (m_inspectedNode->getScript(i)->getFilename() == filepath.string())
@@ -124,7 +125,7 @@ namespace Tank::Editor
 
 				if (fileAllowed && ImGui::Button(filename.c_str()))
 				{
-					auto script = Script::createExistingScript(m_inspectedNode, filepath.string());
+					auto script = Script::createExistingScript(m_inspectedNode, Scene::getActiveScene()->getActiveCamera(), filepath.string());
 					if (script.has_value()) m_inspectedNode->addScript(std::move(script.value()));
 					ImGui::CloseCurrentPopup();
 				}
@@ -148,7 +149,7 @@ namespace Tank::Editor
 				// When the user presses Enter, the New Script will be made and the popup closed.
 				if (ImGui::IsItemDeactivatedAfterEdit())
 				{
-					auto script = Script::createNewScript(m_inspectedNode, scriptName + ".lua");
+					auto script = Script::createNewScript(m_inspectedNode, Scene::getActiveScene()->getActiveCamera(), scriptName + ".lua");
 					if (script.has_value()) m_inspectedNode->addScript(std::move(script.value()));
 					ImGui::CloseCurrentPopup();
 				}

@@ -38,7 +38,11 @@ namespace Tank
 		{
 			GLint maxTextureUnits;
 			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-			if (s_numTextures >= (GLuint)maxTextureUnits) return {};
+			//if (s_numTextures >= (GLuint)maxTextureUnits)
+			//{
+			//	TE_CORE_ERROR("Max texture units surpassed.");
+			//	return {};
+			//}
 
 			int w, h, numChannels;
 			unsigned char *data = stbi_load((directory + "/" + filename).c_str(), &w, &h, &numChannels, 0); // +stbi1

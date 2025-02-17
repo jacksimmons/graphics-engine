@@ -162,8 +162,9 @@ namespace Tank::Editor
 			scene->addChild(std::make_unique<Tank::CubeMap>());
 			scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
-			auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "backpack/backpack.obj");
-			scene->addChild(std::move(backpack));
+			auto object = std::make_unique<Tank::Model>("Doom", "shader.vert", "shader.frag", "doom/doom_E1M1.obj");
+			object->getTransform()->setLocalTranslation({ 0, 0, 2500 });
+			scene->addChild(std::move(object));
 			loadScene(std::move(scene));
 		}
 
