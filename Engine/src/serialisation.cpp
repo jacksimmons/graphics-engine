@@ -27,7 +27,8 @@ namespace Tank
 			//else if (type == "DirLight") serialised = DirLight::serialise((DirLight*)deserialised);
 			//else if (type == "PointLight") serialised = PointLight::serialise((Light*)deserialised);
 			//else if (type == "Model") serialised = Model::serialise((Model*)deserialised);
-			//else serialised = Scene::serialise((Scene*)deserialised);
+			//else if (type == "Scene") serialised = Scene::serialise((Scene*)deserialised);
+			else serialised = Node::serialise((Node*)deserialised);
 
 			std::vector<json> children;
 			for (auto &child : *(Node*)deserialised)
@@ -53,7 +54,8 @@ namespace Tank
 			//else if (type == "DirLight") DirLight::deserialise(serialised, (DirLight**)&node);
 			//else if (type == "PointLight") PointLight::deserialise(serialised, (Light**)&node);
 			//else if (type == "Model") Model::deserialise(serialised, (Model**)&node);
-			//else Scene::deserialise(serialised, (Scene**)&node);
+			//else if (type == "Scene") Scene::deserialise(serialised, (Scene**)&node);
+			else Node::deserialise(serialised, &node);
 
 			for (const json &child : serialised["children"].get<std::vector<json>>())
 			{

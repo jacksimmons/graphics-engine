@@ -65,6 +65,7 @@ namespace Tank::Editor
 		initImGui();
 
 		m_system = std::make_unique<::Tank::Node>("Editor");
+		m_keyInput = nullptr;
 	}
 
 
@@ -137,6 +138,8 @@ namespace Tank::Editor
 
 	void EditorApp::preSceneSetup()
 	{
+		m_system->removeChild(m_system->getChild("Hierarchy"));
+		m_system->removeChild(m_system->getChild("Inspector"));
 		m_system->addChild(std::unique_ptr<_Hierarchy>(new _Hierarchy("Hierarchy")));
 		m_system->addChild(std::unique_ptr<_Inspector>(new _Inspector("Inspector")));
 	}
@@ -144,8 +147,9 @@ namespace Tank::Editor
 
 	void EditorApp::loadScene(std::unique_ptr<::Tank::Scene> scene)
 	{
+		m_scene.reset();
 		m_scene = std::move(scene);
-		m_scene->setActiveScene(m_scene.get());
+		Scene::setActiveScene(m_scene.get());
 	}
 
 
@@ -305,20 +309,20 @@ namespace Tank::Editor
 					[this](const std::filesystem::path &path)
 					{
 						std::unique_ptr<Tank::Scene> scene;
-						try
+
+						if (Scene *rawScene = Tank::Serialisation::loadScene(path.string()))
 						{
-							scene = std::unique_ptr<Tank::Scene>(Tank::Serialisation::loadScene(path.string()));
+							scene = std::unique_ptr<Tank::Scene>(rawScene);
 						}
-						catch (std::exception e)
+						else
 						{
-							TE_CORE_ERROR("Invalid scene selected.");
 							return;
 						}
 
 						preSceneSetup();
 						loadScene(std::move(scene));
-						m_system->removeChild(m_system->getChild("Open Scene"));
 						postSceneSetup();
+						m_system->removeChild(m_system->getChild("Open Scene"));
 					}
 				)
 			);
