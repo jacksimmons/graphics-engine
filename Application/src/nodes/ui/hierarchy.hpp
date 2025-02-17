@@ -1,13 +1,13 @@
 #pragma once
 #include <memory>
 #include <type_traits>
-#include "nodes/ui/panel.hpp"
+#include "nodes/ui/window.hpp"
 
 
 namespace Tank::Editor
 {
 	class _Inspector;
-	class _Hierarchy final : public _Panel
+	class _Hierarchy final : public _Window
 	{
 		friend class EditorApp;
 		

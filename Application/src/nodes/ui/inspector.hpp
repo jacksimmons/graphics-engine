@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "nodes/ui/panel.hpp"
+#include "nodes/ui/window.hpp"
 
 
 namespace Tank
@@ -10,7 +10,7 @@ namespace Tank
 
 namespace Tank::Editor
 {
-	class _Inspector final : public _Panel
+	class _Inspector final : public _Window
 	{
 		friend class EditorApp;
 

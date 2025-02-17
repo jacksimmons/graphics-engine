@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <glad/glad.h>
-#include "nodes/ui/panel.hpp"
+#include "nodes/ui/window.hpp"
 
 
 namespace Tank::Editor
@@ -9,7 +9,7 @@ namespace Tank::Editor
 	class Tank::Framebuffer;
 	class Tank::Camera;
 	class Tank::KeyInput;
-	class _SceneView final : public _Panel
+	class _SceneView final : public _Window
 	{
 		friend class EditorApp;
 	private:

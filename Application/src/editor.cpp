@@ -23,6 +23,7 @@
 #include "transform.hpp"
 #include "log.hpp"
 #include "scene_serialisation.hpp"
+#include "widget.hpp"
 #include "static/time.hpp"
 #include "nodes/node.hpp"
 #include "nodes/scene.hpp"
@@ -33,6 +34,7 @@
 #include "nodes/ui/scene_view.hpp"
 #include "nodes/ui/hierarchy.hpp"
 #include "nodes/ui/inspector.hpp"
+#include "nodes/ui/file_dialog.hpp"
 #include "scripting/script.hpp"
 
 
@@ -62,8 +64,7 @@ namespace Tank::Editor
 		initGL();
 		initImGui();
 
-		// Flip loaded textures on the y-axis.
-		stbi_set_flip_vertically_on_load(GL_TRUE);
+		m_system = std::make_unique<::Tank::Node>("Editor");
 	}
 
 
@@ -136,13 +137,12 @@ namespace Tank::Editor
 
 	void EditorApp::preSceneSetup()
 	{
-		m_system = std::make_unique<Tank::Node>("Editor");
 		m_system->addChild(std::unique_ptr<_Hierarchy>(new _Hierarchy("Hierarchy")));
 		m_system->addChild(std::unique_ptr<_Inspector>(new _Inspector("Inspector")));
 	}
 
 
-	void EditorApp::loadScene(std::unique_ptr<Tank::Scene> scene)
+	void EditorApp::loadScene(std::unique_ptr<::Tank::Scene> scene)
 	{
 		m_scene = std::move(scene);
 		m_scene->setActiveScene(m_scene.get());
@@ -299,9 +299,30 @@ namespace Tank::Editor
 		}
 		if (openProject)
 		{
-			preSceneSetup();
-			loadScene(std::unique_ptr<Tank::Scene>(Tank::Serialisation::loadScene("test.scene")));
-			postSceneSetup();
+			auto fileDialog = std::unique_ptr<_FileDialog>(
+				new _FileDialog("Open Scene", std::filesystem::path(ROOT_DIRECTORY), std::filesystem::path(ROOT_DIRECTORY),
+					_FileDialogTarget::File,
+					[this](const std::filesystem::path &path)
+					{
+						std::unique_ptr<Tank::Scene> scene;
+						try
+						{
+							scene = std::unique_ptr<Tank::Scene>(Tank::Serialisation::loadScene(path.string()));
+						}
+						catch (std::exception e)
+						{
+							TE_CORE_ERROR("Invalid scene selected.");
+							return;
+						}
+
+						preSceneSetup();
+						loadScene(std::move(scene));
+						m_system->removeChild(m_system->getChild("Open Scene"));
+						postSceneSetup();
+					}
+				)
+			);
+			m_system->addChild(std::move(fileDialog));
 		}
 		if (saveProject && m_scene)
 		{
