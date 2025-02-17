@@ -8,6 +8,7 @@
 #include "colours.hpp"
 #include "file.hpp"
 #include "widget.hpp"
+#include "shader.hpp"
 #include "scripting/script.hpp"
 #include "nodes/node.hpp"
 #include "nodes/scene.hpp"
@@ -21,7 +22,7 @@
 
 namespace Tank::Editor
 {
-	_Inspector::_Inspector(const std::string &name) : _Panel(name)
+	_Inspector::_Inspector(const std::string &name) : _Window(name)
 	{
 		m_inspectedNode = nullptr;
 	}

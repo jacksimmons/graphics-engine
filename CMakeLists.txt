@@ -18,21 +18,30 @@ project("Engine")
         ${PROJECT_SOURCES}
         ${LUA_SOURCES}
     )
-    target_compile_features(${PROJECT_NAME} PRIVATE "cxx_std_17")
+    target_compile_features(${PROJECT_NAME} PRIVATE "cxx_std_20")
     target_include_directories(${PROJECT_NAME} PRIVATE
         "include"
         "include/glm"
         "${PROJECT_NAME}/include"
         "${PROJECT_NAME}/include/lua"
         "${PROJECT_NAME}/src"
+        "vendor/assimp/include"
     )
-    # Provide root directory to the application
-    get_filename_component(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE)
+    target_link_directories(${PROJECT_NAME} PRIVATE
+        "${PROJECT_NAME}/lib"
+    )
     target_compile_definitions(${PROJECT_NAME} PRIVATE
-        BUILD_DLL
+        TANK_DLL
         GLM_ENABLE_EXPERIMENTAL
         FMT_UNICODE=0
         ROOT_DIRECTORY="${ROOT_DIR}"
+    )
+    # Provide root directory to the application
+    get_filename_component(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE)
+    # Copy all required DLL/LIBs into the output dir
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${PROJECT_NAME}/lib $<TARGET_FILE_DIR:${PROJECT_NAME}>
     )
 
 
@@ -66,7 +75,6 @@ project("Application")
         "${PROJECT_NAME}/include"
         "${PROJECT_NAME}/include/imgui"
         "${PROJECT_NAME}/include/imgui/backends"
-        "vendor/assimp/include"
     )
     target_link_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_NAME}/lib"

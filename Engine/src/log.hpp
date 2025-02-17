@@ -22,11 +22,11 @@ namespace Tank
 
 
 // Core log macros
-#define TE_CORE_CRITICAL(...)	/*::Tank::Log::getCoreLogger()->critical(__VA_ARGS__)*/ std::cout << "CRITICAL:" << __VA_ARGS__ << std::endl;
-#define TE_CORE_ERROR(...)		/*::Tank::Log::getCoreLogger()->error(__VA_ARGS__)*/ std::cout << "ERROR:" << __VA_ARGS__ << std::endl;
-#define TE_CORE_WARN(...)		/*::Tank::Log::getCoreLogger()->warn(__VA_ARGS__)*/ std::cout << "WARN:" << __VA_ARGS__ << std::endl;
-#define TE_CORE_INFO(...)		/*::Tank::Log::getCoreLogger()->info(__VA_ARGS__)*/ std::cout << "INFO:" << __VA_ARGS__ << std::endl;
-#define TE_CORE_TRACE(...)		/*::Tank::Log::getCoreLogger()->trace(__VA_ARGS__)*/ std::cout << "TRACE:" << __VA_ARGS__ << std::endl;
+#define TE_CORE_CRITICAL(...)	::Tank::Log::getCoreLogger()->critical(__VA_ARGS__)
+#define TE_CORE_ERROR(...)		::Tank::Log::getCoreLogger()->error(__VA_ARGS__)
+#define TE_CORE_WARN(...)		::Tank::Log::getCoreLogger()->warn(__VA_ARGS__)
+#define TE_CORE_INFO(...)		::Tank::Log::getCoreLogger()->info(__VA_ARGS__)
+#define TE_CORE_TRACE(...)		::Tank::Log::getCoreLogger()->trace(__VA_ARGS__)
 
 #define TE_CRITICAL(...)		::Tank::Log::getClientLogger()->critical(__VA_ARGS__)
 #define TE_ERROR(...)			::Tank::Log::getClientLogger()->error(__VA_ARGS__)

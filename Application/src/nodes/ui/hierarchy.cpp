@@ -15,7 +15,7 @@
 
 namespace Tank::Editor
 {
-	_Hierarchy::_Hierarchy(const std::string &name) : _Panel(name)
+	_Hierarchy::_Hierarchy(const std::string &name) : _Window(name)
 	{
 	}
 

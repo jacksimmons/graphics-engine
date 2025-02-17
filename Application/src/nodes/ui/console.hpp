@@ -2,12 +2,12 @@
 #include <functional>
 #include <vector>
 #include <tuple>
-#include "panel.hpp"
+#include "window.hpp"
 
 
 namespace Tank::Editor
 {
-	class _Console final : public _Panel
+	class _Console final : public _Window
 	{
 		friend class EditorApp;
 	private:

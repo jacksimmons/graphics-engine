@@ -11,5 +11,8 @@ namespace Tank
 		static constexpr ImColor DISABLED = ImColor(128, 128, 128);
 		static constexpr ImColor INFO = ImColor(0, 128, 0);
 		static constexpr ImColor ERR = ImColor(128, 0, 0);
+
+		static constexpr ImColor DIRECTORY = INFO;
+		static constexpr ImColor FILE = NORMAL;
 	}
 }

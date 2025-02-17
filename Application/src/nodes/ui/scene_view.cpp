@@ -18,7 +18,7 @@
 namespace Tank::Editor
 {
 	_SceneView::_SceneView(const std::string &name, glm::ivec2 sceneViewportSize, glm::ivec2 fbViewportSize, KeyInput *keyInput)
-		: _Panel(name)
+		: _Window(name)
 	{
 		m_sceneW = sceneViewportSize.x, m_sceneH = sceneViewportSize.y;
 		m_fb = std::make_unique<Framebuffer>(fbViewportSize.x, fbViewportSize.y);
@@ -49,7 +49,7 @@ namespace Tank::Editor
 
 		// Just sets default panel-window size.
 		ImGui::SetNextWindowSize(ImVec2(fbW + 10.0f, fbH + 10.0f), ImGuiCond_FirstUseEver);
-		_Panel::drawUI();
+		_Window::drawUI();
 	}
 
 

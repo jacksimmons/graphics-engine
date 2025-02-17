@@ -1,7 +1,4 @@
 {
-    "activeCam": [
-        0
-    ],
     "children": [
         {
             "centre": {
@@ -152,16 +149,7 @@
         {
             "children": [],
             "enabled": true,
-            "fsPath": "skybox.frag",
             "name": "CubeMap (Skybox)",
-            "texturePaths": [
-                "right.jpg",
-                "left.jpg",
-                "bottom.jpg",
-                "top.jpg",
-                "front.jpg",
-                "back.jpg"
-            ],
             "transform": {
                 "rotation": {
                     "w": 1.0,
@@ -181,14 +169,11 @@
                 }
             },
             "type": "CubeMap",
-            "visible": true,
-            "vsPath": "skybox.vert"
+            "visible": true
         },
         {
             "children": [],
             "enabled": true,
-            "fsPath": "shader.frag",
-            "modelPath": "models/backpack/backpack.obj",
             "name": "Backpack",
             "transform": {
                 "rotation": {
@@ -209,33 +194,12 @@
                 }
             },
             "type": "Model",
-            "visible": true,
-            "vsPath": "shader.vert"
+            "visible": true
         },
         {
-            "ambient": {
-                "x": 0.019999999552965164,
-                "y": 0.019999999552965164,
-                "z": 0.019999999552965164
-            },
             "children": [],
-            "diffuse": {
-                "x": 0.20000000298023224,
-                "y": 0.20000000298023224,
-                "z": 0.20000000298023224
-            },
-            "direction": {
-                "x": 0.0,
-                "y": -1.0,
-                "z": 0.0
-            },
             "enabled": true,
             "name": "DirLight",
-            "specular": {
-                "x": 0.10000000149011612,
-                "y": 0.10000000149011612,
-                "z": 0.10000000149011612
-            },
             "transform": {
                 "rotation": {
                     "w": 1.0,
@@ -259,7 +223,6 @@
         }
     ],
     "enabled": true,
-    "isActiveScene": true,
     "name": "Scene",
     "transform": {
         "rotation": {
