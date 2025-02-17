@@ -82,12 +82,17 @@ namespace Tank::Editor
 				node->setEnabled(false);
 			}
 			// Start all scripting.
-			Scene::getActiveScene()->startup();
+			Scene *activeScene = Scene::getActiveScene();
+			activeScene->getActiveCamera()->setFreeLook(false);
+			activeScene->startup();
+			
 
 			if (ImGui::Button("Stop"))
 			{
 				m_isInPlayMode = false;
-				Scene::getActiveScene()->shutdown();
+				Scene *activeScene = Scene::getActiveScene();
+				activeScene->getActiveCamera()->setFreeLook(true);
+				activeScene->shutdown();
 
 				// Show all UI other than this SceneView.
 				for (auto &node : *getParent())
@@ -157,6 +162,9 @@ namespace Tank::Editor
 			cycleDepthFuncComparisonMode();
 
 		float frameDelta = Time::getFrameDelta();
+
+		// Exit early if camera free look is disabled.
+		if (!cam->getFreeLook()) return;
 
 		if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Held)
 			cam->translate(glm::vec3(0.0f, frameDelta * panSpd, 0.0f));

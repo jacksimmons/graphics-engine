@@ -6,7 +6,7 @@ end
 function v3.one()
     return v3.new(1, 1, 1)
 end
-function v3:clone()
-    return v3.new(self.x, self.y, self.z)
+function v3.clone(original)
+    return v3.new(original.x, original.y, original.z)
 end
 return v3

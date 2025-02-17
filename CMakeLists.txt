@@ -30,14 +30,14 @@ project("Engine")
     target_link_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_NAME}/lib"
     )
+    # Provide root directory to the application
+    get_filename_component(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
         TANK_DLL
         GLM_ENABLE_EXPERIMENTAL
         FMT_UNICODE=0
         ROOT_DIRECTORY="${ROOT_DIR}"
     )
-    # Provide root directory to the application
-    get_filename_component(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE)
     # Copy all required DLL/LIBs into the output dir
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

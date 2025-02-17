@@ -54,7 +54,8 @@ namespace Tank
 		m_type = "Camera";
 
 		// Create a perspective projection for this camera.
-		m_P = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+		float camFar = 10000.0f;
+		m_P = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, camFar);
 		m_V = glm::mat4(1.0f);
 		m_R = glm::mat4(1.0f);
 		m_T = glm::mat4(1.0f);
@@ -63,8 +64,10 @@ namespace Tank
 		m_centre = centre;
 		m_up = up;
 
-		m_panSpeed = 1;
-		m_rotSpeed = 1;
+		m_panSpeed = 1000;
+		m_rotSpeed = 5;
+
+		m_freeLook = true;
 	}
 
 	void Camera::setPosition(glm::vec3 pos)
@@ -122,6 +125,6 @@ namespace Tank
 		glm::vec3 t_centre = getTransformedCentre();
 		glm::vec3 t_eye = getTransformedEye();
 		glm::vec3 t_up = getTransformedUp();
-		m_V = glm::lookAt(t_eye, t_centre, t_up);
+		m_V = getTransform()->getWorldModelMatrix() * glm::lookAt(t_eye, t_centre, t_up);
 	}
 }

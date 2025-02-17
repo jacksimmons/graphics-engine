@@ -30,6 +30,7 @@ namespace Tank
 		glm::vec3 m_centre;
 		glm::vec3 m_up;
 
+		bool m_freeLook;
 		float m_panSpeed;
 		float m_rotSpeed;
 	public:
@@ -54,6 +55,9 @@ namespace Tank
 
 		void setRotSpeed(float speed) noexcept { m_rotSpeed = speed; }
 		float getRotSpeed() const noexcept { return m_rotSpeed; }
+
+		void setFreeLook(bool freeLook) noexcept { m_freeLook = freeLook; }
+		bool getFreeLook() const noexcept { return m_freeLook; }
 
 		void update() override;
 	};

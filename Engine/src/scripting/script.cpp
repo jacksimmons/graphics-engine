@@ -1,21 +1,23 @@
 #include <functional>
+#include <format>
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp>
 #include <glm/glm.hpp>
-#include <variant>
 #include "log.hpp"
 #include "file.hpp"
 #include "json.hpp"
 #include "serialisation.hpp"
 #include "nodes/node.hpp"
+#include "nodes/camera.hpp"
 #include "scripting/script.hpp"
+#include "scripting/script_prop.hpp"
 #include "static/glm_serialise.hpp"
 
 
 namespace Tank
 {
-	Script::Script(Node *node, std::string filename)
-		: m_node(node), m_filename(filename)
+	Script::Script(Node *node, Camera *camera, std::string filename)
+		: m_node(node), m_camera(camera), m_filename(filename)
 	{
 		sol::state *state = new sol::state();
 		m_luaState = std::unique_ptr<sol::state>(state);
@@ -27,7 +29,7 @@ namespace Tank
 	}
 
 
-	std::optional<std::unique_ptr<Script>> Script::createNewScript(Node *node, const std::string &filename)
+	std::optional<std::unique_ptr<Script>> Script::createNewScript(Node *node, Camera *camera, const std::string &filename)
 	{
 		std::string scriptsDir = std::string(ROOT_DIRECTORY) + "/scripts";
 		std::string scriptPath = scriptsDir + "/" + filename;
@@ -56,11 +58,11 @@ namespace Tank
 			}
 		}
 		
-		return std::unique_ptr<Script>(new Script(node, filename));
+		return std::unique_ptr<Script>(new Script(node, camera, filename));
 	}
 
 
-	std::optional<std::unique_ptr<Script>> Script::createExistingScript(Node *node, const std::string &filename)
+	std::optional<std::unique_ptr<Script>> Script::createExistingScript(Node *node, Camera *camera, const std::string &filename)
 	{
 		// Load script (.lua) file
 		if (!File::exists(filename))
@@ -69,7 +71,7 @@ namespace Tank
 			return {};
 		}
 
-		Script *script = new Script(node, filename);
+		Script *script = new Script(node, camera, filename);
 		return std::unique_ptr<Script>(script);
 	}
 
@@ -78,15 +80,20 @@ namespace Tank
 	{
 		// Read script file
 		std::string scriptLines;
-		std::filesystem::path scriptPath = std::filesystem::path(ROOT_DIRECTORY) / "Scripts" / m_filename;
+		std::filesystem::path scriptPath = std::filesystem::path(ROOT_DIRECTORY) / "scripts" / m_filename;
 		if (!File::readLines(scriptPath, scriptLines))
 		{
 			TE_CORE_ERROR(std::string("Script no longer exists: ") + scriptPath.string());
 			return;
 		}
 
-		// Setup lua script
+		// Setup libraries and append /scripts to package.path
 		m_luaState->open_libraries(sol::lib::base, sol::lib::package);
+		std::string packagePath = (*m_luaState)["package"]["path"];
+		packagePath = packagePath + (!packagePath.empty() ? ";" : "") + ROOT_DIRECTORY + "/scripts/?.lua";
+		(*m_luaState)["package"]["path"] = packagePath;
+
+		// Setup lua script
 		auto result = m_luaState->safe_script(scriptLines, sol::script_pass_on_error);
 		if (!result.valid())
 		{
@@ -94,17 +101,20 @@ namespace Tank
 			TE_CORE_ERROR(std::string("Script ") + m_filename + " runtime error: " + err.what());
 		}
 
-		// Setup script functions
+		// Setup transform property
 		Transform *transform = m_node->getTransform();
-		const auto &trans = transform->getLocalTranslation();
-		const auto &rot = glm::eulerAngles(transform->getLocalRotation());
-		const auto &scale = transform->getLocalScale();
+		(*m_luaState)["_transform"] = ScriptProp::transformToTable(m_luaState.get(), transform);
 
-		(*m_luaState)["transform"] = m_luaState->create_table_with(
-			"translation", m_luaState->create_table_with("x", trans.x, "y", trans.y, "z", trans.z),
-			"rotation", m_luaState->create_table_with("x", rot.x, "y", rot.y, "z", rot.z),
-			"scale", m_luaState->create_table_with("x", scale.x, "y", scale.y, "z", scale.z)
-		);
+		// Setup camera property
+		(*m_luaState)["_camera"] = sol::table();
+		m_luaState->set_function("_camera_translate", [this](float x, float y, float z)
+		{
+			m_camera->translate({ x,y,z });
+		});
+		m_luaState->set_function("_camera_rotate", [this](float x, float y, float z)
+		{
+			m_camera->rotate({ x, y, z });
+		});
 
 		// Call startup function on lua script, if present
 		std::optional<sol::protected_function> start = (*m_luaState)["Startup"];
@@ -131,10 +141,6 @@ namespace Tank
 		if (update.has_value())
 			update.value()();
 
-		Transform *transform = m_node->getTransform();
-		auto luaTransform = (*m_luaState)["transform"];
-		transform->setLocalTranslation({ luaTransform["translation"]["x"], luaTransform["translation"]["y"], luaTransform["translation"]["z"] });
-		transform->setLocalRotation(quat::fromAngleAxis({ luaTransform["rotation"]["x"], luaTransform["rotation"]["y"], luaTransform["rotation"]["z"] }));
-		transform->setLocalScale({ luaTransform["scale"]["x"], luaTransform["scale"]["y"], luaTransform["scale"]["z"] });
+		ScriptProp::tableToTransform((*m_luaState)["_transform"], m_node->getTransform());
 	}
 }
