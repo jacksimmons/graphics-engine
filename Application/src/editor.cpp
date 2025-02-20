@@ -107,8 +107,10 @@ namespace Tank::Editor
 		glViewport(0, 0, m_settings->windowSize.x, m_settings->windowSize.y);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-		// Enable depth buffer
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 		// Enable debug output
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -165,6 +167,10 @@ namespace Tank::Editor
 			auto object = std::make_unique<Tank::Model>("Doom", "shader.vert", "shader.frag", "doom/doom_E1M1.obj");
 			object->getTransform()->setLocalTranslation({ 0, 0, 2500 });
 			scene->addChild(std::move(object));
+			auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "backpack/backpack.obj");
+			backpack->getTransform()->setLocalScale({ 100, 100, 100 });
+			backpack->getTransform()->setLocalTranslation({ 0, 0, 200 });
+			scene->addChild(std::move(backpack));
 			loadScene(std::move(scene));
 		}
 
@@ -226,7 +232,6 @@ namespace Tank::Editor
 			frameStart = std::clock();
 
 			glfwPollEvents();
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Draw UI
 			ImGui_ImplOpenGL3_NewFrame();
@@ -247,19 +252,13 @@ namespace Tank::Editor
 				// Decay input states (comes after handleKeyInput)
 				m_keyInput->update();
 			}
+
+			// Draw all system UI (SceneView/Framebuffer draws the scene)
 			if (m_system) m_system->update();
 
 			ImGui::End();
 			ImGui::Render();
-
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-			//// ! Remove this?
-			GLFWwindow *backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-			// ! End
 
 			// Double buffering
 			glfwSwapBuffers(m_window);

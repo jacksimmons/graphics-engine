@@ -48,7 +48,7 @@ namespace Tank
 
 
 	Model::Model(const std::string &name, const std::string &vsName, const std::string &fsName, const std::string &modelPath)
-		: Node(name)
+		: IOutlined(name, { 0.5f, 0.5f, 0, 1 })
 	{
 		m_type = "Model";
 		std::string fullModelPath = (std::string(ROOT_DIRECTORY) + "/Models/" + modelPath);
@@ -189,7 +189,9 @@ namespace Tank
 
 	void Model::draw()
 	{
+		IOutlined::predraw();
 		m_shader->use();
+
 		m_shader->setVec3("tex_scale", glm::vec3{ 1, 1, 1 });
 		m_shader->setFloat("material.Ns", 32.0f);
 
@@ -216,10 +218,9 @@ namespace Tank
 		{
 			m_meshes[i].draw(m_shader.get());
 		}
-
 		m_shader->unuse();
 
-		Node::draw();
+		IOutlined::postdraw(m_meshes);
 	}
 
 

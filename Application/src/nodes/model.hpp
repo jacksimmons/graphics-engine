@@ -7,7 +7,7 @@
 #include "shader.hpp"
 #include "mesh.hpp"
 #include "texture.hpp"
-#include "nodes/node.hpp"
+#include "interfaces/ioutlined.hpp"
 
 
 struct aiNode; struct aiScene; struct aiMesh;
@@ -18,7 +18,7 @@ namespace Tank
 
 	namespace Editor { class _Inspector; }
 
-	class Model : public Node
+	class Model : public IOutlined
 	{
 		// Allow Inspector to read shaders.
 		friend class Editor::_Inspector;

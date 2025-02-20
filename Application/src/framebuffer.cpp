@@ -66,10 +66,11 @@ namespace Tank
 	void Framebuffer::update() const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		Tank::Scene::getActiveScene()->update();
-
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+			glStencilMask(0x00); // Don't write to stencil by default
+			Tank::Scene::getActiveScene()->update();
+		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// Disable depth testing so quad renders over everything.

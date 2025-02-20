@@ -433,4 +433,28 @@ namespace Tank::Editor
 			}
 		);
 	}
+
+
+	/// <summary>
+	/// Sets the inspected node for the inspector.
+	/// </summary>
+	void _Inspector::setInspectedNode(Node *node)
+	{
+		// Disable outline for prev inspected node (if necessary)
+		if (m_inspectedNode)
+		{
+			if (IOutlined *inspectedOutline = dynamic_cast<IOutlined*>(m_inspectedNode))
+			{
+				inspectedOutline->setOutlineEnabled(false);
+			}
+		}
+
+		// Enable outline for new inspected node (if necessary)
+		if (IOutlined *ioutlined = dynamic_cast<IOutlined*>(node))
+		{
+			ioutlined->setOutlineEnabled(true);
+		}
+
+		m_inspectedNode = node;
+	}
 }
