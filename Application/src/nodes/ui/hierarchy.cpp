@@ -63,7 +63,7 @@ namespace Tank::Editor
 			!ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
 			inspector->getInspectedNode() != node)
 		{
-			inspector->m_inspectedNode = node;
+			inspector->setInspectedNode(node);
 		}
 
 		// Draw the right-click options, if user is right-clicking and hovering. If node gets deleted here, return.

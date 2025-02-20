@@ -13,14 +13,10 @@ namespace Tank::Editor
 	class _Inspector final : public _Window
 	{
 		friend class EditorApp;
-
-		// The Hierarchy can modify the inspected node, e.g. when a user clicks
-		// on one of the nodes.
 		friend class _Hierarchy;
 	private:
 		Node *m_inspectedNode;
 
-	private:
 		_Inspector(const std::string &name);
 		void drawNodeSection();
 		void drawSceneSection(Scene *scene);
@@ -29,6 +25,7 @@ namespace Tank::Editor
 		void drawLightSection(Light *light);
 		void drawDirLightSection(DirLight *dir);
 		void onNodeDeleted(Node *node);
+		void setInspectedNode(Node *node);
 	protected:
 		virtual void drawPanel() override;
 	public:

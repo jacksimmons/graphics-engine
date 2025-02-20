@@ -40,9 +40,13 @@ namespace Tank
 
 	glm::mat4 Transform::getLocalModelMatrix() const
 	{
-		return (glm::translate(glm::identity<glm::mat4>(), m_translation)
-			* glm::scale(glm::identity<glm::mat4>(), m_scale)
-			* glm::mat4_cast(m_rotation));
+		glm::mat4 model = glm::identity<glm::mat4>();
+
+		model = glm::translate(model, m_translation);
+		model = glm::mat4_cast(m_rotation) * model;
+		model = glm::scale(model, m_scale);
+
+		return model;
 	}
 
 
