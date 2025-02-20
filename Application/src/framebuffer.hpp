@@ -4,7 +4,7 @@
 
 namespace Tank
 {
-	class Shader;
+	class Shader; class IOutlined;
 	class Framebuffer
 	{
 	private:

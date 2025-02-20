@@ -4,6 +4,7 @@
 #include "framebuffer.hpp"
 #include "shader.hpp"
 #include "nodes/scene.hpp"
+#include "nodes/interfaces/ioutlined.hpp"
 
 
 namespace Tank
@@ -72,13 +73,6 @@ namespace Tank
 			Tank::Scene::getActiveScene()->update();
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		// Disable depth testing so quad renders over everything.
-		glDisable(GL_DEPTH_TEST);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		// Re-enable depth testing.
-		glEnable(GL_DEPTH_TEST);
 	}
 
 

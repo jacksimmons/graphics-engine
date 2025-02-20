@@ -219,8 +219,7 @@ namespace Tank
 			m_meshes[i].draw(m_shader.get());
 		}
 		m_shader->unuse();
-
-		IOutlined::postdraw(m_meshes);
+		IOutlined::postdraw();
 	}
 
 

@@ -29,7 +29,6 @@ namespace Tank
 
 	private:
 		static std::vector<std::shared_ptr<Texture>> s_loadedTextures;
-		std::vector<Mesh> m_meshes;
 		std::string m_modelDirectory;
 		std::string m_modelFile;
 	protected:

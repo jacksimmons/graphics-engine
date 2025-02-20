@@ -440,9 +440,9 @@ namespace Tank::Editor
 	/// </summary>
 	void _Inspector::setInspectedNode(Node *node)
 	{
-		// Disable outline for prev inspected node (if necessary)
 		if (m_inspectedNode)
 		{
+			// Disable outline for prev inspected node (if necessary)
 			if (IOutlined *inspectedOutline = dynamic_cast<IOutlined*>(m_inspectedNode))
 			{
 				inspectedOutline->setOutlineEnabled(false);

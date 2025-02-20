@@ -16,12 +16,14 @@ namespace Tank
 		std::unique_ptr<Shader> m_outlineShader;
 		bool m_outlineEnabled;
 	protected:
+		std::vector<Mesh> m_meshes;
+
 		IOutlined(const std::string &name, const glm::vec4 &outlineCol);
 	public:
 		virtual ~IOutlined() = default;
 
 		void setOutlineEnabled(bool enabled) noexcept { m_outlineEnabled = enabled; }
 		void predraw();
-		void postdraw(const std::vector<Mesh> &meshes);
+		void postdraw();
 	};
 }
