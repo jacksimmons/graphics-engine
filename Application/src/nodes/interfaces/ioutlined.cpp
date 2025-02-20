@@ -48,8 +48,7 @@ namespace Tank
 	/// testing. Then draw a scaled-up version of the object, in
 	/// a block colour.
 	/// </summary>
-	/// <param name="meshes"></param>
-	void IOutlined::postdraw(const std::vector<Mesh> &meshes)
+	void IOutlined::postdraw()
 	{
 		if (!m_outlineEnabled) return;
 
@@ -58,7 +57,6 @@ namespace Tank
 		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 		// Disable stencil writing and depth testing
 		glStencilMask(0x00);
-		glDisable(GL_DEPTH_TEST);
 
 		m_outlineShader->use(); // use
 
@@ -71,14 +69,13 @@ namespace Tank
 		m_transform->setLocalScale(scale);
 
 		// Draw scaled up form of the object
-		for (unsigned i = 0; i < meshes.size(); i++)
+		for (unsigned i = 0; i < m_meshes.size(); i++)
 		{ // use
-			meshes[i].draw(m_outlineShader.get());
+			m_meshes[i].draw(m_outlineShader.get());
 		} // unuse
 
 		// Now disable writing to the stencil buffer.
 		glStencilMask(0xFF);
-		glEnable(GL_DEPTH_TEST);
 		glStencilFunc(GL_ALWAYS, 0, 0xFF);
 	}
 }
