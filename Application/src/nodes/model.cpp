@@ -43,22 +43,14 @@ namespace Tank
 	}
 
 
-	// This will be the last object alive to own a reference to any Texture object.
-	std::vector<std::shared_ptr<Texture>> Model::s_loadedTextures;
-
-
 	Model::Model(const std::string &name, const std::string &vsName, const std::string &fsName, const std::string &modelPath)
-		: IOutlined(name, { 0.5f, 0.5f, 0, 1 })
+		: IOutlined(name, { 0.5f, 0.5f, 0, 1 }), IHasShader(vsName, fsName)
 	{
 		m_type = "Model";
 		std::string fullModelPath = (std::string(ROOT_DIRECTORY) + "/Models/" + modelPath);
 		size_t indexOfLastSlash = fullModelPath.find_last_of("/");
 		m_modelDirectory = fullModelPath.substr(0, indexOfLastSlash);
 		m_modelFile = fullModelPath.substr(indexOfLastSlash + 1, (fullModelPath.length() - indexOfLastSlash) + 1);
-
-		auto maybeShader = Shader::createShader(vsName, fsName);
-		if (maybeShader.has_value())
-			m_shader = std::move(maybeShader.value());
 
 		Assimp::Importer importer;
 		const aiScene *scene = importer.ReadFile(fullModelPath, aiProcess_Triangulate | aiProcess_FlipUVs);

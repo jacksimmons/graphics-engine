@@ -1,4 +1,4 @@
-#include "ioutlined.hpp"
+#include "outlined.hpp"
 #include <shader.hpp>
 #include <mesh.hpp>
 #include <nodes/scene.hpp>
