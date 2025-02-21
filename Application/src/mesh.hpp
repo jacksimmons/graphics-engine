@@ -23,6 +23,10 @@ namespace Tank
 		unsigned int m_vao, m_vbo, m_ebo;
 		std::vector<Vertex> m_vertices;
 		std::vector<unsigned> m_indices;
+		/// <summary>
+		/// Shared only between meshes. E.g. multiple meshes can share the same texture.
+		/// The same mesh may use a texture multiple times as well.
+		/// </summary>
 		std::vector<std::shared_ptr<Texture>> m_textures;
 	public:
 		Mesh(

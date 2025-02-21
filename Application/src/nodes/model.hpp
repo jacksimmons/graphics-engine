@@ -47,6 +47,6 @@ namespace Tank
 		void processNode(aiNode *node, const aiScene *scene);
 		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
-		void loadMaterialTextures(std::vector<std::shared_ptr<Texture>> textures, aiMaterial *mat, aiTextureType type, std::string typeName);
+		std::vector<std::shared_ptr<Texture>> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
 	};
 }
