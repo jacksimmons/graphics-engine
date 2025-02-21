@@ -20,8 +20,6 @@ namespace Tank
 		GLuint id = getTexID();
 		glDeleteTextures(1, &id);
 
-		Model::deleteLoadedTexture(this);
-
 		s_numTextures--;
 	}
 }

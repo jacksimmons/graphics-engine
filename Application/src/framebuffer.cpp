@@ -4,7 +4,6 @@
 #include "framebuffer.hpp"
 #include "shader.hpp"
 #include "nodes/scene.hpp"
-#include "nodes/interfaces/ioutlined.hpp"
 
 
 namespace Tank

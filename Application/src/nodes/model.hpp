@@ -7,7 +7,8 @@
 #include "shader.hpp"
 #include "mesh.hpp"
 #include "texture.hpp"
-#include "interfaces/ioutlined.hpp"
+#include "interfaces/outlined.hpp"
+#include "interfaces/has_shader.hpp"
 
 
 struct aiNode; struct aiScene; struct aiMesh;
@@ -18,7 +19,11 @@ namespace Tank
 
 	namespace Editor { class _Inspector; }
 
-	class Model : public IOutlined
+
+	/// <summary>
+	/// A class which can load 3D models using Assimp.
+	/// </summary>
+	class Model : public IOutlined, public IHasShader
 	{
 		// Allow Inspector to read shaders.
 		friend class Editor::_Inspector;
@@ -28,38 +33,20 @@ namespace Tank
 		static void deserialise(const json &serialised, Model **targetPtr);
 
 	private:
-		static std::vector<std::shared_ptr<Texture>> s_loadedTextures;
 		std::string m_modelDirectory;
 		std::string m_modelFile;
-	protected:
-		std::unique_ptr<Shader> m_shader;
 	public:
-		static const std::vector<std::shared_ptr<Texture>> &getLoadedTextures() { return s_loadedTextures; }
-
 		Model(const std::string &name,
 			const std::string &vsName,
 			const std::string &fsName,
 			const std::string &modelPath
 		);
 
-		void setShader(std::unique_ptr<Shader> shader) { m_shader = std::move(shader); };
-
 		virtual void draw() override;
 		virtual void update() override;
 		void processNode(aiNode *node, const aiScene *scene);
 		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
-		std::vector<std::shared_ptr<Texture>> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
-		static void deleteLoadedTexture(Texture *texture)
-		{
-			int index = -1;
-			for (unsigned int i = 0; i < s_loadedTextures.size(); i++)
-			{
-				if (s_loadedTextures[i].get() == texture)
-					index = i;
-			}
-
-			if (index >= 0) s_loadedTextures.erase(s_loadedTextures.begin() + index);
-		}
+		void loadMaterialTextures(std::vector<std::shared_ptr<Texture>> textures, aiMaterial *mat, aiTextureType type, std::string typeName);
 	};
 }
