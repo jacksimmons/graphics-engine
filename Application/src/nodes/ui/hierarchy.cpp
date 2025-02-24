@@ -8,6 +8,7 @@
 #include "nodes/light.hpp"
 #include "nodes/scene.hpp"
 #include "nodes/cube_map.hpp"
+#include "nodes/sprite.hpp"
 #include "nodes/ui/console.hpp"
 #include "nodes/ui/hierarchy.hpp"
 #include "nodes/ui/inspector.hpp"

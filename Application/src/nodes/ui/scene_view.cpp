@@ -14,7 +14,6 @@
 #include "nodes/ui/scene_view.hpp"
 #include "nodes/ui/console.hpp"
 #include "nodes/ui/inspector.hpp"
-#include "nodes/interfaces/ioutlined.hpp"
 
 
 namespace Tank::Editor

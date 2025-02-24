@@ -28,8 +28,6 @@ namespace Tank
 	json Model::serialise(Model *model)
 	{
 		json serialised = Node::serialise(model);
-		serialised["vsPath"] = model->m_shader->getVertPath().string();
-		serialised["fsPath"] = model->m_shader->getFragPath().string();
 		serialised["modelPath"] = model->m_modelDirectory + "/" + model->m_modelFile;
 		return serialised;
 	}
@@ -37,14 +35,14 @@ namespace Tank
 
 	void Model::deserialise(const json &serialised, Model **targetPtr)
 	{
-		if (!(*targetPtr)) *targetPtr = new Model(serialised["name"], serialised["vsPath"], serialised["fsPath"], serialised["modelPath"]);
+		if (!(*targetPtr)) *targetPtr = new Model(serialised["name"], {}, serialised["modelPath"]);
 		Node *target = *targetPtr;
 		Node::deserialise(serialised, &target);
 	}
 
 
-	Model::Model(const std::string &name, const std::string &vsName, const std::string &fsName, const std::string &modelPath)
-		: IOutlined(name, { 0.5f, 0.5f, 0, 1 }), IHasShader(vsName, fsName)
+	Model::Model(const std::string &name, const Shader::ShaderDict &dict, const std::string &modelPath)
+		: IMeshContainer(name, dict)
 	{
 		m_type = "Model";
 		std::string fullModelPath = (std::string(ROOT_DIRECTORY) + "/Models/" + modelPath);
@@ -75,7 +73,7 @@ namespace Tank
 			m_meshes.push_back(processMesh(mesh, scene));
 		}
 
-		// Recurse on children's meshes
+		// Recurse on child meshes
 		for (unsigned i = 0; i < node->mNumChildren; i++)
 		{
 			processNode(node->mChildren[i], scene);
@@ -148,7 +146,7 @@ namespace Tank
 			bool skipLoading = false;
 
 			// See if texture with same path has already been loaded. If it has, copy existing version.
-			std::vector<std::shared_ptr<Texture>> loadedTextures = IHasShader::getLoadedTextures();
+			std::vector<std::shared_ptr<Texture>> loadedTextures = IShaderContainer::getLoadedTextures();
 			for (unsigned j = 0; j < loadedTextures.size(); j++)
 			{
 				std::shared_ptr<Texture> loadedTex = loadedTextures[j];
@@ -168,7 +166,7 @@ namespace Tank
 				{
 					std::shared_ptr<Texture> val = tex.value();
 					textures.push_back(val);
-					IHasShader::addLoadedTexture(val);
+					IShaderContainer::addLoadedTexture(val);
 				}
 				else
 				{
@@ -192,7 +190,7 @@ namespace Tank
 		auto cam = Scene::getActiveScene()->getActiveCamera();
 		auto P = cam->getProj();
 		auto V = cam->getView();
-		auto M = getTransform()->getWorldModelMatrix();
+		auto M = Node::getTransform()->getWorldModelMatrix();
 		auto VM = V * M;
 		m_shader->setMat4("PVM", P * VM);
 		m_shader->setMat4("VM", VM);

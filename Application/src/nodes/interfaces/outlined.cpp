@@ -8,7 +8,11 @@ namespace Tank
 {
 	IOutlined::IOutlined(const std::string &name, const glm::vec4 &outlineCol) : Node(name)
 	{
-		auto shader = Shader::createShader("shader.vert", "outline/single_colour.frag");
+		auto shader = Shader::createShader(
+		{
+			{ GL_VERTEX_SHADER, "shader.vert" },
+			{ GL_FRAGMENT_SHADER, "outline/single_colour.frag" }
+		});
 
 		if (shader.has_value())
 		{
@@ -68,11 +72,7 @@ namespace Tank
 		m_outlineShader->setMat4("PVM", cam->getProj() * cam->getView() * m_transform->getWorldModelMatrix());
 		m_transform->setLocalScale(scale);
 
-		// Draw scaled up form of the object
-		for (unsigned i = 0; i < m_meshes.size(); i++)
-		{ // use
-			m_meshes[i].draw(m_outlineShader.get());
-		} // unuse
+		drawOutlineMeshes(m_outlineShader.get());
 
 		// Now disable writing to the stencil buffer.
 		glStencilMask(0xFF);

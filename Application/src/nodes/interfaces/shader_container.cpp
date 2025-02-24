@@ -1,22 +1,23 @@
 #include <algorithm>
-#include "has_shader.hpp"
+#include "shader_container.hpp"
 
 
 namespace Tank
 {
-	std::vector<std::weak_ptr<Texture>> IHasShader::s_loadedTextures;
+	std::vector<std::weak_ptr<Texture>> IShaderContainer::s_loadedTextures;
 
 
-	IHasShader::IHasShader(const std::string &vsName,
-		const std::string &fsName)
+	IShaderContainer::IShaderContainer(
+		const std::string &name,
+		const Shader::ShaderDict &dict) : IOutlined(name)
 	{
-		auto maybeShader = Shader::createShader(vsName, fsName);
+		auto maybeShader = Shader::createShader(dict);
 		if (maybeShader.has_value())
 			m_shader = std::move(maybeShader.value());
 	}
 
 
-	void IHasShader::touchLoadedTextures()
+	void IShaderContainer::touchLoadedTextures()
 	{
 		std::vector<size_t> toRemoveIndices;
 		for (size_t i = 0; i < s_loadedTextures.size(); i++)
@@ -31,7 +32,12 @@ namespace Tank
 	}
 
 
-	std::vector<std::shared_ptr<Texture>> IHasShader::getLoadedTextures()
+	void IShaderContainer::draw()
+	{
+	}
+
+
+	std::vector<std::shared_ptr<Texture>> IShaderContainer::getLoadedTextures()
 	{
 		touchLoadedTextures();
 
@@ -47,7 +53,7 @@ namespace Tank
 	}
 
 	
-	void IHasShader::addLoadedTexture(std::weak_ptr<Texture> texture)
+	void IShaderContainer::addLoadedTexture(std::weak_ptr<Texture> texture)
 	{
 		s_loadedTextures.push_back(texture);
 	}

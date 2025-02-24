@@ -6,9 +6,9 @@
 namespace Tank
 {
 	Mesh::Mesh(
-		std::vector<Vertex> vertices,
-		std::vector<unsigned int> indices,
-		std::vector<std::shared_ptr<Texture>> textures)
+		const std::vector<Vertex> &vertices,
+		const std::vector<unsigned int> &indices,
+		const std::vector<std::shared_ptr<Texture>> &textures)
 		: m_vertices(vertices), m_indices(indices), m_textures(textures)
 	{
 		glGenVertexArrays(1, &m_vao);
