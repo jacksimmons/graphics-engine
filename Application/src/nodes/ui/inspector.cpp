@@ -12,12 +12,12 @@
 #include "scripting/script.hpp"
 #include "nodes/node.hpp"
 #include "nodes/scene.hpp"
-#include "nodes/model.hpp"
 #include "nodes/light.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/ui/ui.hpp"
 #include "nodes/ui/console.hpp"
 #include "nodes/ui/inspector.hpp"
+#include "nodes/interfaces/shader_container.hpp"
 
 
 namespace Tank::Editor
@@ -41,8 +41,8 @@ namespace Tank::Editor
 			if (Tank::Scene *scene = dynamic_cast<Tank::Scene *>(m_inspectedNode))
 				drawSceneSection(scene);
 
-			if (Tank::Model *model = dynamic_cast<Tank::Model *>(m_inspectedNode))
-				drawModelSection(model);
+			if (Tank::IShaderContainer *shaders = dynamic_cast<Tank::IShaderContainer *>(m_inspectedNode))
+				drawShaderSection(shaders);
 
 			if (Tank::Camera *camera = dynamic_cast<Tank::Camera *>(m_inspectedNode))
 				drawCameraSection(camera);
@@ -276,47 +276,37 @@ namespace Tank::Editor
 	/// <summary>
 	/// Draws inspector section that is present for all Models.
 	/// </summary>
-	void _Inspector::drawModelSection(Model *model)
+	void _Inspector::drawShaderSection(IShaderContainer *shaders)
 	{
-		std::filesystem::path fragPath = model->m_shader->getFragPath();
-		std::filesystem::path vertPath = model->m_shader->getVertPath();
-
-		ImGui::TextColored(Colour::TITLE, "Vertex Shader");
-		Widget::textInput("##Inspector_VertexShaderPath", vertPath.string(),
-			[&model, &fragPath](const std::string &newPath)
-			{
-				auto maybeShader = Shader::createShader(newPath, fragPath.string());
-				if (maybeShader.has_value())
-				{
-					model->setShader(std::move(maybeShader.value()));
-				}
-			}
-		);
-
-		std::string vshader;
-		if (File::readLines("shaders" / vertPath, vshader))
+		for (const auto &kvp : shaders->m_shader->getShaderDict())
 		{
-			// https://github.com/ocornut/imgui/issues/2429
-			ImGui::TextUnformatted(vshader.c_str());
-		}
-
-		ImGui::TextColored(Colour::TITLE, "Fragment Shader");
-		Widget::textInput("##Inspector_FragmentShaderPath", fragPath.string(),
-			[&model, &vertPath](const std::string &newPath)
-			{
-				auto maybeShader = Shader::createShader(vertPath.string(), newPath);
-				if (maybeShader.has_value())
+			std::string shaderType = "Unspecified shader";
+			ImGui::TextColored(Colour::TITLE, shaderType.c_str());
+			Widget::textInput(("##Inspector_" + shaderType).c_str(), kvp.second.string(),
+				[&shaders](const std::string &newPath)
 				{
-					model->setShader(std::move(maybeShader.value()));
-				}
-			}
-		);
+					const Shader::ShaderDict &dict = shaders->getShader()->getShaderDict();
 
-		std::string fshader;
-		if (File::readLines("shaders" / fragPath, fshader))
-		{
-			// https://github.com/ocornut/imgui/issues/2429
-			ImGui::TextUnformatted(fshader.c_str());
+					Shader::ShaderDict newDict;
+					for (const auto &kvp : dict)
+					{
+						newDict[kvp.first] = kvp.second;
+					}
+
+					auto maybeShader = Shader::createShader(newDict);
+					if (maybeShader.has_value())
+					{
+						shaders->setShader(std::move(maybeShader.value()));
+					}
+				}
+			);
+
+			std::string shaderContents;
+			if (File::readLines("shaders" / kvp.second, shaderContents))
+			{
+				// https://github.com/ocornut/imgui/issues/2429
+				ImGui::TextUnformatted(shaderContents.c_str());
+			}
 		}
 	}
 

@@ -30,9 +30,9 @@ namespace Tank
 		std::vector<std::shared_ptr<Texture>> m_textures;
 	public:
 		Mesh(
-			std::vector<Vertex> vertices,
-			std::vector<unsigned> indices,
-			std::vector<std::shared_ptr<Texture>> textures
+			const std::vector<Vertex> &vertices,
+			const std::vector<unsigned> &indices,
+			const std::vector<std::shared_ptr<Texture>> &textures
 		);
 		void draw(Shader *shader) const;
 	};

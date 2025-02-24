@@ -30,6 +30,7 @@
 #include "nodes/model.hpp"
 #include "nodes/light.hpp"
 #include "nodes/cube_map.hpp"
+#include "nodes/sprite.hpp"
 #include "nodes/ui/console.hpp"
 #include "nodes/ui/scene_view.hpp"
 #include "nodes/ui/hierarchy.hpp"
@@ -164,13 +165,18 @@ namespace Tank::Editor
 			scene->addChild(std::make_unique<Tank::CubeMap>());
 			scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
-			auto object = std::make_unique<Tank::Model>("Doom", "shader.vert", "shader.frag", "doom/doom_E1M1.obj");
+			auto object = std::unique_ptr<Tank::Model>(new Model("Doom", { {GL_VERTEX_SHADER, "shader.vert"}, {GL_FRAGMENT_SHADER, "shader.frag"} }, "doom/doom_E1M1.obj"));
 			object->getTransform()->setLocalTranslation({ 0, 0, 0 });
 			scene->addChild(std::move(object));
-			auto backpack = std::make_unique<Tank::Model>("Backpack", "shader.vert", "shader.frag", "backpack/backpack.obj");
+
+			auto backpack = std::unique_ptr<Tank::Model>(new Model("Backpack", { {GL_VERTEX_SHADER, "shader.vert"}, {GL_FRAGMENT_SHADER, "shader.frag"} }, "backpack/backpack.obj"));
 			backpack->getTransform()->setLocalScale({ 100, 100, 100 });
 			backpack->getTransform()->setLocalTranslation({ 0, 0, 200 });
 			scene->addChild(std::move(backpack));
+
+			auto sprite = std::unique_ptr<Tank::Sprite>(new Sprite("Sprite", { {GL_VERTEX_SHADER, "shader.vert"}, {GL_FRAGMENT_SHADER, "shader.frag"} }, std::string(ROOT_DIRECTORY) + "/textures/awesomeface.png"));
+			scene->addChild(std::move(sprite));
+
 			loadScene(std::move(scene));
 		}
 

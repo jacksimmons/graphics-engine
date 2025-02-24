@@ -7,8 +7,7 @@
 #include "shader.hpp"
 #include "mesh.hpp"
 #include "texture.hpp"
-#include "interfaces/outlined.hpp"
-#include "interfaces/has_shader.hpp"
+#include "interfaces/mesh_container.hpp"
 
 
 struct aiNode; struct aiScene; struct aiMesh;
@@ -17,17 +16,11 @@ namespace Tank
 {
 	class Texture;
 
-	namespace Editor { class _Inspector; }
-
-
 	/// <summary>
 	/// A class which can load 3D models using Assimp.
 	/// </summary>
-	class Model : public IOutlined, public IHasShader
+	class Model : public IMeshContainer
 	{
-		// Allow Inspector to read shaders.
-		friend class Editor::_Inspector;
-
 	public:
 		static json serialise(Model *model);
 		static void deserialise(const json &serialised, Model **targetPtr);
@@ -37,10 +30,10 @@ namespace Tank
 		std::string m_modelFile;
 	public:
 		Model(const std::string &name,
-			const std::string &vsName,
-			const std::string &fsName,
+			const Shader::ShaderDict &dict,
 			const std::string &modelPath
 		);
+		virtual ~Model() = default;
 
 		virtual void draw() override;
 		virtual void update() override;

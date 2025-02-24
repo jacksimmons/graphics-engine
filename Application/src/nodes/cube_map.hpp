@@ -23,8 +23,7 @@ namespace Tank
 		std::array<std::string, 6> m_texturePaths;
 	public:
 		CubeMap(const std::string &name = "CubeMap (Skybox)",
-			const std::string &vsName = "skybox.vert",
-			const std::string &fsName = "skybox.frag",
+			const Shader::ShaderDict &dict = { {GL_VERTEX_SHADER, "skybox.vert"}, {GL_FRAGMENT_SHADER, "skybox.frag"} },
 			const std::array<std::string, 6> &textureNames = { "right.jpg", "left.jpg", "bottom.jpg", "top.jpg", "front.jpg", "back.jpg" }
 		);
 

@@ -3,13 +3,22 @@
 #include <vector>
 #include <string>
 #include <shader.hpp>
+#include "outlined.hpp"
 
 
 namespace Tank
 {
 	class Texture;
-	class IHasShader
+	namespace Editor { class _Inspector; }
+
+	/// <summary>
+	/// An interface for an object containing (currently one) shaders.
+	/// </summary>
+	class IShaderContainer : public IOutlined
 	{
+		// Allow Inspector to read shaders.
+		friend class Editor::_Inspector;
+
 	private:
 		// Non-owning reference to all loaded textures. Once all owners of a texture are
 		// destroyed, the corresponding entry in this vector becomes invalid.
@@ -23,10 +32,11 @@ namespace Tank
 	protected:
 		std::unique_ptr<Shader> m_shader;
 
-		IHasShader(const std::string &vsName,
-			const std::string &fsName);
+		IShaderContainer(const std::string &name, const Shader::ShaderDict &dict);
+
+		virtual void draw() override;
 	public:
-		virtual ~IHasShader() = default;
+		virtual ~IShaderContainer() = default;
 
 		void setShader(std::unique_ptr<Shader> shader) { m_shader = std::move(shader); };
 		Shader *getShader() const { return m_shader.get(); }

@@ -15,24 +15,20 @@ namespace Tank
 	{
 		json serialised = Node::serialise(cubeMap);
 
-		serialised["vsPath"] = cubeMap->m_shader->getVertPath();
-		serialised["fsPath"] = cubeMap->m_shader->getFragPath();
-		serialised["texturePaths"] = cubeMap->m_texturePaths;
-
 		return serialised;
 	}
 
 
 	void CubeMap::deserialise(const json &serialised, CubeMap **targetPtr)
 	{
-		if (!(*targetPtr)) *targetPtr = new CubeMap(serialised["name"], serialised["vsPath"], serialised["fsPath"], serialised["texturePaths"]);
+		if (!(*targetPtr)) *targetPtr = new CubeMap(serialised["name"]);
 
 		Node *target = *targetPtr;
 		Node::deserialise(serialised, &target);
 	}
 
 
-	CubeMap::CubeMap(const std::string &name, const std::string &vsName, const std::string &fsName, const std::array<std::string, 6> &textureNames)
+	CubeMap::CubeMap(const std::string &name, const Shader::ShaderDict &dict, const std::array<std::string, 6> &textureNames)
 		: Node(name)
 	{
 		m_type = "CubeMap";
@@ -47,7 +43,7 @@ namespace Tank
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-		auto maybeShader = Shader::createShader(vsName, fsName);
+		auto maybeShader = Shader::createShader(dict);
 		if (maybeShader.has_value())
 			m_shader = std::move(maybeShader.value());
 		m_shader->use();
