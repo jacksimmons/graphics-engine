@@ -12,47 +12,31 @@
 #include <glm/gtx/string_cast.hpp>
 #include "log.hpp"
 #include "file.hpp"
+#include "shader_source.hpp"
 namespace fs = std::filesystem;
 
 
 namespace Tank
 {
 	/// <summary>
-	/// A class for elegantly passing const char ** arguments to
-	/// OpenGL functions.
-	/// </summary>
-	class StringHelper
-	{
-	private:
-		const char *m_str;
-	public:
-		StringHelper(const std::string &s) : m_str(s.c_str()) {}
-		operator const char **() {
-			return &m_str;
-		}
-	};
-
-
-	/// <summary>
 	/// A Shader represents a shader program in OpenGL.
 	/// Consists of all parts of the rendering pipeline.
 	/// </summary>
 	class Shader
 	{
-	public:
-		typedef std::unordered_map<GLenum, fs::path> ShaderDict;
 	private:
 		GLuint m_id;
-		ShaderDict m_shaders;
+		ShaderSources m_sources;
 
 		GLint getLoc(const std::string &name) const { return glGetUniformLocation(m_id, name.c_str()); }
 
-		Shader(unsigned int progId, const std::unordered_map<GLenum, fs::path> &shaders);
+		Shader(unsigned int progId, const ShaderSources &sources);
 	public:
 		~Shader();
 
 
-		static std::optional<std::unique_ptr<Shader>> createShader(const ShaderDict &shaders);
+		static std::optional<std::unique_ptr<Shader>> createShader(ShaderSources &shaders);
+		static bool attachShader(GLuint programID, ShaderSource &source);
 		static bool readShaderFile(const fs::path &shaderPath, std::string &shaderContents, const std::string &shaderType);
 		static std::optional<unsigned> compileShader(const std::string &shaderContents, GLenum shaderType, const std::string &shaderTypeStr);
 
@@ -61,7 +45,7 @@ namespace Tank
 		void unuse() const { glUseProgram(0); }
 		GLuint getID() const noexcept { return m_id; };
 
-		const ShaderDict &getShaderDict() const noexcept { return m_shaders; }
+		const ShaderSources &getShaderSources() const noexcept { return m_sources; }
 
 		void setInt(const std::string &name, int value) const
 		{

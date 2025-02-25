@@ -22,9 +22,9 @@ namespace Tank
 		std::shared_ptr<Texture> m_texture;
 		std::array<std::string, 6> m_texturePaths;
 	public:
-		CubeMap(const std::string &name = "CubeMap (Skybox)",
-			const Shader::ShaderDict &dict = { {GL_VERTEX_SHADER, "skybox.vert"}, {GL_FRAGMENT_SHADER, "skybox.frag"} },
-			const std::array<std::string, 6> &textureNames = { "right.jpg", "left.jpg", "bottom.jpg", "top.jpg", "front.jpg", "back.jpg" }
+		CubeMap(const std::string &name,
+			ShaderSources &sources,
+			const std::array<std::string, 6> &textureNames = { "skybox/right.jpg", "skybox/left.jpg", "skybox/bottom.jpg", "skybox/top.jpg", "skybox/front.jpg", "skybox/back.jpg" }
 		);
 
 		virtual void draw() override;

@@ -21,14 +21,15 @@ namespace Tank
 
 	void CubeMap::deserialise(const json &serialised, CubeMap **targetPtr)
 	{
-		if (!(*targetPtr)) *targetPtr = new CubeMap(serialised["name"]);
+		ShaderSources sources;
+		if (!(*targetPtr)) *targetPtr = new CubeMap(serialised["name"], sources);
 
 		Node *target = *targetPtr;
 		Node::deserialise(serialised, &target);
 	}
 
 
-	CubeMap::CubeMap(const std::string &name, const Shader::ShaderDict &dict, const std::array<std::string, 6> &textureNames)
+	CubeMap::CubeMap(const std::string &name, ShaderSources &sources, const std::array<std::string, 6> &textureNames)
 		: Node(name)
 	{
 		m_type = "CubeMap";
@@ -43,22 +44,22 @@ namespace Tank
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-		auto maybeShader = Shader::createShader(dict);
+		auto maybeShader = Shader::createShader(sources);
 		if (maybeShader.has_value())
 			m_shader = std::move(maybeShader.value());
 		m_shader->use();
 
 		int texNum = Texture::getTexCount();
-		auto tex = Texture::cubeMapFromFile(std::string(ROOT_DIRECTORY) + "/textures/skybox", textureNames, "cubeMap");
+		auto tex = Texture::cubeMapFromFile(std::string(ROOT_DIRECTORY) + "/textures", textureNames, "cubeMap");
 		if (tex.has_value())
 		{
 			m_texture = tex.value();
 			m_shader->setInt("cubeMap", texNum);
-			TE_CORE_INFO(std::format("Set {} to {}, first filename {}", "cubeMap", texNum, textureNames[0]));
+			TE_CORE_INFO(std::format("Set cubeMap to {}, first filename {}", texNum, textureNames[0]));
 		}
 		else
 		{
-			TE_CORE_ERROR(std::format("GL_TEXTURE_CUBE_MAP GL_TEXTURE{} uniform was not set.", texNum));
+			TE_CORE_ERROR(std::format("GL_TEXTURE_CUBE_MAP Tex number {} uniform was not set.", texNum));
 		}
 		m_shader->unuse();
 	}

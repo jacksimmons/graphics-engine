@@ -1,10 +1,11 @@
 #include <vector>
+#include <functional>
 #include "shader.hpp"
 
 
 namespace Tank
 {
-	Shader::Shader(unsigned id, const std::unordered_map<GLuint, fs::path> &shaders) : m_id(id), m_shaders(shaders)
+	Shader::Shader(unsigned id, const ShaderSources &sources) : m_id(id), m_sources(sources)
 	{
 
 	}
@@ -16,26 +17,15 @@ namespace Tank
 	}
 
 
-	std::optional<std::unique_ptr<Shader>> Shader::createShader(const ShaderDict &shaders)
+	std::optional<std::unique_ptr<Shader>> Shader::createShader(ShaderSources &sources)
 	{
 		std::string vsString, fsString, gsString;
-
 		unsigned progId = glCreateProgram();
 		std::vector<GLuint> shadersToDelete;
-		for (const auto &kvp : shaders)
-		{
-			std::string shaderContents;
 
-			// Exit with error if any shader file cannot be read.
-			if (!readShaderFile(kvp.second, shaderContents, "Unspecified shader")) return {};
-			
-			std::optional<GLuint> shader = compileShader(shaderContents, kvp.first, "Unspecified shader");
-			// Exit with error if any shader file fails to compile.
-			if (!shader.has_value()) return {};
-
-			glAttachShader(progId, shader.value());
-			shadersToDelete.push_back(shader.value());
-		}
+		if (!attachShader(progId, sources.vertex)) return {};
+		if (!attachShader(progId, sources.fragment)) return {};
+		if (sources.geometry.enabled && !attachShader(progId, sources.geometry)) return {};
 
 		glLinkProgram(progId);
 
@@ -45,7 +35,25 @@ namespace Tank
 			glDeleteProgram(shader);
 		}
 
-		return std::unique_ptr<Shader>(new Shader(progId, shaders));
+		return std::unique_ptr<Shader>(new Shader(progId, sources));
+	}
+
+
+	bool Shader::attachShader(GLuint programID, ShaderSource &source)
+	{
+		std::string shaderContents;
+
+		// Exit with error if any shader file cannot be read.
+		if (!readShaderFile(source.location, shaderContents, "Unspecified shader")) return false;
+
+		std::optional<GLuint> shader = compileShader(shaderContents, source.glType, "Unspecified shader");
+
+		// Exit with error if any shader file fails to compile.
+		if (!shader.has_value()) return false;
+		source.glID = shader.value();
+
+		glAttachShader(programID, shader.value());
+		return true;
 	}
 
 

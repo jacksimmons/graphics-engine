@@ -32,7 +32,7 @@ namespace Tank
 	protected:
 		std::unique_ptr<Shader> m_shader;
 
-		IShaderContainer(const std::string &name, const Shader::ShaderDict &dict);
+		IShaderContainer(const std::string &name, ShaderSources &sources);
 
 		virtual void draw() override;
 	public:

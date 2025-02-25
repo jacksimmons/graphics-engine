@@ -278,36 +278,68 @@ namespace Tank::Editor
 	/// </summary>
 	void _Inspector::drawShaderSection(IShaderContainer *shaders)
 	{
-		for (const auto &kvp : shaders->m_shader->getShaderDict())
+		const ShaderSources &sources = shaders->getShader()->getShaderSources();
+		ShaderSources copy = ShaderSources(sources);
+
 		{
-			std::string shaderType = "Unspecified shader";
-			ImGui::TextColored(Colour::TITLE, shaderType.c_str());
-			Widget::textInput(("##Inspector_" + shaderType).c_str(), kvp.second.string(),
-				[&shaders](const std::string &newPath)
-				{
-					const Shader::ShaderDict &dict = shaders->getShader()->getShaderDict();
-
-					Shader::ShaderDict newDict;
-					for (const auto &kvp : dict)
-					{
-						newDict[kvp.first] = kvp.second;
-					}
-
-					auto maybeShader = Shader::createShader(newDict);
-					if (maybeShader.has_value())
-					{
-						shaders->setShader(std::move(maybeShader.value()));
-					}
-				}
-			);
-
-			std::string shaderContents;
-			if (File::readLines("shaders" / kvp.second, shaderContents))
+			std::string loc = drawShaderSourceSection("Vertex", copy.vertex);
+			if (!loc.empty())
 			{
-				// https://github.com/ocornut/imgui/issues/2429
-				ImGui::TextUnformatted(shaderContents.c_str());
+				copy.vertex.location = loc;
 			}
 		}
+
+		{
+			std::string loc = drawShaderSourceSection("Fragment", copy.fragment);
+			if (!loc.empty())
+			{
+				copy.fragment.location = loc;
+			}
+		}
+
+		{
+			std::string loc = drawShaderSourceSection("Geometry", copy.geometry);
+			if (!loc.empty())
+			{
+				copy.geometry.location = loc;
+			}
+		}
+
+		if (copy != sources)
+		{
+			auto maybeShader = Shader::createShader(copy);
+			if (maybeShader.has_value())
+			{
+				shaders->setShader(std::move(maybeShader.value()));
+			}
+		}
+	}
+
+
+	/// <summary>
+	/// Draws section for a single shader source (e.g. frag shader).
+	/// </summary>
+	std::string _Inspector::drawShaderSourceSection(const std::string &sourceName, ShaderSource &source)
+	{
+		std::string retPath;
+
+		std::string shaderType = sourceName + " shader";
+		ImGui::TextColored(Colour::TITLE, shaderType.c_str());
+		Widget::textInput(("##Inspector_" + shaderType).c_str(), source.location.string(),
+			[&retPath] (const std::string &newPath)
+			{
+				retPath = newPath;
+			}
+		);
+
+		std::string shaderContents;
+		if (File::readLines("shaders" / source.location, shaderContents))
+		{
+			// https://github.com/ocornut/imgui/issues/2429
+			ImGui::TextUnformatted(shaderContents.c_str());
+		}
+
+		return retPath;
 	}
 
 

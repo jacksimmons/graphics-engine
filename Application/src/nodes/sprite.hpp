@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <glad/glad.h>
 #include "interfaces/mesh_container.hpp"
 namespace fs = std::filesystem;
 
@@ -10,7 +11,7 @@ namespace Tank
 	{
 	public:
 		Sprite(const std::string &name,
-			const Shader::ShaderDict &dict,
+			ShaderSources &sources,
 			const fs::path &spritePath
 		);
 		virtual ~Sprite() = default;

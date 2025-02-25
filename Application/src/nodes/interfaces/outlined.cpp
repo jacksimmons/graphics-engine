@@ -8,11 +8,10 @@ namespace Tank
 {
 	IOutlined::IOutlined(const std::string &name, const glm::vec4 &outlineCol) : Node(name)
 	{
-		auto shader = Shader::createShader(
-		{
-			{ GL_VERTEX_SHADER, "shader.vert" },
-			{ GL_FRAGMENT_SHADER, "outline/single_colour.frag" }
-		});
+		ShaderSources sources;
+		sources.vertex.location = "shader.vert";
+		sources.fragment.location = "outline/single_colour.frag";
+		auto shader = Shader::createShader(sources);
 
 		if (shader.has_value())
 		{
