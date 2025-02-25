@@ -35,14 +35,15 @@ namespace Tank
 
 	void Model::deserialise(const json &serialised, Model **targetPtr)
 	{
-		if (!(*targetPtr)) *targetPtr = new Model(serialised["name"], {}, serialised["modelPath"]);
+		ShaderSources sources;
+		if (!(*targetPtr)) *targetPtr = new Model(serialised["name"], sources, serialised["modelPath"]);
 		Node *target = *targetPtr;
 		Node::deserialise(serialised, &target);
 	}
 
 
-	Model::Model(const std::string &name, const Shader::ShaderDict &dict, const std::string &modelPath)
-		: IMeshContainer(name, dict)
+	Model::Model(const std::string &name, ShaderSources &sources, const std::string &modelPath)
+		: IMeshContainer(name, sources)
 	{
 		m_type = "Model";
 		std::string fullModelPath = (std::string(ROOT_DIRECTORY) + "/Models/" + modelPath);

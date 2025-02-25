@@ -11,9 +11,9 @@ namespace fs = std::filesystem;
 namespace Tank
 {
 	Sprite::Sprite(const std::string &name,
-		const Shader::ShaderDict &dict,
+		ShaderSources &sources,
 		const fs::path &spritePath)
-		: IMeshContainer(name, dict)
+		: IMeshContainer(name, sources)
 	{
 		const auto &tex = Texture::fromFile(spritePath.has_parent_path() ? spritePath.parent_path().string() : "", spritePath.filename().string(), "diffuse");
 

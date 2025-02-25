@@ -16,9 +16,10 @@ namespace Tank
 	};
 
 
-	class Texture;
+	class Texture; class IMeshContainer;
 	class Mesh
 	{
+		friend class IMeshContainer;
 	private:
 		unsigned int m_vao, m_vbo, m_ebo;
 		std::vector<Vertex> m_vertices;

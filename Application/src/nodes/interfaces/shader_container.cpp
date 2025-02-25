@@ -9,9 +9,9 @@ namespace Tank
 
 	IShaderContainer::IShaderContainer(
 		const std::string &name,
-		const Shader::ShaderDict &dict) : IOutlined(name)
+		ShaderSources &sources) : IOutlined(name)
 	{
-		auto maybeShader = Shader::createShader(dict);
+		auto maybeShader = Shader::createShader(sources);
 		if (maybeShader.has_value())
 			m_shader = std::move(maybeShader.value());
 	}
@@ -20,14 +20,13 @@ namespace Tank
 	void IShaderContainer::touchLoadedTextures()
 	{
 		std::vector<size_t> toRemoveIndices;
-		for (size_t i = 0; i < s_loadedTextures.size(); i++)
-		{
-			if (s_loadedTextures[i].expired()) toRemoveIndices.push_back(i);
-		}
 
-		for (const size_t toRemoveIndex : toRemoveIndices)
+		// Vector resizing occurs in this loop; continuously check we are in vector bounds.
+		size_t index = 0;
+		while (index < s_loadedTextures.size())
 		{
-			s_loadedTextures.erase(s_loadedTextures.begin() + toRemoveIndex);
+			if (s_loadedTextures[index].expired()) s_loadedTextures.erase(s_loadedTextures.begin() + index);
+			else index++;
 		}
 	}
 

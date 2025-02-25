@@ -162,20 +162,32 @@ namespace Tank::Editor
 		{
 			auto scene = std::make_unique<Tank::Scene>();
 			scene->addChild(std::make_unique<Tank::Camera>());
-			scene->addChild(std::make_unique<Tank::CubeMap>());
+
+			{
+				ShaderSources sources;
+				sources.vertex.location = "skybox.vert";
+				sources.fragment.location = "skybox.frag";
+				scene->addChild(std::make_unique<Tank::CubeMap>("CubeMap", sources));
+			}
 			scene->setActiveCamera(dynamic_cast<Tank::Camera *>(scene->getChild("Camera")));
 
-			auto object = std::unique_ptr<Tank::Model>(new Model("Doom", { {GL_VERTEX_SHADER, "shader.vert"}, {GL_FRAGMENT_SHADER, "shader.frag"} }, "doom/doom_E1M1.obj"));
-			object->getTransform()->setLocalTranslation({ 0, 0, 0 });
-			scene->addChild(std::move(object));
+			{
+				ShaderSources sources;
+				sources.vertex.location = "shader.vert";
+				sources.fragment.location = "shader.frag";
 
-			auto backpack = std::unique_ptr<Tank::Model>(new Model("Backpack", { {GL_VERTEX_SHADER, "shader.vert"}, {GL_FRAGMENT_SHADER, "shader.frag"} }, "backpack/backpack.obj"));
-			backpack->getTransform()->setLocalScale({ 100, 100, 100 });
-			backpack->getTransform()->setLocalTranslation({ 0, 0, 200 });
-			scene->addChild(std::move(backpack));
+				auto object = std::unique_ptr<Tank::Model>(new Model("Doom", sources, "doom/doom_E1M1.obj"));
+				object->getTransform()->setLocalTranslation({ 0, 0, 0 });
+				scene->addChild(std::move(object));
 
-			auto sprite = std::unique_ptr<Tank::Sprite>(new Sprite("Sprite", { {GL_VERTEX_SHADER, "shader.vert"}, {GL_FRAGMENT_SHADER, "shader.frag"} }, std::string(ROOT_DIRECTORY) + "/textures/awesomeface.png"));
-			scene->addChild(std::move(sprite));
+				auto backpack = std::unique_ptr<Tank::Model>(new Model("Backpack", sources, "backpack/backpack.obj"));
+				backpack->getTransform()->setLocalScale({ 100, 100, 100 });
+				backpack->getTransform()->setLocalTranslation({ 0, 0, 200 });
+				scene->addChild(std::move(backpack));
+
+				auto sprite = std::unique_ptr<Tank::Sprite>(new Sprite("Sprite", sources, std::string(ROOT_DIRECTORY) + "/textures/awesomeface.png"));
+				scene->addChild(std::move(sprite));
+			}
 
 			loadScene(std::move(scene));
 		}

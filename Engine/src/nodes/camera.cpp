@@ -64,7 +64,7 @@ namespace Tank
 		m_centre = centre;
 		m_up = up;
 
-		m_panSpeed = 1000;
+		m_panSpeed = 10;
 		m_rotSpeed = 5;
 
 		m_freeLook = true;

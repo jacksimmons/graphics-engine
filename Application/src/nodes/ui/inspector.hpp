@@ -1,12 +1,13 @@
 #pragma once
 #include <memory>
+#include <functional>
 #include "nodes/ui/window.hpp"
 
 
 namespace Tank
 {
 	class Scene; class Model; class Camera; class Light; class DirLight; class PointLight;
-	class IShaderContainer;
+	class IShaderContainer; class ShaderSource;
 }
 
 namespace Tank::Editor
@@ -22,6 +23,7 @@ namespace Tank::Editor
 		void drawNodeSection();
 		void drawSceneSection(Scene *scene);
 		void drawShaderSection(IShaderContainer *shaders);
+		std::string drawShaderSourceSection(const std::string &sourceName, ShaderSource &source);
 		void drawCameraSection(Camera *camera);
 		void drawLightSection(Light *light);
 		void drawDirLightSection(DirLight *dir);

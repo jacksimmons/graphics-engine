@@ -27,8 +27,8 @@ namespace Tank
 
 	std::optional<std::shared_ptr<Texture>> Texture::fromFile(const std::string &directory, const std::string &filename, const std::string &texType)
 	{
-		GLint maxTextureUnits;
-		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+		//GLint maxTextureUnits;
+		//glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
 		//if (s_numTextures >= (GLuint)maxTextureUnits)
 		//{
 		//	TE_CORE_ERROR("Max texture units surpassed.");
@@ -77,9 +77,9 @@ namespace Tank
 	std::optional<std::shared_ptr<Texture>> Texture::cubeMapFromFile(const std::string &directory, const std::array<std::string, 6> &filenames,
 		const std::string &texType)
 	{
-		GLint maxTextureUnits;
-		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-		if (s_numTextures >= (GLuint)maxTextureUnits) return {};
+		//GLint maxTextureUnits;
+		//glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+		//if (s_numTextures >= (GLuint)maxTextureUnits) return {};
 
 		GLuint texID;
 		glGenTextures(1, &texID);

@@ -33,11 +33,9 @@ namespace Tank::Editor
 		bool drawNodeContextMenu(Node *node, _Inspector *inspector) const;
 
 		/// <summary>
-		/// Creates a new node of the template class, and with the provided node
-		/// as a parent.
+		/// Adds a created node as a child of parent.
 		/// </summary>
-		template <class T>
-		Node *buildNode(Node *parent, const std::string &name) const;
+		void addNewNode(Node *parent, Node *heapAllocatedNode) const;
 
 		_Hierarchy(const std::string &name);
 	protected:

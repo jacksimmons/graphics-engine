@@ -125,11 +125,31 @@ namespace Tank::Editor
 
 			if (ImGui::BeginMenu("Add Child Node"))
 			{
-				if (ImGui::MenuItem("Node")) buildNode<Node>(node, "Node");
-				if (ImGui::MenuItem("Point Light")) buildNode<PointLight>(node, "PointLight");
-				if (ImGui::MenuItem("Directional Light")) buildNode<DirLight>(node, "DirLight");
-				if (ImGui::MenuItem("Camera")) buildNode<Camera>(node, "Camera");
-				if (ImGui::MenuItem("CubeMap (Skybox)")) buildNode<CubeMap>(node, "CubeMap");
+				if (ImGui::MenuItem("Node")) addNewNode(node, new Node());
+				if (ImGui::MenuItem("Sprite (2D)"))
+				{
+					ShaderSources sources;
+					sources.vertex.location = "shader.vert";
+					sources.fragment.location = "shader.frag";
+					addNewNode(node, new Sprite("Sprite", sources, "textures/awesomeface.png"));
+				}
+				if (ImGui::MenuItem("Model (3D)"))
+				{
+					ShaderSources sources;
+					sources.vertex.location = "shader.vert";
+					sources.fragment.location = "shader.frag";
+					addNewNode(node, new Model("Model", sources, "backpack/backpack.obj"));
+				}
+				if (ImGui::MenuItem("Skybox (CubeMap)"))
+				{
+					ShaderSources sources;
+					sources.vertex.location = "skybox.vert";
+					sources.fragment.location = "skybox.frag";
+					addNewNode(node, new CubeMap("CubeMap", sources));
+				}
+				if (ImGui::MenuItem("Point Light")) addNewNode(node, new PointLight());
+				if (ImGui::MenuItem("Directional Light")) addNewNode(node, new DirLight());
+				if (ImGui::MenuItem("Camera")) addNewNode(node, new Camera());
 
 				ImGui::EndMenu();
 			}
@@ -141,12 +161,8 @@ namespace Tank::Editor
 	}
 
 
-	template <class T>
-	Node *_Hierarchy::buildNode(Node *parent, const std::string &name) const
+	void _Hierarchy::addNewNode(Node *parent, Node *heapAllocatedNode) const
 	{
-		std::unique_ptr<Node> child = std::unique_ptr<Node>(new T(name));
-		Node *ref = child.get();
-		parent->addChild(std::move(child));
-		return ref;
+		parent->addChild(std::unique_ptr<Node>(heapAllocatedNode));
 	}
 }

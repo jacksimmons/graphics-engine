@@ -30,7 +30,7 @@ namespace Tank
 		std::string m_modelFile;
 	public:
 		Model(const std::string &name,
-			const Shader::ShaderDict &dict,
+			ShaderSources &sources,
 			const std::string &modelPath
 		);
 		virtual ~Model() = default;

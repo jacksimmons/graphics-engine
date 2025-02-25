@@ -10,16 +10,15 @@ namespace Tank
 	{
 	protected:
 		std::vector<Mesh> m_meshes;
-		IMeshContainer(const std::string &name, const Shader::ShaderDict &dict)
-			: IShaderContainer(name, dict)
+		IMeshContainer(const std::string &name, ShaderSources &sources)
+			: IShaderContainer(name, sources)
 		{
 		}
 	public:
 		virtual ~IMeshContainer() = default;
 
-		virtual void drawOutlineMeshes(Shader *outlineShader)
+		virtual void drawOutlineMeshes(Shader *outlineShader) override
 		{
-			// Draw scaled up form of the object
 			for (unsigned i = 0; i < m_meshes.size(); i++)
 			{ // use
 				m_meshes[i].draw(outlineShader);
