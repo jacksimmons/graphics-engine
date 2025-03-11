@@ -5,7 +5,6 @@
 #include "node.hpp"
 #include "log.hpp"
 #include "transform.hpp"
-#include "scripting/script.hpp"
 
 
 namespace Tank
@@ -178,27 +177,6 @@ namespace Tank
 	}
 
 
-	void Node::addScript(std::unique_ptr<Script> script)
-	{
-		script->setEnabled(false);
-		m_scripts.push_back(std::move(script));
-	}
-
-	bool Node::removeScript(Script *script)
-	{
-		for (int i = 0; i < m_scripts.size(); i++)
-		{
-			if (m_scripts[i].get() == script)
-			{
-				m_scripts.erase(m_scripts.begin() + i);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-
 	void Node::draw()
 	{
 	}
@@ -210,11 +188,11 @@ namespace Tank
 		if (m_started) return;
 		m_started = true;
 
-		for (auto const &script : m_scripts)
-		{
-			script->setEnabled(true);
-			script->startup();
-		}
+		//for (auto const &script : m_scripts)
+		//{
+		//	script->setEnabled(true);
+		//	script->startup();
+		//}
 
 		for (auto const &child : m_children)
 		{
@@ -229,11 +207,11 @@ namespace Tank
 		if (!m_started) return;
 		m_started = false;
 
-		for (auto const &script : m_scripts)
-		{
-			script->setEnabled(false);
-			script->shutdown();
-		}
+		//for (auto const &script : m_scripts)
+		//{
+		//	script->setEnabled(false);
+		//	script->shutdown();
+		//}
 
 		for (auto const &child : m_children)
 		{
@@ -247,10 +225,10 @@ namespace Tank
 		if (!m_enabled) return;
 		if (m_visible) draw();
 
-		for (auto const &script : m_scripts)
-		{
-			script->update();
-		}
+		//for (auto const &script : m_scripts)
+		//{
+		//	script->update();
+		//}
 
 		for (auto const &child : m_children)
 		{

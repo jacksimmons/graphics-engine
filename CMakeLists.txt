@@ -1,35 +1,27 @@
 cmake_minimum_required(VERSION 3.12)
-include(ExternalProject)
+set(MONO_ROOT "vendor/mono")
 
-# Engine DLL
+
+# Engine: DLL
 project("Engine")
     file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS
         "${PROJECT_NAME}/src/*.hpp"
         "${PROJECT_NAME}/src/*.cpp"
     )
-    file(GLOB_RECURSE LUA_SOURCES CONFIGURE_DEPENDS
-        "${PROJECT_NAME}/include/lua/*.c"
-    )
     add_library(${PROJECT_NAME} SHARED
         ${PROJECT_SOURCES}
-        ${LUA_SOURCES}
     )
     source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" FILES
         ${PROJECT_SOURCES}
-        ${LUA_SOURCES}
     )
     target_compile_features(${PROJECT_NAME} PRIVATE "cxx_std_20")
     target_include_directories(${PROJECT_NAME} PRIVATE
         "include"
         "include/glm"
         "${PROJECT_NAME}/include"
-        "${PROJECT_NAME}/include/lua"
         "${PROJECT_NAME}/src"
-        "vendor/assimp/include"
     )
-    target_link_directories(${PROJECT_NAME} PRIVATE
-        "${PROJECT_NAME}/lib"
-    )
+
     # Provide root directory to the application
     get_filename_component(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -45,7 +37,16 @@ project("Engine")
     )
 
 
-# Application EXE
+project("Tank-ScriptCore" LANGUAGE CSharp)
+    file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS
+        "${PROJECT_NAME}/Source/*.cs"
+    )
+    add_library(${PROJECT_NAME} SHARED
+        ${PROJECT_SOURCES}
+    )
+
+
+# Application: EXE
 project("Application")
     file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS
         "${PROJECT_NAME}/src/*.hpp"
@@ -75,9 +76,11 @@ project("Application")
         "${PROJECT_NAME}/include"
         "${PROJECT_NAME}/include/imgui"
         "${PROJECT_NAME}/include/imgui/backends"
+        "${MONO_ROOT}/include"
     )
     target_link_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_NAME}/lib"
+        "${MONO_ROOT}/lib"
     )
     target_link_libraries(${PROJECT_NAME}
         OpenGL::GL
@@ -85,6 +88,7 @@ project("Application")
         "glfw3"
         "glfw3dll"
         "assimp-vc143-mt"
+        "libmono-static-sgen"
     )
     target_compile_definitions(${PROJECT_NAME} PRIVATE
         GLM_ENABLE_EXPERIMENTAL
