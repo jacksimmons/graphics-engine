@@ -6,9 +6,7 @@
 #include <glm/mat4x4.hpp>
 #include <nlohmann/json.hpp>
 #include <core.hpp>
-
 #include "transform.hpp"
-#include "scripting/script.hpp"
 
 using json = nlohmann::json;
 
@@ -38,7 +36,6 @@ namespace Tank
 		Node *m_parent;
 		std::unique_ptr<Transform> m_transform;
 		std::vector<std::unique_ptr<Node>> m_children;
-		std::vector<std::unique_ptr<Script>> m_scripts;
 
 		// Member Functions
 	protected:
@@ -102,11 +99,6 @@ namespace Tank
 		/// Builds a descendant tree traversal up to `this`, from a child of `this`.
 		/// </summary>
 		std::vector<int> treeFromChild(Node *child);
-
-		size_t getScriptCount() const noexcept { return m_scripts.size(); }
-		void addScript(std::unique_ptr<Script> script);
-		bool removeScript(Script *script);
-		Script *getScript(size_t index) const { return m_scripts[index].get(); }
 
 		void startup();
 		void shutdown();

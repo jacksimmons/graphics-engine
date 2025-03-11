@@ -15,6 +15,7 @@ namespace Tank
 		const fs::path &spritePath)
 		: IMeshContainer(name, sources)
 	{
+		m_type = "Sprite";
 		const auto &tex = Texture::fromFile(spritePath.has_parent_path() ? spritePath.parent_path().string() : "", spritePath.filename().string(), "diffuse");
 
 		if (tex.has_value())

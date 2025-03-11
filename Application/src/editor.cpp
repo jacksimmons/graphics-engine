@@ -25,6 +25,7 @@
 #include "scene_serialisation.hpp"
 #include "widget.hpp"
 #include "static/time.hpp"
+#include "scripting/script_engine.hpp"
 #include "nodes/node.hpp"
 #include "nodes/scene.hpp"
 #include "nodes/model.hpp"
@@ -36,7 +37,6 @@
 #include "nodes/ui/hierarchy.hpp"
 #include "nodes/ui/inspector.hpp"
 #include "nodes/ui/file_dialog.hpp"
-#include "scripting/script.hpp"
 
 
 // Enable debug output
@@ -64,6 +64,7 @@ namespace Tank::Editor
 
 		initGL();
 		initImGui();
+		ScriptEngine::init();
 
 		m_system = std::make_unique<::Tank::Node>("Editor");
 		m_keyInput = nullptr;
