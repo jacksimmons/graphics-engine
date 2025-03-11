@@ -17,7 +17,7 @@ namespace Tank
 
 		MonoAssembly *coreAssembly = nullptr;
 	};
-	static ScriptEngineData *s_data;
+	static ScriptEngineData *s_data = nullptr;
 
 
 	MonoAssembly *loadCSharpAssembly(const std::filesystem::path &fp)
@@ -71,7 +71,8 @@ namespace Tank
 
 	void ScriptEngine::initMono()
 	{
-		mono_set_assemblies_path("mono/lib");
+		const std::string path = std::string{} + APP_DIRECTORY + "mono/lib";
+		mono_set_assemblies_path(path.c_str());
 
 		MonoDomain *rootDomain = mono_jit_init("TankJITRuntime");
 		
@@ -88,7 +89,7 @@ namespace Tank
 
 		mono_domain_set(s_data->appDomain, true);
 
-		s_data->coreAssembly = loadCSharpAssembly("Tank-ScriptCore.dll");
+		s_data->coreAssembly = loadCSharpAssembly(std::string{} + SCRIPTCORE_DIRECTORY + "Tank-ScriptCore.dll");
 		printAssemblyTypes(s_data->coreAssembly);
 	}
 
