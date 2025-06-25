@@ -12,10 +12,14 @@ namespace Tank
 	{
 	private:
 		std::unique_ptr<Node> m_root;
+		Node *m_snake;
+		glm::ivec2 m_moveDir = { 0, 0 };
+		float m_moveFrequency = 0.5f;
+		float m_timeSinceLastMove = 0;
 	public:
 		Player();
 		~Player();
-		void loadDemoScene();
+		void loadScene();
 	protected:
 		virtual void step() override;
 		virtual void handleKeyInput() override;

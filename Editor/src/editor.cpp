@@ -92,7 +92,7 @@ namespace Tank::Editor
 							{
 								std::unique_ptr<_FileDialog> fileDialog = std::unique_ptr<_FileDialog>(
 									new _FileDialog("Open Project", fs::current_path(), fs::current_path(),
-										_FileDialogTarget::Directory,
+										_FileDialogTarget::File,
 										[this](const std::filesystem::path &path)
 										{
 											std::unique_ptr<Tank::Scene> scene;

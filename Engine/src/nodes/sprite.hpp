@@ -1,7 +1,5 @@
 #pragma once
-
 #include "interfaces/mesh_container.hpp"
-namespace fs = std::filesystem;
 
 
 namespace Tank

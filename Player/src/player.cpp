@@ -2,15 +2,15 @@
 #include <GLFW/glfw3.h>
 
 #include "player.hpp"
+#include "key_input.hpp"
 #include "scene_serialisation.hpp"
 #include "nodes/node.hpp"
 #include "nodes/scene.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/cube_map.hpp"
-#include "nodes/model.hpp"
-#include "nodes/physics/physics_body.hpp"
-#include "nodes/sprite.hpp"
 #include "nodes/light.hpp"
+#include "nodes/sprite.hpp"
+#include "static/time.hpp"
 
 
 namespace Tank
@@ -40,62 +40,17 @@ namespace Tank
 		}
 	)
 	{
-		loadDemoScene();
-		Scene::setActiveScene(dynamic_cast<Tank::Scene*>(m_root.get()));
+		m_root = std::make_unique<Node>("Root");
+		loadScene();
 	}
 
 
-	void Player::loadDemoScene()
+	void Player::loadScene()
 	{
-		// Create nodes
-		{
-			auto scene = std::make_unique<Tank::Scene>();
-			{
-				auto camera = std::make_unique<Tank::Camera>();
-				scene->setActiveCamera(dynamic_cast<Tank::Camera*>(camera.get()));
-				scene->addChild(std::move(camera));
-			}
-			{
-				ShaderSources sources;
-				sources.vertex.location = "skybox.vert";
-				sources.fragment.location = "skybox.frag";
-				scene->addChild(std::make_unique<Tank::CubeMap>("CubeMap", sources));
-			}
-			{
-				ShaderSources sources;
-				sources.vertex.location = "shader.vert";
-				sources.fragment.location = "shader.frag";
-
-				auto object = std::unique_ptr<Tank::Model>(new Model("Doom", sources, fs::current_path() / "models/doom/doom_E1M1.obj"));
-				object->getTransform()->setLocalTranslation({ 0, 0, 0 });
-				scene->addChild(std::move(object));
-
-				auto backpackPhysics = std::unique_ptr<Tank::PhysicsBody>(new PhysicsBody("BackpackBody", 1e15f));
-				auto backpack = std::unique_ptr<Tank::Model>(new Model("Backpack", sources, fs::current_path() / "models/backpack/backpack.obj"));
-				backpack->getTransform()->setLocalScale({ 100, 100, 100 });
-				backpackPhysics->getTransform()->setLocalTranslation({ 0, 0, 200 });
-				backpackPhysics->addChild(std::move(backpack));
-				scene->addChild(std::move(backpackPhysics));
-
-				auto spritePhysics = std::unique_ptr<Tank::PhysicsBody>(new PhysicsBody("SpriteBody", 1e15f));
-				auto sprite = std::unique_ptr<Tank::Sprite>(new Sprite("Sprite", sources, fs::current_path() / "textures/awesomeface.png"));
-				spritePhysics->addChild(std::move(sprite));
-				scene->addChild(std::move(spritePhysics));
-			}
-
-			Scene::setActiveScene(scene.get());
-			m_root = std::move(scene);
-
-			// Lights can only be added after scene load
-			std::string name = "DirLight";
-			auto light = std::make_unique<Tank::DirLight>(name,
-				glm::vec3{ 0.0f, -1.0f, 0.0f },
-				glm::vec3{ 0.02f, 0.02f, 0.02f },
-				glm::vec3{ 0.2f, 0.2f, 0.2f },
-				glm::vec3{ 0.1f, 0.1f, 0.1f }
-			);
-			Scene::getActiveScene()->addChild(std::move(light));
-		}
+		Scene *scene = Serialisation::loadScene("snake.scene");
+		m_snake = scene->getChild("Snake");
+		Scene::setActiveScene(scene);
+		m_root->addChild(std::unique_ptr<Scene>(scene));
 	}
 
 
@@ -112,11 +67,64 @@ namespace Tank
 
 		m_root->update();
 		m_root->startup();
+
+		if (m_timeSinceLastMove > m_moveFrequency && m_moveDir != glm::ivec2 { 0, 0 })
+		{
+			m_timeSinceLastMove = 0;
+			auto snakeTransform = m_snake->getTransform();
+			snakeTransform->setLocalTranslation(
+				snakeTransform->getLocalTranslation() +
+				glm::vec3{ m_moveDir.x, m_moveDir.y, 0 }
+			);
+		}
+
+		m_timeSinceLastMove += Time::getFrameDelta();
+		TE_CORE_INFO(m_timeSinceLastMove);
 	}
 
 
 	void Player::handleKeyInput()
 	{
+		if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Pressed)
+			m_moveDir = { 0, 1 };
+		else if (m_keyInput->getKeyState(GLFW_KEY_A) == KeyState::Pressed)
+			m_moveDir = { -1, 0 };
+		else if (m_keyInput->getKeyState(GLFW_KEY_S) == KeyState::Pressed)
+			m_moveDir = { 0, -1 };
+		else if (m_keyInput->getKeyState(GLFW_KEY_D) == KeyState::Pressed)
+			m_moveDir = { 1, 0 };
+
+		//float frameDelta = Time::getFrameDelta();
+		//float panSpd = 10;
+		//float rotSpd = 10;
+		//Camera *cam = Scene::getActiveScene()->getActiveCamera();
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_Q) == KeyState::Held)
+		//	cam->translate(glm::vec3(0.0f, 0.0f, frameDelta * panSpd));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_E) == KeyState::Held)
+		//	cam->translate(glm::vec3(0.0f, 0.0f, -frameDelta * panSpd));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_J) == KeyState::Held)
+		//	cam->rotate(glm::vec3(-frameDelta * rotSpd, 0.0f, 0.0f));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_L) == KeyState::Held)
+		//	cam->rotate(glm::vec3(frameDelta * rotSpd, 0.0f, 0.0f));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_I) == KeyState::Held)
+		//	cam->rotate(glm::vec3(0.0f, frameDelta * rotSpd, 0.0f));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_K) == KeyState::Held)
+		//	cam->rotate(glm::vec3(0.0f, -frameDelta * rotSpd, 0.0f));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_U) == KeyState::Held)
+		//	cam->rotate(glm::vec3(0.0f, 0.0f, frameDelta * rotSpd));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_O) == KeyState::Held)
+		//	cam->rotate(glm::vec3(0.0f, 0.0f, -frameDelta * rotSpd));
+
+		//if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
+		//	Serialisation::saveScene(Scene::getActiveScene(), "hi.scene");
 	}
 
 

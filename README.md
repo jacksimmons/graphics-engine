@@ -1,3 +1,6 @@
+# Snake Game
+To play, bear in mind you will need to set the active project to Player, after building.
+
 # Preview
 ![image](https://github.com/user-attachments/assets/cdc3609c-a13f-4393-b11c-93826cc0753b)
 
