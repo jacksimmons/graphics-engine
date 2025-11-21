@@ -11,6 +11,7 @@
 #include "nodes/light.hpp"
 #include "nodes/sprite.hpp"
 #include "static/time.hpp"
+#include "../../snake_script.hpp"
 
 
 namespace Tank
@@ -68,6 +69,7 @@ namespace Tank
 		m_root->update();
 		m_root->startup();
 
+		// Handle timed movements
 		if (m_timeSinceLastMove > m_moveFrequency && m_moveDir != glm::ivec2 { 0, 0 })
 		{
 			m_timeSinceLastMove = 0;
@@ -76,15 +78,54 @@ namespace Tank
 				snakeTransform->getLocalTranslation() +
 				glm::vec3{ m_moveDir.x, m_moveDir.y, 0 }
 			);
+
+			TE_CORE_INFO("Snake has moved to " + glm::to_string(m_snake->getTransform()->getLocalTranslation()));
+		}
+
+		// Handle fruit spawns (random position in range)	
+		if (m_fruits.empty())
+		{
+			ShaderSources sources;
+			sources.vertex.location = "shader.vert";
+			sources.fragment.location = "shader.frag";
+			Sprite *sprite = new Sprite("Fruit", sources, "fruit.png");
+			m_fruits.push_back(sprite);
+
+			// Seed to the current time
+			std::srand(std::time({}));
+			// Random range x between -4 and 4, y between -3 and 3
+			glm::vec3 randomTranslation = glm::vec3{ std::rand() % 8 - 4, std::rand() % 6 - 3, 0 };
+			TE_CORE_INFO("Fruit spawned at " + glm::to_string(randomTranslation));
+			sprite->getTransform()->setLocalTranslation(randomTranslation);
+			m_root->addChild(std::unique_ptr<Sprite>(sprite));
+		}
+
+		// Loop over all fruits - if a single fruit overlaps with the snake, destroy it.
+		// Exit the loop if any fruit is eaten, to not break iteration.
+		for (auto it = m_fruits.begin(); it != m_fruits.end(); ++it)
+		{
+			if (m_snake->getTransform()->getLocalTranslation() == (*it)->getTransform()->getLocalTranslation())
+			{
+				(*it)->destroy();
+				m_fruits.erase(it);
+				m_score++;
+				TE_CORE_INFO(std::format("Score has increased to {}", m_score));
+				break;
+			}
 		}
 
 		m_timeSinceLastMove += Time::getFrameDelta();
-		TE_CORE_INFO(m_timeSinceLastMove);
+	}
+
+
+	void Player::uiStep()
+	{
 	}
 
 
 	void Player::handleKeyInput()
 	{
+		// Update direction based on WASD
 		if (m_keyInput->getKeyState(GLFW_KEY_W) == KeyState::Pressed)
 			m_moveDir = { 0, 1 };
 		else if (m_keyInput->getKeyState(GLFW_KEY_A) == KeyState::Pressed)
@@ -93,38 +134,6 @@ namespace Tank
 			m_moveDir = { 0, -1 };
 		else if (m_keyInput->getKeyState(GLFW_KEY_D) == KeyState::Pressed)
 			m_moveDir = { 1, 0 };
-
-		//float frameDelta = Time::getFrameDelta();
-		//float panSpd = 10;
-		//float rotSpd = 10;
-		//Camera *cam = Scene::getActiveScene()->getActiveCamera();
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_Q) == KeyState::Held)
-		//	cam->translate(glm::vec3(0.0f, 0.0f, frameDelta * panSpd));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_E) == KeyState::Held)
-		//	cam->translate(glm::vec3(0.0f, 0.0f, -frameDelta * panSpd));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_J) == KeyState::Held)
-		//	cam->rotate(glm::vec3(-frameDelta * rotSpd, 0.0f, 0.0f));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_L) == KeyState::Held)
-		//	cam->rotate(glm::vec3(frameDelta * rotSpd, 0.0f, 0.0f));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_I) == KeyState::Held)
-		//	cam->rotate(glm::vec3(0.0f, frameDelta * rotSpd, 0.0f));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_K) == KeyState::Held)
-		//	cam->rotate(glm::vec3(0.0f, -frameDelta * rotSpd, 0.0f));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_U) == KeyState::Held)
-		//	cam->rotate(glm::vec3(0.0f, 0.0f, frameDelta * rotSpd));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_O) == KeyState::Held)
-		//	cam->rotate(glm::vec3(0.0f, 0.0f, -frameDelta * rotSpd));
-
-		//if (m_keyInput->getKeyState(GLFW_KEY_ESCAPE) == KeyState::Pressed)
-		//	Serialisation::saveScene(Scene::getActiveScene(), "hi.scene");
 	}
 
 

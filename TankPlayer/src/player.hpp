@@ -16,12 +16,15 @@ namespace Tank
 		glm::ivec2 m_moveDir = { 0, 0 };
 		float m_moveFrequency = 0.5f;
 		float m_timeSinceLastMove = 0;
+		std::vector<Tank::Node *> m_fruits;
+		int m_score = 0;
 	public:
 		Player();
 		~Player();
 		void loadScene();
 	protected:
 		virtual void step() override;
+		virtual void uiStep() override;
 		virtual void handleKeyInput() override;
 	};
 }
