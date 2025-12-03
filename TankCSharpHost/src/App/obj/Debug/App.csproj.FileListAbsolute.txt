@@ -1,0 +1,13 @@
+C:\Git\hosting\bin\Debug\App.deps.json
+C:\Git\hosting\bin\Debug\App.runtimeconfig.json
+C:\Git\hosting\bin\Debug\App.dll
+C:\Git\hosting\bin\Debug\App.pdb
+C:\Git\hosting\src\App\obj\Debug\App.GeneratedMSBuildEditorConfig.editorconfig
+C:\Git\hosting\src\App\obj\Debug\App.AssemblyInfoInputs.cache
+C:\Git\hosting\src\App\obj\Debug\App.AssemblyInfo.cs
+C:\Git\hosting\src\App\obj\Debug\App.csproj.CoreCompileInputs.cache
+C:\Git\hosting\src\App\obj\Debug\App.dll
+C:\Git\hosting\src\App\obj\Debug\refint\App.dll
+C:\Git\hosting\src\App\obj\Debug\App.pdb
+C:\Git\hosting\src\App\obj\Debug\App.genruntimeconfig.cache
+C:\Git\hosting\src\App\obj\Debug\ref\App.dll
