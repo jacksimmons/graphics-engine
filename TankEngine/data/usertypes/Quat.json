@@ -1,0 +1,7 @@
+{
+    "cpp_type": "glm::quat",
+    "constructors": [
+        "()",
+        "(float, float, float, float)"
+    ]
+}

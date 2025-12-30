@@ -16,63 +16,6 @@
 #include <nodes/scene.hpp>
 
 
-#define KC_PAIR(x) #x, GLFW_KEY_##x
-
-// Declare a Sol class usertype.	
-#define SOL_CLASS(name) (s_luaClasses.push_back({#name}), #name)
-// Get a lua class from name
-#define GET_SOL_CLASS(name) Tank::UserTypes::classFromName(name).value()
-// Declares a class base for name.
-#define SOL_CLASS_BASE(name, baseName) (GET_SOL_CLASS(name)->base = #baseName/*, sol::bases<baseName>()*/)
-
-// Declares a class field.
-#define SOL_FIELD(className, name, type) \
-	(GET_SOL_CLASS(className)->fields.push_back({name, type}), name)
-#define SOL_GLOBAL_FIELD(className, name, type) \
-	GET_SOL_CLASS(className)->globalFields.push_back({name, type})
-
-#define SOL_CALLABLE(relevantClass, functionsVector, funcName, retType, ...) \
-	GET_SOL_CLASS(relevantClass)->functionsVector.push_back({ \
-		funcName, \
-		##__VA_ARGS__, \
-		retType \
-	})
-#define SOL_METHOD(className, name, retType, ...) \
-	(SOL_CALLABLE( \
-		className, \
-		methods, \
-		name, \
-		retType, \
-		__VA_ARGS__ \
-	), name)
-#define SOL_META_METHOD(className, methodVal, retType, ...) \
-	(SOL_CALLABLE( \
-		className, \
-		metaMethods, \
-		sol::meta_function_names()[(int)methodVal], \
-		retType, \
-		__VA_ARGS__ \
-	), methodVal)
-#define SOL_STATIC_METHOD(className, name, retType, ...) \
-	(SOL_CALLABLE( \
-		className, \
-		staticMethods, \
-		name, \
-		retType, \
-		__VA_ARGS__ \
-	), name)
-#define SOL_GLOBAL_FUNCTION(relevantClass, name, retType, ...) \
-	(SOL_CALLABLE( \
-		relevantClass, \
-		globalFunctions, \
-		name, \
-		retType, \
-		__VA_ARGS__ \
-	), name)
-#define SOL_CONSTRUCTOR(className, ...) \
-	SOL_STATIC_METHOD(className, "new", className, __VA_ARGS__)
-
-
 namespace Tank
 {
 	std::optional<LuaClass*> UserTypes::classFromName(const std::string &name)
@@ -91,70 +34,19 @@ namespace Tank
 
 	void UserTypes::generate(sol::state &lua)
 	{
-		// Vec3
-		auto utVec3 = lua.new_usertype<glm::vec3>(
-			SOL_CLASS(Vec3),
-			sol::constructors<glm::vec3(), glm::vec3(float, float, float)>()
-		);
-		SOL_CONSTRUCTOR("Vec3", {});
-		SOL_CONSTRUCTOR("Vec3", {{"x", "number"}, {"y", "number"}, {"z", "number"}});
+		// Read all usertypes data files
+		generateFromFile<glm::vec3>("Vec3", lua);
 
-		// Fields
-		utVec3[SOL_FIELD("Vec3", "x", "number")] = &glm::vec3::x;
-		utVec3[SOL_FIELD("Vec3", "y", "number")] = &glm::vec3::y;
-		utVec3[SOL_FIELD("Vec3", "z", "number")] = &glm::vec3::z;
-
-		// Meta functions
-		utVec3[SOL_META_METHOD(
-			"Vec3",
-			sol::meta_function::addition,
-			"Vec3",
-			{{ "other", "Vec3" }}
-		)] = [](const glm::vec3 &a, const glm::vec3 &b) { return a + b; };
-		utVec3[SOL_META_METHOD(
-			"Vec3",
-			sol::meta_function::subtraction,
-			"Vec3",
-			{{ "other", "Vec3" }}
-		)] = [](const glm::vec3 &a, const glm::vec3 &b) { return a - b; };
-		utVec3[SOL_META_METHOD(
-			"Vec3",
-			sol::meta_function::multiplication,
-			"Vec3",
-			{{ "scalar", "number" }}
-		)] = [](const glm::vec3 &a, const float b) { return a * b; };
-		utVec3[SOL_META_METHOD(
-			"Vec3",
-			sol::meta_function::division,
-			"Vec3",
-			{{ "scalar", "number" }}
-		)] = [](const glm::vec3 &a, const float b) { return a / b; };
-		SOL_META_METHOD(
-			"Vec3",
-			sol::meta_function::unary_minus,
-			"Vec3",
-			{}
-		);
-		SOL_META_METHOD(
-			"Vec3",
-			sol::meta_function::equal_to,
-			"boolean",
-			{{ "other", "Vec3" }}
-		);
-		SOL_META_METHOD(
-			"Vec3",
-			sol::meta_function::to_string,
-			"string",
-			{}
-		);
+		UserTypes::Vec3(lua);
+		UserTypes::Quat(lua);
 
 		// Define types Node is dependent on
 		// Transform
 		auto utTransform = lua.new_usertype<Transform>(
-			SOL_CLASS(Transform)
+			SOL_CLASS("Transform")
 		);
 		utTransform[SOL_FIELD("Transform", "translation", "Vec3")] = sol::property(&Transform::getLocalTranslation, &Transform::setLocalTranslation);
-		utTransform[SOL_FIELD("Transform", "rotation", "Vec3")] = sol::property(&Transform::getLocalRotation, &Transform::setLocalRotation);
+		utTransform[SOL_FIELD("Transform", "rotation", "Quat")] = sol::property(&Transform::getLocalRotation, &Transform::setLocalRotation);
 		utTransform[SOL_FIELD("Transform", "scale", "Vec3")] = sol::property(&Transform::getLocalScale, &Transform::setLocalScale);
 		
 		// KeyInput, and relevant enums
@@ -176,14 +68,14 @@ namespace Tank
 
 		// KeyInput
 		sol::usertype<KeyInput> utKeyInput = lua.new_usertype<KeyInput>(
-			SOL_CLASS(KeyInput)
+			SOL_CLASS("KeyInput")
 		);
 		utKeyInput[SOL_METHOD("KeyInput", "get_key_state", "KeyState", {{ "code", "KeyCode" }})] = &KeyInput::getKeyState;
 
 
 		// Node
 		sol::usertype<Node> utNode = lua.new_usertype<Node>(
-			SOL_CLASS(Node)
+			SOL_CLASS("Node")
 		);
 		utNode[SOL_FIELD("Node", "name", "string")] = sol::property(&Node::getName, &Node::setName);
 		utNode[SOL_FIELD("Node", "transform", "Transform")] = sol::property(&Node::getTransform);
@@ -193,19 +85,17 @@ namespace Tank
 		utNode[SOL_METHOD("Node", "get_child", "Node", {{ "name", "string" }})] = static_cast<Node *(Node::*)(const std::string &) const>(&Node::getChild);
 		SOL_GLOBAL_FIELD("Node", "node", "Node");
 
-
 		// Camera
 		sol::usertype<Camera> utCamera = lua.new_usertype<Camera>(
-			SOL_CLASS(Camera),
+			SOL_CLASS("Camera"),
 			sol::base_classes, sol::bases<Node>()
 		);
 		SOL_CLASS_BASE("Camera", Node);
-		utCamera[SOL_METHOD("Camera", "set_pos", "", {{ "pos", "Vec3" }})] = &Camera::setPosition;
-
+		utCamera[SOL_FIELD("Camera", "position", "Vec3")] = sol::property(&Camera::getTransformedCentre, &Camera::setPosition);
 
 		// Scene
 		sol::usertype<Scene> utScene = lua.new_usertype<Scene>(
-			SOL_CLASS(Scene),
+			SOL_CLASS("Scene"),
 			sol::base_classes, sol::bases<Node>()
 		);
 		SOL_CLASS_BASE("Scene", Node);

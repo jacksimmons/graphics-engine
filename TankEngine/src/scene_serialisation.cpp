@@ -17,12 +17,13 @@ namespace Tank
 	{
 		Scene* loadScene(const std::filesystem::path &scenePath, Reflect::NodeFactory *factory)
 		{
-			std::string sceneFile;
-			if (File::readLines(scenePath, sceneFile) != File::ReadResult::Success)
+			auto result = File::readLines(scenePath);
+			if (!result)
 			{
 				TE_CORE_ERROR(std::format("Failed to deserialise from file {}", scenePath.string()));
 				return nullptr;
 			}
+			std::string sceneFile = result.value();
 
 			json serialised;
 			try
@@ -47,11 +48,13 @@ namespace Tank
 
 		void saveScene(Scene *scene, const std::filesystem::path &scenePath)
 		{
-			std::string sceneFile;
-			if (File::readLines(scenePath, sceneFile) == File::ReadResult::Error)
+			auto result = File::readLines(scenePath);
+			if (!result)
 			{
 				TE_CORE_ERROR(std::format("Failed to serialise to file {}", scenePath.string()));
+				return;
 			}
+			std::string sceneFile = result.value();
 
 			// Write with pretty print (indent=4)
 			File::writeLines(scenePath, serialise(scene).dump(4));

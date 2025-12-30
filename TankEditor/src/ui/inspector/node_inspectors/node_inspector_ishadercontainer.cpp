@@ -34,10 +34,18 @@ namespace Tank
 		}
 
 		// Read the file if contents is not provided. If that read fails...
-		if (readFile && File::readLines(source.location.resolvePath(), sourceContents[sourceName]) != File::ReadResult::Success)
+		if (readFile)
 		{
-			TE_CORE_TRACE(std::format("Couldn't read shader file {}", source.location.resolvePathStr()));
-			sourceContents[sourceName] = "<N/A>";
+			auto shaderContents = File::readLines(source.location.resolvePath());
+			if (!shaderContents)
+			{
+				TE_CORE_ERROR(std::format("Couldn't read shader file {}", source.location.resolvePathStr()));
+				sourceContents[sourceName] = "<N/A>";
+			}
+			else
+			{
+				sourceContents[sourceName] = shaderContents.value();
+			}
 		}
 
 		// https://github.com/ocornut/imgui/issues/2429

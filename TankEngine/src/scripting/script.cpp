@@ -6,6 +6,7 @@
 #include <log.hpp>
 #include "script.hpp"
 #include "script_manager.hpp"
+#include "generate_user_types.hpp"
 #include "user_types.hpp"
 
 
@@ -36,7 +37,7 @@ namespace Tank
 		}
 
 		// Define usertypes
-		UserTypes::generate(m_state);
+		UserTypes::generateAll(m_state);
 		UserTypes::codegen();
 	}
 

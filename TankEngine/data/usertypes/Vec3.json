@@ -1,0 +1,12 @@
+{
+    "cpp_type": "glm::vec3",
+    "constructors": [
+        "()",
+        "(float, float, float)"
+    ],
+    "fields": [
+        {"cpp": "x", "lua": "x: number"},
+        {"cpp": "y", "lua": "y: number"},
+        {"cpp": "z", "lua": "z: number"}
+    ]
+}

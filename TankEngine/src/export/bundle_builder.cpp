@@ -47,14 +47,14 @@ namespace Tank::Export
 	void BundleBuilder::prepareSerialisedData(const fs::path &path)
 	{
 		// Read the serialised file into a new Scene instance
-		std::string serialised;
 		std::string scenePath = (path / "scene.json").string();
-		auto result = File::readLines(path / "scene.json", serialised);
-		if (result != File::ReadResult::Success)
+		auto result = File::readLines(path / "scene.json");
+		if (!result)
 		{
 			TE_CORE_ERROR(std::format("BundleBuilder > Error reading {}.", scenePath));
 			return;
 		}
+		std::string serialised = result.value();
 
 		// Cut all occurrences of project dir; replace with relative dir
 		// @todo Neaten this up once projects are enforced, and all assets are already required to be a subdirectory of the root project.

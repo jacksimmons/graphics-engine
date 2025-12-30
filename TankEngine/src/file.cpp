@@ -14,9 +14,9 @@ namespace Tank
 		}
 
 
-		ReadResult readLines(const std::filesystem::path &fp, std::string &outStr) noexcept
+		std::expected<std::string, ReadError> readLines(const std::filesystem::path &fp) noexcept
 		{
-			if (!File::exists(fp)) return ReadResult::NotFile;
+			if (!File::exists(fp)) return std::unexpected(ReadError::NotFile);
 
 			try
 			{
@@ -28,12 +28,11 @@ namespace Tank
 					contents.append(line);
 					contents.push_back('\n');
 				}
-				outStr = contents;
-				return ReadResult::Success;
+				return contents;
 			}
 			catch (std::exception const)
 			{
-				return ReadResult::Error;
+				return std::unexpected(ReadError::Error);
 			}
 		}
 

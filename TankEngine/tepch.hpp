@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <type_traits>
 #include <regex>
+#include <expected>
 
 // Standard Library Datatypes
 #include <string>

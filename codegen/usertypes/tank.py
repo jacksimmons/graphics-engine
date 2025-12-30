@@ -1,0 +1,1 @@
+CLASSES_VEC = "UserTypes::s_luaClasses"

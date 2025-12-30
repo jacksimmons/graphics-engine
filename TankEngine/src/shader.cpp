@@ -64,13 +64,15 @@ namespace Tank
 
 	bool Shader::readShaderFile(const fs::path &shaderPath, std::string &shaderContents, const std::string &shaderType)
 	{
-		if (File::readLines(shaderPath, shaderContents) != File::ReadResult::Success)
+		auto result = File::readLines(shaderPath);
+		if (!result)
 		{
 			std::string errMsg = "Failed to read " + shaderType + " shader: " + shaderPath.string();
 			TE_CORE_ERROR(errMsg);
 			return false;
 		}
 
+		shaderContents = result.value();
 		return true;
 	}
 

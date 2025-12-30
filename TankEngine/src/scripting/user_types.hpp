@@ -5,10 +5,11 @@
 namespace sol { class state; }
 namespace Tank::UserTypes
 {
-	static std::vector<LuaClass> s_luaClasses;
+	inline std::vector<LuaClass> s_luaClasses;
 	
-	std::optional<LuaClass*> classFromName(const std::string &);
-	void generate(sol::state &);
+	std::optional<LuaClass *>classFromName(const std::string &);
+	void Vec3(sol::state &);
+	void Quat(sol::state &);
 
 	void codegen();
 }

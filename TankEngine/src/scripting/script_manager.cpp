@@ -13,21 +13,24 @@ namespace Tank
 
 	void ScriptData::load(const Res &path)
 	{
-		auto result = File::readLines(path.resolvePath(), m_lastContents);
-		if (result != File::ReadResult::Success)
+		auto result = File::readLines(path.resolvePath());
+		if (!result)
 		{
-			switch (result)
+			switch (result.error())
 			{
-			case File::ReadResult::Error:
-				TE_CORE_ERROR(std::string("Error when loading script: ") + Res::encode(path));
-				break;
-			case File::ReadResult::NotFile:
+			case File::ReadError::NotFile:
 				TE_CORE_ERROR(std::string("Script did not exist: ") + Res::encode(path));
+				break;
+			case File::ReadError::Error:
+				TE_CORE_ERROR(std::string("Error when loading script: ") + Res::encode(path));
 				break;
 			}
 
 			m_lastContents = "";
+			return;
 		}
+
+		m_lastContents = result.value();
 	}
 
 

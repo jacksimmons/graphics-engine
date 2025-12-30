@@ -5,6 +5,7 @@ x32/
 **/*.vcxproj*
 *.pc
 *.make
+__pycache__
 
 CMakeLists.txt.user
 CMakeCache.txt

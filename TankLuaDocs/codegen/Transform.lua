@@ -3,7 +3,7 @@
 --- Fields/Methods
 ---@class (exact) Transform
 ---@field translation Vec3
----@field rotation Vec3
+---@field rotation Quat
 ---@field scale Vec3
 
 --- Static Methods

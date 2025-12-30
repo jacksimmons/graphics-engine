@@ -2,7 +2,7 @@
 
 --- Fields/Methods
 ---@class (exact) Camera : Node
----@field set_pos fun(this, pos: Vec3): nil
+---@field position Vec3
 
 --- Static Methods
 ---@class (exact) Camera_Static
