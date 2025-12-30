@@ -34,9 +34,6 @@ namespace Tank
 
 	void UserTypes::generate(sol::state &lua)
 	{
-		// Read all usertypes data files
-		generateFromFile<glm::vec3>("Vec3", lua);
-
 		UserTypes::Vec3(lua);
 		UserTypes::Quat(lua);
 

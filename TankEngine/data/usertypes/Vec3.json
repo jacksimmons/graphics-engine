@@ -8,5 +8,13 @@
         {"cpp": "x", "lua": "x: number"},
         {"cpp": "y", "lua": "y: number"},
         {"cpp": "z", "lua": "z: number"}
+    ],
+    "metamethods": [
+        "a+b",
+        "a-b",
+        ["a*b", "float"],
+        ["a/b", "float"],
+        "-a",
+        "a==b"
     ]
 }

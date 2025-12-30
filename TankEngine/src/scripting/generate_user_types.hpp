@@ -7,8 +7,6 @@
 #define SOL_CLASS_BASE(name, baseName) (GET_SOL_CLASS(name)->base = #baseName/*, sol::bases<baseName>()*/)
 
 // Declares a class field.
-#define SOL_FIELD(className, name, type) \
-	(GET_SOL_CLASS(className)->fields.push_back({name, type}), name)
 #define SOL_GLOBAL_FIELD(className, name, type) \
 	GET_SOL_CLASS(className)->globalFields.push_back({name, type})
 

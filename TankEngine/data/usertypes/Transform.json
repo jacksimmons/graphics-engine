@@ -1,0 +1,9 @@
+{
+    "include": "#include <transform.hpp>",
+    "cpp_type": "Transform",
+    "properties": [
+        {"lua": "translation: Vec3", "get": "getLocalTranslation", "set": "setLocalTranslation"},
+        {"lua": "rotation: Quat", "get": "getLocalRotation", "set": "setLocalRotation"},
+        {"lua": "scale: Vec3", "get": "getLocalScale", "set": "setLocalScale"}
+    ]
+}

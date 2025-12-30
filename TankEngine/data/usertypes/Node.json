@@ -1,0 +1,11 @@
+{
+    "include": "#include <nodes/node.hpp>",
+    "cpp_type": "Node",
+    "properties": [
+        {"lua": "name: string", "get": "getName", "set": "setName"},
+        {"lua": "transform: Transform", "get": "getTransform"},
+        {"lua": "key_input: KeyInput", "get": "getKeyInput"}
+    ],
+    "methods": [
+    ]
+}

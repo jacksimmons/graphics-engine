@@ -40,7 +40,10 @@ usertype_func_calls = usertype_func_calls[:-1]
 code = f"""// CODEGEN FROM {sys.argv[0]}
 #include \"generate_user_types.hpp\"
 #include \"user_types.hpp\""
-
+"""
+for key in usertypes.keys():
+    code += f"{usertypes[key]["include"] if "include" in usertypes[key] else ""}"
+code += f"""
 namespace Tank
 {"{"}
 {usertype_funcs}
